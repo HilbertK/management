@@ -35,7 +35,7 @@
       <ACol :span="12">
         <FormItem :style="{ 'text-align': 'right' }">
           <!-- No logic, you need to deal with it yourself -->
-          <Button type="link" size="small" @click="setLoginState(LoginStateEnum.RESET_PASSWORD)">
+          <Button type="link" size="small" @click="onForgetPassword()">
             {{ t('sys.login.forgetPassword') }}
           </Button>
         </FormItem>
@@ -46,35 +46,13 @@
       <Button type="primary" size="large" block @click="handleLogin" :loading="loading">
         {{ t('sys.login.loginButton') }}
       </Button>
-      <!-- <Button size="large" class="mt-4 enter-x" block @click="handleRegister">
-              {{ t('sys.login.registerButton') }}
-            </Button> -->
+      <Button size="large" class="mt-4 enter-x" block @click="setLoginState(LoginStateEnum.REGISTER)">
+        {{ t('sys.login.registerButton') }}
+      </Button>
     </FormItem>
-    <ARow class="enter-x">
-      <ACol :md="8" :xs="24">
-        <Button block @click="setLoginState(LoginStateEnum.MOBILE)">
-          {{ t('sys.login.mobileSignInFormTitle') }}
-        </Button>
-      </ACol>
-      <ACol :md="8" :xs="24" class="!my-2 !md:my-0 xs:mx-0 md:mx-2">
-        <Button block @click="setLoginState(LoginStateEnum.QR_CODE)">
-          {{ t('sys.login.qrSignInFormTitle') }}
-        </Button>
-      </ACol>
-      <ACol :md="7" :xs="24">
-        <Button block @click="setLoginState(LoginStateEnum.REGISTER)">
-          {{ t('sys.login.registerButton') }}
-        </Button>
-      </ACol>
-    </ARow>
-
     <Divider class="enter-x">{{ t('sys.login.otherSignIn') }}</Divider>
-
     <div class="flex justify-evenly enter-x" :class="`${prefixCls}-sign-in-way`">
-      <a @click="onThirdLogin('github')" title="github"><GithubFilled /></a>
       <a @click="onThirdLogin('wechat_enterprise')" title="企业微信"> <icon-font class="item-icon" type="icon-qiyeweixin3" /></a>
-      <a @click="onThirdLogin('dingtalk')" title="钉钉"><DingtalkCircleFilled /></a>
-      <a @click="onThirdLogin('wechat_open')" title="微信"><WechatFilled /></a>
     </div>
   </Form>
   <!-- 第三方登录相关弹框 -->
@@ -84,7 +62,7 @@
   import { reactive, ref, toRaw, unref, computed, onMounted } from 'vue';
 
   import { Checkbox, Form, Input, Row, Col, Button, Divider } from 'ant-design-vue';
-  import { GithubFilled, WechatFilled, DingtalkCircleFilled, QuestionCircleFilled, createFromIconfontCN } from '@ant-design/icons-vue';
+  import { createFromIconfontCN } from '@ant-design/icons-vue';
   import LoginFormTitle from './LoginFormTitle.vue';
   import ThirdModal from './ThirdModal.vue';
   import { useI18n } from '/@/hooks/web/useI18n';
@@ -94,7 +72,6 @@
   import { LoginStateEnum, useLoginState, useFormRules, useFormValid } from './useLogin';
   import { useDesign } from '/@/hooks/web/useDesign';
   import { getCodeInfo } from '/@/api/sys/user';
-  //import { onKeyStroke } from '@vueuse/core';
 
   const ACol = Col;
   const ARow = Row;
@@ -104,7 +81,7 @@
     scriptUrl: '//at.alicdn.com/t/font_2316098_umqusozousr.js',
   });
   const { t } = useI18n();
-  const { notification, createErrorModal } = useMessage();
+  const { notification } = useMessage();
   const { prefixCls } = useDesign('login');
   const userStore = useUserStore();
 
@@ -117,8 +94,8 @@
   const rememberMe = ref(false);
 
   const formData = reactive({
-    account: 'admin',
-    password: '123456',
+    account: '',
+    password: '',
     inputCode: '',
   });
   const randCodeData = reactive({
@@ -128,8 +105,6 @@
   });
 
   const { validForm } = useFormValid(formRef);
-
-  //onKeyStroke('Enter', handleLogin);
 
   const getShow = computed(() => unref(getLoginState) === LoginStateEnum.LOGIN);
 
@@ -162,9 +137,7 @@
       });
       loading.value = false;
 
-      //update-begin-author:taoyan date:2022-5-3 for: issues/41 登录页面，当输入验证码错误时，验证码图片要刷新一下，而不是保持旧的验证码图片不变
       handleChangeCheckCode();
-      //update-end-author:taoyan date:2022-5-3 for: issues/41 登录页面，当输入验证码错误时，验证码图片要刷新一下，而不是保持旧的验证码图片不变
     }
   }
   function handleChangeCheckCode() {
@@ -183,6 +156,14 @@
    */
   function onThirdLogin(type) {
     thirdModalRef.value.onThirdLogin(type);
+  }
+
+  // 忘记密码
+  function onForgetPassword() {
+    notification.warning({
+      message: t('sys.exception.forgetPassword'),
+      duration: 5,
+    });
   }
   //初始化验证码
   onMounted(() => {

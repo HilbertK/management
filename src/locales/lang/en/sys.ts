@@ -53,6 +53,7 @@ export default {
     noDataTitle: 'No data on the current page.',
     networkErrorTitle: 'Network Error',
     networkErrorSubTitle: 'Sorry，Your network connection has been disconnected, please check your network!',
+    forgetPassword: '请联系行政人员~',
   },
   lock: {
     unlock: 'Click to unlock',
@@ -69,8 +70,7 @@ export default {
     signUpFormTitle: 'Sign up',
     forgetFormTitle: 'Reset password',
 
-    signInTitle: 'Backstage management system',
-    signInDesc: 'Enter your personal details and get started!',
+    signInTitle: 'zw service',
     policy: 'I agree to the xxx Privacy Policy',
     scanSign: `scanning the code to complete the login`,
 

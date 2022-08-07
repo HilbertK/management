@@ -51,6 +51,7 @@ export default {
     noDataTitle: '当前页无数据',
     networkErrorTitle: '网络错误',
     networkErrorSubTitle: '抱歉，您的网络连接已断开，请检查您的网络！',
+    forgetPassword: '请联系行政人员~',
   },
   lock: {
     unlock: '点击解锁',
@@ -67,8 +68,7 @@ export default {
     signUpFormTitle: '注册',
     forgetFormTitle: '重置密码',
 
-    signInTitle: 'Jeecg Boot',
-    signInDesc: '是中国最具影响力的 企业级低代码平台！在线开发，可视化拖拽设计，零代码实现80%的基础功能~',
+    signInTitle: '中闻',
     policy: '我同意xxx隐私政策',
     scanSign: `扫码后，即可完成登录`,
     scanSuccess: `扫码成功，登录中`,

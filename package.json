@@ -1,11 +1,6 @@
 {
-  "name": "jeecgboot-vue3",
-  "version": "3.3.0",
-  "author": {
-    "name": "jeecg",
-    "email": "jeecgos@163.com",
-    "url": "https://github.com/jeecgboot/jeecgboot-vue3"
-  },
+  "name": "management",
+  "version": "1.0.0",
   "scripts": {
     "bootstrap": "yarn install",
     "serve": "npm run dev",
@@ -34,7 +29,6 @@
     "prepare": "husky install"
   },
   "dependencies": {
-    "@jeecg/online": "1.0.1",
     "@iconify/iconify": "^2.0.4",
     "@vueuse/core": "^6.6.2",
     "@zxcvbn-ts/core": "^1.0.0-beta.0",
@@ -161,15 +155,6 @@
     "bin-wrapper": "npm:bin-wrapper-china",
     "rollup": "^2.56.3"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/jeecgboot/jeecgboot-vue3.git"
-  },
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/jeecgboot/jeecgboot-vue3/issues"
-  },
-  "homepage": "https://github.com/jeecgboot/jeecgboot-vue3",
   "engines": {
     "node": "^12 || >=14"
   },
@@ -178,7 +163,6 @@
       "include": [
         "@ant-design/colors",
         "@ant-design/icons-vue",
-        "@jeecg/online",
         "@vueuse/core",
         "@vueuse/shared",
         "@zxcvbn-ts/core",

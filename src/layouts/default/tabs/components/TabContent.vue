@@ -61,9 +61,6 @@
       const prefixIconType = computed(() => {
         if (props.tabItem.meta.icon) {
           return props.tabItem.meta.icon;
-        } else if (props.tabItem.path === '/dashboard/analysis') {
-          // 当是首页时返回 home 图标 TODO 此处可能需要动态判断首页路径
-          return 'ant-design:home-outlined';
         } else {
           return 'ant-design:code';
         }

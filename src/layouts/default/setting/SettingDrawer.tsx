@@ -3,7 +3,7 @@ import { BasicDrawer } from '/@/components/Drawer/index';
 import { Divider } from 'ant-design-vue';
 import { TypePicker, ThemeColorPicker, SettingFooter, SwitchItem, SelectItem, InputNumberItem } from './components';
 
-import { AppDarkModeToggle } from '/@/components/Application';
+// import { AppDarkModeToggle } from '/@/components/Application';
 
 import { MenuTypeEnum, TriggerEnum } from '/@/enums/menuEnum';
 
@@ -289,7 +289,7 @@ export default defineComponent({
     return () => (
       <BasicDrawer {...attrs} title={t('layout.setting.drawerTitle')} width={330} wrapClassName="setting-drawer">
         {unref(getShowDarkModeToggle) && <Divider>{() => t('layout.setting.darkMode')}</Divider>}
-        {unref(getShowDarkModeToggle) && <AppDarkModeToggle class="mx-auto" />}
+        {/* {unref(getShowDarkModeToggle) && <AppDarkModeToggle class="mx-auto" />} */}
         <Divider>{() => t('layout.setting.navMode')}</Divider>
         {renderSidebar()}
         <Divider>{() => t('layout.setting.sysTheme')}</Divider>

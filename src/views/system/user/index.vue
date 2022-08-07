@@ -7,10 +7,9 @@
         <a-button type="primary" preIcon="ant-design:plus-outlined" @click="handleCreate"> 新增</a-button>
         <a-button type="primary" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
         <j-upload-button type="primary" preIcon="ant-design:import-outlined" @click="onImportXls">导入</j-upload-button>
-        <a-button type="primary" @click="handleSyncUser" preIcon="ant-design:sync-outlined"> 同步流程</a-button>
-        <a-button type="primary" @click="openModal(true, {})" preIcon="ant-design:hdd-outlined"> 回收站</a-button>
-        <JThirdAppButton biz-type="user" :selected-row-keys="selectedRowKeys" syncToApp syncToLocal @sync-finally="onSyncFinally" />
-        <a-button type="primary" preIcon="ant-design:filter-outlined"> 高级查询?</a-button>
+        <!-- <a-button type="primary" @click="handleSyncUser" preIcon="ant-design:sync-outlined"> 同步流程</a-button> -->
+        <!-- <a-button type="primary" @click="openModal(true, {})" preIcon="ant-design:hdd-outlined"> 回收站</a-button> -->
+        <!-- <JThirdAppButton biz-type="user" :selected-row-keys="selectedRowKeys" syncToApp syncToLocal @sync-finally="onSyncFinally" /> -->
         <a-dropdown v-if="selectedRowKeys.length > 0">
           <template #overlay>
             <a-menu>
@@ -44,9 +43,9 @@
     <!--修改密码-->
     <PasswordModal @register="registerPasswordModal" @success="reload" />
     <!--用户代理-->
-    <UserAgentModal @register="registerAgentModal" @success="reload" />
+    <!-- <UserAgentModal @register="registerAgentModal" @success="reload" /> -->
     <!--回收站-->
-    <UserRecycleBinModal @register="registerModal" @success="reload" />
+    <!-- <UserRecycleBinModal @register="registerModal" @success="reload" /> -->
   </div>
 </template>
 
@@ -55,10 +54,10 @@
   import { ref, computed, unref } from 'vue';
   import { BasicTable, TableAction, ActionItem } from '/@/components/Table';
   import UserDrawer from './UserDrawer.vue';
-  import UserRecycleBinModal from './UserRecycleBinModal.vue';
+  // import UserRecycleBinModal from './UserRecycleBinModal.vue';
   import PasswordModal from './PasswordModal.vue';
-  import UserAgentModal from './UserAgentModal.vue';
-  import JThirdAppButton from '/@/components/jeecg/thirdApp/JThirdAppButton.vue';
+  // import UserAgentModal from './UserAgentModal.vue';
+  // import JThirdAppButton from '/@/components/jeecg/thirdApp/JThirdAppButton.vue';
   import { useDrawer } from '/@/components/Drawer';
   import { useListPage } from '/@/hooks/system/useListPage';
   import { useModal } from '/@/components/Modal';
@@ -74,11 +73,11 @@
   //注册drawer
   const [registerDrawer, { openDrawer }] = useDrawer();
   //回收站model
-  const [registerModal, { openModal }] = useModal();
+  // const [registerModal, { openModal }] = useModal();
   //密码model
   const [registerPasswordModal, { openModal: openPasswordModal }] = useModal();
   //代理人model
-  const [registerAgentModal, { openModal: openAgentModal }] = useModal();
+  // const [registerAgentModal, { openModal: openAgentModal }] = useModal();
 
   // 列表页面公共参数、方法
   const { prefixCls, tableContext, onExportXls, onImportXls } = useListPage({
@@ -178,12 +177,6 @@
     openPasswordModal(true, { username });
   }
   /**
-   * 打开代理人弹窗
-   */
-  function handleAgentSettings(userName) {
-    openAgentModal(true, { userName });
-  }
-  /**
    * 冻结解冻
    */
   async function handleFrozen(record, status) {
@@ -275,10 +268,6 @@
           title: '确定解冻吗?',
           confirm: handleFrozen.bind(null, record, 1),
         },
-      },
-      {
-        label: '代理人',
-        onClick: handleAgentSettings.bind(null, record.username),
       },
     ];
   }

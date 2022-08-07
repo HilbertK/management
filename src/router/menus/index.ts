@@ -1,24 +1,14 @@
-import type { Menu, MenuModule } from '/@/router/types';
+import type { Menu } from '/@/router/types';
 import type { RouteRecordNormalized } from 'vue-router';
 
 import { useAppStoreWithOut } from '/@/store/modules/app';
 import { usePermissionStore } from '/@/store/modules/permission';
-import { transformMenuModule, getAllParentPath } from '/@/router/helper/menuHelper';
+import { getAllParentPath } from '/@/router/helper/menuHelper';
 import { filter } from '/@/utils/helper/treeHelper';
 import { isUrl } from '/@/utils/is';
 import { router } from '/@/router';
 import { PermissionModeEnum } from '/@/enums/appEnum';
 import { pathToRegexp } from 'path-to-regexp';
-
-const modules = import.meta.globEager('./modules/**/*.ts');
-
-const menuModules: MenuModule[] = [];
-
-Object.keys(modules).forEach((key) => {
-  const mod = modules[key].default || {};
-  const modList = Array.isArray(mod) ? [...mod] : [mod];
-  menuModules.push(...modList);
-});
 
 // ===========================
 // ==========Helper===========
@@ -40,17 +30,6 @@ const isRoleMode = () => {
   return getPermissionMode() === PermissionModeEnum.ROLE;
 };
 
-const staticMenus: Menu[] = [];
-(() => {
-  menuModules.sort((a, b) => {
-    return (a.orderNo || 0) - (b.orderNo || 0);
-  });
-
-  for (const menu of menuModules) {
-    staticMenus.push(transformMenuModule(menu));
-  }
-})();
-
 async function getAsyncMenus() {
   const permissionStore = usePermissionStore();
   if (isBackMode()) {
@@ -59,7 +38,7 @@ async function getAsyncMenus() {
   if (isRouteMappingMode()) {
     return permissionStore.getFrontMenuList.filter((item) => !item.hideMenu);
   }
-  return staticMenus;
+  return [];
 }
 
 export const getMenus = async (): Promise<Menu[]> => {

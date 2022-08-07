@@ -3,20 +3,15 @@ import type { RuleObject } from 'ant-design-vue/lib/form/interface';
 import { ref, computed, unref, Ref } from 'vue';
 import { useI18n } from '/@/hooks/web/useI18n';
 import { checkOnlyUser } from '/@/api/sys/user';
-import { defHttp } from '/@/utils/http/axios';
 
 export enum LoginStateEnum {
   LOGIN,
   REGISTER,
-  RESET_PASSWORD,
-  MOBILE,
-  QR_CODE,
 }
 
 export enum SmsEnum {
   LOGIN = '0',
   REGISTER = '1',
-  FORGET_PASSWORD = '2',
 }
 const currentState = ref(LoginStateEnum.LOGIN);
 
@@ -50,15 +45,7 @@ export function useFormRules(formData?: Recordable) {
 
   const getAccountFormRule = computed(() => createRule(t('sys.login.accountPlaceholder')));
   const getPasswordFormRule = computed(() => createRule(t('sys.login.passwordPlaceholder')));
-  const getSmsFormRule = computed(() => createRule(t('sys.login.smsPlaceholder')));
-  const getMobileFormRule = computed(() => createRule(t('sys.login.mobilePlaceholder')));
-
-  const getRegisterAccountRule = computed(() => createRegisterAccountRule('account'));
-  const getRegisterMobileRule = computed(() => createRegisterAccountRule('mobile'));
-
-  const validatePolicy = async (_: RuleObject, value: boolean) => {
-    return !value ? Promise.reject(t('sys.login.policyPlaceholder')) : Promise.resolve();
-  };
+  const getRegisterAccountRule = computed(() => createRegisterAccountRule());
 
   const validateConfirmPassword = (password: string) => {
     return async (_: RuleObject, value: string) => {
@@ -75,40 +62,17 @@ export function useFormRules(formData?: Recordable) {
   const getFormRules = computed((): { [k: string]: ValidationRule | ValidationRule[] } => {
     const accountFormRule = unref(getAccountFormRule);
     const passwordFormRule = unref(getPasswordFormRule);
-    const smsFormRule = unref(getSmsFormRule);
-    const mobileFormRule = unref(getMobileFormRule);
 
     const registerAccountRule = unref(getRegisterAccountRule);
-    const registerMobileRule = unref(getRegisterMobileRule);
 
-    const mobileRule = {
-      sms: smsFormRule,
-      mobile: mobileFormRule,
-    };
     switch (unref(currentState)) {
       // register form rules
       case LoginStateEnum.REGISTER:
         return {
           account: registerAccountRule,
           password: passwordFormRule,
-          mobile: registerMobileRule,
-          sms: smsFormRule,
           confirmPassword: [{ validator: validateConfirmPassword(formData?.password), trigger: 'change' }],
-          policy: [{ validator: validatePolicy, trigger: 'change' }],
         };
-
-      // reset password form rules
-      case LoginStateEnum.RESET_PASSWORD:
-        return {
-          username: accountFormRule,
-          confirmPassword: [{ validator: validateConfirmPassword(formData?.password), trigger: 'change' }],
-          ...mobileRule,
-        };
-
-      // mobile form rules
-      case LoginStateEnum.MOBILE:
-        return mobileRule;
-
       // login form rules
       default:
         return {
@@ -129,10 +93,10 @@ function createRule(message: string) {
     },
   ];
 }
-function createRegisterAccountRule(type) {
+function createRegisterAccountRule() {
   return [
     {
-      validator: type == 'account' ? checkUsername : checkPhone,
+      validator: checkUsername,
       trigger: 'change',
     },
   ];
@@ -146,19 +110,6 @@ function checkUsername(rule, value, callback) {
     return new Promise((resolve, reject) => {
       checkOnlyUser({ username: value }).then((res) => {
         res.success ? resolve() : reject('用户名已存在!');
-      });
-    });
-  }
-}
-async function checkPhone(rule, value, callback) {
-  const { t } = useI18n();
-  var reg = /^1[3456789]\d{9}$/;
-  if (!reg.test(value)) {
-    return Promise.reject(new Error('请输入正确手机号'));
-  } else {
-    return new Promise((resolve, reject) => {
-      checkOnlyUser({ phone: value }).then((res) => {
-        res.success ? resolve() : reject('手机号已存在!');
       });
     });
   }

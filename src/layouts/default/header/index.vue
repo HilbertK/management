@@ -27,7 +27,7 @@
 
       <LockScreen v-if="getUseLockPage" />
 
-      <AppLocalePicker v-if="getShowLocalePicker" :reload="true" :showText="false" :class="`${prefixCls}-action__item`" />
+      <!-- <AppLocalePicker v-if="getShowLocalePicker" :reload="true" :showText="false" :class="`${prefixCls}-action__item`" /> -->
 
       <UserDropDown :theme="getHeaderTheme" />
 
@@ -54,7 +54,7 @@
 
   import { MenuModeEnum, MenuSplitTyeEnum } from '/@/enums/menuEnum';
   import { SettingButtonPositionEnum } from '/@/enums/appEnum';
-  import { AppLocalePicker } from '/@/components/Application';
+  // import { AppLocalePicker } from '/@/components/Application';
 
   import { UserDropDown, LayoutBreadcrumb, FullScreen, Notify, ErrorAction, LockScreen } from './components';
   import { useAppInject } from '/@/hooks/web/useAppInject';
@@ -75,7 +75,7 @@
       LayoutBreadcrumb,
       LayoutMenu,
       UserDropDown,
-      AppLocalePicker,
+      // AppLocalePicker,
       FullScreen,
       Notify,
       AppSearch,
