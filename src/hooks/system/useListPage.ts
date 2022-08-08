@@ -239,7 +239,7 @@ export function useListTable(tableProps: TableProps): [
     // 是否可以自适应高度
     canResize: true,
     // 表格最小高度
-    minHeight: 500,
+    minHeight: 350,
     // 点击行选中
     clickToRowSelect: false,
     // 是否显示边框

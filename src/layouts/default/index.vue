@@ -1,8 +1,6 @@
 <template>
   <Layout :class="prefixCls">
     <Layout :class="[layoutClass]">
-      <LayoutSideBar v-if="getShowSidebar || getIsMobile" />
-      <LayoutTrigger v-if="getShowSidebar || getIsMobile" />
       <Layout :class="`${prefixCls}-main`">
         <LayoutContent />
       </Layout>
@@ -15,8 +13,6 @@
   import { Layout } from 'ant-design-vue';
 
   import LayoutContent from './content/index.vue';
-  import LayoutSideBar from './sider/index.vue';
-  import LayoutTrigger from './trigger/index.vue';
   import { useMenuSetting } from '/@/hooks/setting/useMenuSetting';
   import { useDesign } from '/@/hooks/web/useDesign';
 
@@ -26,8 +22,6 @@
     name: 'DefaultLayout',
     components: {
       LayoutContent,
-      LayoutSideBar,
-      LayoutTrigger,
       Layout,
     },
     setup() {

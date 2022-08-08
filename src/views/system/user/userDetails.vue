@@ -4,17 +4,7 @@
 <script lang="ts">
   import { defineComponent } from 'vue';
   import { Description, DescItem, useDescription } from '/@/components/Description/index';
-  const mockData = {
-    username: 'test',
-    nickName: 'VB',
-    age: '123',
-    phone: '15695909xxx',
-    email: '190848757@qq.com',
-    addr: '厦门市思明区',
-    sex: '男',
-    certy: '3504256199xxxxxxxxx',
-    tag: 'orange',
-  };
+  const mockData = {};
   const schema: DescItem[] = [
     {
       field: 'username',

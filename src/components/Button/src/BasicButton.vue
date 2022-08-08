@@ -37,3 +37,8 @@
   // get inherit binding value
   const getBindValue = computed(() => ({ ...unref(attrs), ...props }));
 </script>
+<style lang="less">
+  .ant-btn {
+    border-radius: 4px !important;
+  }
+</style>

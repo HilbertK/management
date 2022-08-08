@@ -39,7 +39,7 @@ async function bootstrap() {
   registerGlobComp(app);
 
   //CAS单点登录
-  await useSso().ssoLogin();
+  // await useSso().ssoLogin();
 
   // 配置路由
   setupRouter(app);

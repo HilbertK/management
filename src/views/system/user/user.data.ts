@@ -86,33 +86,16 @@ export const recycleColumns: BasicColumn[] = [
 
 export const searchFormSchema: FormSchema[] = [
   {
-    label: '账号',
-    field: 'username',
-    component: 'JInput',
-    colProps: { span: 6 },
-  },
-  {
-    label: '性别',
-    field: 'sex',
-    component: 'JDictSelectTag',
-    componentProps: {
-      dictCode: 'sex',
-      placeholder: '请选择性别',
-      stringToNumber: true,
-    },
-    colProps: { span: 6 },
-  },
-  {
-    label: '真实名称',
+    label: '用户姓名',
     field: 'realname',
     component: 'Input',
-    colProps: { span: 6 },
+    colProps: { span: 3, xl: { span: 5 } },
   },
   {
     label: '手机号码',
     field: 'phone',
     component: 'Input',
-    colProps: { span: 6 },
+    colProps: { span: 3, xl: { span: 5 } },
   },
   {
     label: '用户状态',
@@ -123,7 +106,7 @@ export const searchFormSchema: FormSchema[] = [
       placeholder: '请选择状态',
       stringToNumber: true,
     },
-    colProps: { span: 6 },
+    colProps: { span: 3, xl: { span: 5 } },
   },
 ];
 
@@ -169,14 +152,16 @@ export const formSchema: FormSchema[] = [
   {
     label: '工号',
     field: 'workNo',
-    required: true,
+    required: false,
     component: 'Input',
+    dynamicDisabled: true,
     dynamicRules: ({ model, schema }) => rules.duplicateCheckRule('sys_user', 'work_no', model, schema, true),
   },
   {
     label: '职务',
     field: 'post',
     required: false,
+    dynamicDisabled: true,
     component: 'JSelectPosition',
     componentProps: {
       rowKey: 'code',
@@ -215,35 +200,6 @@ export const formSchema: FormSchema[] = [
           ]);
           //所属部门修改后更新负责部门数据
           formModel.departIds && (formModel.departIds = formModel.departIds.filter((item) => values.value.indexOf(item) > -1));
-        },
-      };
-    },
-  },
-  {
-    label: '租户',
-    field: 'relTenantIds',
-    component: 'ApiSelect',
-    componentProps: {
-      mode: 'multiple',
-      api: getAllTenantList,
-      numberToString: true,
-      labelField: 'name',
-      valueField: 'id',
-    },
-  },
-  {
-    label: '身份',
-    field: 'userIdentity',
-    component: 'RadioGroup',
-    defaultValue: 1,
-    componentProps: ({ formModel }) => {
-      return {
-        options: [
-          { label: '普通用户', value: 1, key: '1' },
-          { label: '上级', value: 2, key: '2' },
-        ],
-        onChange: () => {
-          formModel.userIdentity == 1 && (formModel.departIds = []);
         },
       };
     },
@@ -291,24 +247,7 @@ export const formSchema: FormSchema[] = [
     field: 'phone',
     component: 'Input',
     dynamicRules: ({ model, schema }) => {
-      return [{ ...rules.duplicateCheckRule('sys_user', 'phone', model, schema, true)[0] }, { pattern: /^1[3|4|5|7|8|9][0-9]\d{8}$/, message: '手机号码格式有误' }];
-    },
-  },
-  {
-    label: '座机',
-    field: 'telephone',
-    component: 'Input',
-    rules: [{ pattern: /^0\d{2,3}-[1-9]\d{6,7}$/, message: '请输入正确的座机号码' }],
-  },
-  {
-    label: '工作流引擎',
-    field: 'activitiSync',
-    defaultValue: 1,
-    component: 'JDictSelectTag',
-    componentProps: {
-      dictCode: 'activiti_sync',
-      type: 'radio',
-      stringToNumber: true,
+      return [{ ...rules.duplicateCheckRule('sys_user', 'phone', model, schema, false)[0] }, { pattern: /^1[3|4|5|7|8|9][0-9]\d{8}$/, message: '手机号码格式有误' }];
     },
   },
 ];

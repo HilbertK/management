@@ -8,7 +8,6 @@
   <a-modal :footer="null" :closable="false" v-model:visible="thirdConfirmShow" :class="'ant-modal-confirm'">
     <div class="ant-modal-confirm-body-wrapper">
       <div class="ant-modal-confirm-body">
-        <QuestionCircleFilled style="color: #faad14" />
         <span class="ant-modal-confirm-title">提示</span>
         <div class="ant-modal-confirm-content"> 已有同名账号存在,请确认是否绑定该账号？ </div>
       </div>

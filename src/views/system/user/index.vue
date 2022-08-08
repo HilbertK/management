@@ -57,19 +57,13 @@
   // import UserRecycleBinModal from './UserRecycleBinModal.vue';
   import PasswordModal from './PasswordModal.vue';
   // import UserAgentModal from './UserAgentModal.vue';
-  // import JThirdAppButton from '/@/components/jeecg/thirdApp/JThirdAppButton.vue';
   import { useDrawer } from '/@/components/Drawer';
   import { useListPage } from '/@/hooks/system/useListPage';
   import { useModal } from '/@/components/Modal';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { columns, searchFormSchema } from './user.data';
   import { list, deleteUser, batchDeleteUser, getImportUrl, getExportUrl, frozenBatch, syncUser } from './user.api';
-  // import { usePermission } from '/@/hooks/web/usePermission'
-  // const { hasPermission } = usePermission();
 
-  const { createMessage, createConfirm } = useMessage();
-
-  const selectRows = ref([]);
   //注册drawer
   const [registerDrawer, { openDrawer }] = useDrawer();
   //回收站model
@@ -143,21 +137,12 @@
    * 删除事件
    */
   async function handleDelete(record) {
-    if ('admin' == record.username) {
-      createMessage.warning('管理员账号不允许此操作！');
-      return;
-    }
     await deleteUser({ id: record.id }, reload);
   }
   /**
    * 批量删除事件
    */
   async function batchHandleDelete() {
-    let hasAdmin = unref(selectRows).filter((item) => item.username == 'admin');
-    if (unref(hasAdmin).length > 0) {
-      createMessage.warning('管理员账号不允许此操作！');
-      return;
-    }
     await batchDeleteUser({ ids: selectedRowKeys.value }, () => {
       selectedRowKeys.value = [];
       reload();
@@ -180,21 +165,12 @@
    * 冻结解冻
    */
   async function handleFrozen(record, status) {
-    if ('admin' == record.username) {
-      createMessage.warning('管理员账号不允许此操作！');
-      return;
-    }
     await frozenBatch({ ids: record.id, status: status }, reload);
   }
   /**
    * 批量冻结解冻
    */
   function batchFrozen(status) {
-    let hasAdmin = unref(selectRows).filter((item) => item.username == 'admin');
-    if (unref(hasAdmin).length > 0) {
-      createMessage.warning('管理员账号不允许此操作！');
-      return;
-    }
     createConfirm({
       iconType: 'warning',
       title: '确认操作',
@@ -203,22 +179,6 @@
         await frozenBatch({ ids: unref(selectedRowKeys).join(','), status: status }, reload);
       },
     });
-  }
-
-  /**
-   *同步流程
-   */
-  function handleSyncUser() {
-    syncUser();
-  }
-  /**
-   *同步钉钉和微信回调
-   */
-  function onSyncFinally({ isToLocal }) {
-    // 同步到本地时刷新下数据
-    if (isToLocal) {
-      reload();
-    }
   }
 
   /**

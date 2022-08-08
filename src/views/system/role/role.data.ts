@@ -40,7 +40,7 @@ export const searchFormSchema: FormSchema[] = [
     field: 'roleName',
     label: '角色名称',
     component: 'Input',
-    colProps: { span: 6 },
+    colProps: { span: 3, xl: { span: 5 } },
   },
 ];
 /**

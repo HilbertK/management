@@ -1,5 +1,5 @@
 <template>
-  <BasicDrawer @register="registerBaseDrawer" title="角色用户" width="800" destroyOnClose>
+  <BasicDrawer @register="registerBaseDrawer" :title="getTitle" width="800" destroyOnClose>
     <BasicTable @register="registerTable" :rowSelection="rowSelection">
       <template #tableTitle>
         <a-button type="primary" @click="handleCreate"> 新增用户</a-button>
@@ -31,7 +31,7 @@
   </BasicDrawer>
 </template>
 <script lang="ts" setup>
-  import { ref, defineProps, watch, unref } from 'vue';
+  import { ref, defineProps, watch, unref, computed } from 'vue';
   import { BasicTable, useTable, TableAction } from '/src/components/Table';
   import { BasicDrawer, useDrawer, useDrawerInner } from '/src/components/Drawer';
   import { useModal } from '/src/components/Modal';
@@ -44,8 +44,10 @@
   const emit = defineEmits(['register', 'hideUserList']);
   const checkedKeys = ref<Array<string | number>>([]);
   const roleId = ref('');
+  const roleName = ref('');
   const [registerBaseDrawer, { setDrawerProps, closeDrawer }] = useDrawerInner(async (data) => {
     roleId.value = data.id;
+    roleName.value = data.roleName;
     setProps({ searchInfo: { roleId: data.id } });
     reload();
   });
@@ -90,6 +92,8 @@
     selectedRowKeys: checkedKeys,
     onChange: onSelectChange,
   };
+
+  const getTitle = computed(() => roleName.value);
 
   /**
    * 选择事件

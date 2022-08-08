@@ -72,7 +72,7 @@ function createPageLoadingGuard(router: Router) {
       // The timer simulates the loading time to prevent flashing too fast,
       setTimeout(() => {
         appStore.setPageLoading(false);
-      }, 220);
+      }, 0);
     }
     return true;
   });

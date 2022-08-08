@@ -2,26 +2,9 @@ import type { AppRouteRecordRaw, Menu } from '/@/router/types';
 
 import { defineStore } from 'pinia';
 import { store } from '/@/store';
-import { useI18n } from '/@/hooks/web/useI18n';
 import { useUserStore } from './user';
-import { useAppStoreWithOut } from './app';
-import { toRaw } from 'vue';
-import { transformObjToRoute, flatMultiLevelRoutes, addSlashToRouteComponent } from '/@/router/helper/routeHelper';
-import { transformRouteToMenu } from '/@/router/helper/menuHelper';
-
-import projectSetting from '/@/settings/projectSetting';
-
-import { PermissionModeEnum } from '/@/enums/appEnum';
-
-import { asyncRoutes } from '/@/router/routes';
 import { ERROR_LOG_ROUTE, PAGE_NOT_FOUND_ROUTE } from '/@/router/routes/basic';
-
-import { filter } from '/@/utils/helper/treeHelper';
-
-import { getMenuList } from '/@/api/sys/menu';
 import { getPermCode } from '/@/api/sys/user';
-
-import { useMessage } from '/@/hooks/web/useMessage';
 import { PageEnum } from '/@/enums/pageEnum';
 
 // 系统权限
@@ -130,26 +113,9 @@ export const usePermissionStore = defineStore({
       this.setAuthData(systemPermission);
     },
     async buildRoutesAction(): Promise<AppRouteRecordRaw[]> {
-      const { t } = useI18n();
       const userStore = useUserStore();
-      const appStore = useAppStoreWithOut();
 
-      let routes: AppRouteRecordRaw[] = [];
-      const roleList = toRaw(userStore.getRoleList) || [];
-      const { permissionMode = projectSetting.permissionMode } = appStore.getProjectConfig;
-
-      const routeFilter = (route: AppRouteRecordRaw) => {
-        const { meta } = route;
-        const { roles } = meta || {};
-        if (!roles) return true;
-        return roleList.some((role) => roles.includes(role));
-      };
-
-      const routeRemoveIgnoreFilter = (route: AppRouteRecordRaw) => {
-        const { meta } = route;
-        const { ignoreRoute } = meta || {};
-        return !ignoreRoute;
-      };
+      const routes: AppRouteRecordRaw[] = [PAGE_NOT_FOUND_ROUTE, ERROR_LOG_ROUTE];
 
       /**
        * @description 根据设置的首页path，修正routes中的affix标记（固定首页）
@@ -181,98 +147,6 @@ export const usePermissionStore = defineStore({
         return;
       };
 
-      switch (permissionMode) {
-        case PermissionModeEnum.ROLE:
-          routes = filter(asyncRoutes, routeFilter);
-          routes = routes.filter(routeFilter);
-          //  将多级路由转换为二级
-          routes = flatMultiLevelRoutes(routes);
-          break;
-
-        case PermissionModeEnum.ROUTE_MAPPING:
-          routes = filter(asyncRoutes, routeFilter);
-          routes = routes.filter(routeFilter);
-          const menuList = transformRouteToMenu(routes, true);
-          routes = filter(routes, routeRemoveIgnoreFilter);
-          routes = routes.filter(routeRemoveIgnoreFilter);
-          menuList.sort((a, b) => {
-            return (a.meta?.orderNo || 0) - (b.meta?.orderNo || 0);
-          });
-
-          this.setFrontMenuList(menuList);
-          // 将多级路由转换为二级
-          routes = flatMultiLevelRoutes(routes);
-          break;
-
-        // 后台菜单构建
-        case PermissionModeEnum.BACK:
-          const { createMessage, createWarningModal } = useMessage();
-          // 菜单加载提示
-          // createMessage.loading({
-          //   content: t('sys.app.menuLoading'),
-          //   duration: 1,
-          // });
-
-          // 从后台获取权限码，
-          // 这个函数可能只需要执行一次，并且实际的项目可以在正确的时间被放置
-          let routeList: AppRouteRecordRaw[] = [];
-          try {
-            this.changePermissionCode();
-            routeList = (await getMenuList()) as AppRouteRecordRaw[];
-            // update-begin----author:sunjianlei---date:20220315------for: 判断是否是 vue3 版本的菜单 ---
-            let hasIndex: boolean = false;
-            let hasIcon: boolean = false;
-            for (let menuItem of routeList) {
-              // 条件1：判断组件是否是 layouts/default/index
-              if (!hasIndex) {
-                hasIndex = menuItem.component === 'layouts/default/index';
-              }
-              // 条件2：判断图标是否带有 冒号
-              if (!hasIcon) {
-                hasIcon = !!menuItem.meta?.icon?.includes(':');
-              }
-              // 满足任何一个条件都直接跳出循环
-              if (hasIcon || hasIndex) {
-                break;
-              }
-            }
-            // 两个条件都不满足，就弹出提示框
-            if (!hasIcon && !hasIndex) {
-              // 延迟1.5秒之后再出现提示，否则提示框出不来
-              setTimeout(
-                () =>
-                  createWarningModal({
-                    title: '提示',
-                    content:
-                      '检测到当前菜单表是 <b>Vue2版本</b> 的，这将导致菜单加载异常，请更换成vue3版本的表！' +
-                      '<br>切换文档：<a href="http://vue3.jeecg.com/2671576" target="_blank">http://vue3.jeecg.com/2671576</a>',
-                  }),
-                1500
-              );
-            }
-            // update-end----author:sunjianlei---date:20220315------for: 判断是否是 vue3 版本的菜单 ---
-          } catch (error) {
-            console.error(error);
-          }
-          // 组件地址前加斜杠处理  author: lsq date:2021-09-08
-          routeList = addSlashToRouteComponent(routeList);
-          // 动态引入组件
-          routeList = transformObjToRoute(routeList);
-
-          // 构建后台路由菜单
-          const backMenuList = transformRouteToMenu(routeList);
-          this.setBackMenuList(backMenuList);
-
-          // 删除meta.ignoreRoute项
-          routeList = filter(routeList, routeRemoveIgnoreFilter);
-          routeList = routeList.filter(routeRemoveIgnoreFilter);
-
-          routeList = flatMultiLevelRoutes(routeList);
-          routes = [PAGE_NOT_FOUND_ROUTE, ...routeList];
-          break;
-      }
-
-      routes.push(ERROR_LOG_ROUTE);
       patchHomeAffix(routes);
       return routes;
     },

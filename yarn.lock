@@ -1309,11 +1309,6 @@
   resolved "https://registry.npmmirror.com/@istanbuljs/schema/download/@istanbuljs/schema-0.1.3.tgz#e45e384e4b8ec16bce2fd903af78450f6bf7ec98"
   integrity sha1-5F44TkuOwWvOL9kDr3hFD2v37Jg=
 
-"@jeecg/online@1.0.1":
-  version "1.0.1"
-  resolved "https://registry.npmjs.org/@jeecg/online/-/online-1.0.1.tgz#68c8d573e9acc009915e7feff1776ed87e972ca6"
-  integrity sha512-wB93qHXc5HVEvOT59Too9OpeSlnQyGnvMkG2lo7dZ1DnkUDbYXPH3QoxuxmZxDTQ5gJVaq1dX0zmUKb+4kts2Q==
-
 "@jest/console@^27.3.1":
   version "27.3.1"
   resolved "https://registry.npmmirror.com/@jest/console/download/@jest/console-27.3.1.tgz#e8ea3a475d3f8162f23d69efbfaa9cbe486bee93"
@@ -1692,22 +1687,10 @@
   dependencies:
     "@babel/types" "^7.3.0"
 
-"@types/codemirror@^5.60.5":
-  version "5.60.5"
-  resolved "https://registry.npmmirror.com/@types/codemirror/download/@types/codemirror-5.60.5.tgz?cache=0&sync_timestamp=1634002339419&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Fcodemirror%2Fdownload%2F%40types%2Fcodemirror-5.60.5.tgz#5b989a3b4bbe657458cf372c92b6bfda6061a2b7"
-  integrity sha1-W5iaO0u+ZXRYzzcskra/2mBhorc=
-  dependencies:
-    "@types/tern" "*"
-
 "@types/crypto-js@^4.0.2":
   version "4.0.2"
   resolved "https://registry.nlark.com/@types/crypto-js/download/@types/crypto-js-4.0.2.tgz?cache=0&sync_timestamp=1629707090206&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40types%2Fcrypto-js%2Fdownload%2F%40types%2Fcrypto-js-4.0.2.tgz#4524325a175bf819fec6e42560c389ce1fb92c97"
   integrity sha1-RSQyWhdb+Bn+xuQlYMOJzh+5LJc=
-
-"@types/estree@*":
-  version "0.0.50"
-  resolved "https://registry.nlark.com/@types/estree/download/@types/estree-0.0.50.tgz?cache=0&sync_timestamp=1629707592205&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40types%2Festree%2Fdownload%2F%40types%2Festree-0.0.50.tgz#1e0caa9364d3fccd2931c3ed96fdbeaa5d4cca83"
-  integrity sha1-Hgyqk2TT/M0pMcPtlv2+ql1MyoM=
 
 "@types/estree@0.0.39":
   version "0.0.39"
@@ -1947,13 +1930,6 @@
   integrity sha1-8MUO7ShkIvY7TjNG2KMJsOpn1Yo=
   dependencies:
     "@types/node" "*"
-
-"@types/tern@*":
-  version "0.23.4"
-  resolved "https://registry.nlark.com/@types/tern/download/@types/tern-0.23.4.tgz?cache=0&sync_timestamp=1629709532693&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40types%2Ftern%2Fdownload%2F%40types%2Ftern-0.23.4.tgz#03926eb13dbeaf3ae0d390caf706b2643a0127fb"
-  integrity sha1-A5JusT2+rzrg05DK9wayZDoBJ/s=
-  dependencies:
-    "@types/estree" "*"
 
 "@types/throttle-debounce@^2.1.0":
   version "2.1.0"
@@ -3418,11 +3394,6 @@ co@^4.6.0:
   resolved "https://registry.npm.taobao.org/co/download/co-4.6.0.tgz?cache=0&sync_timestamp=1598277393881&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fco%2Fdownload%2Fco-4.6.0.tgz#6ea6bdf3d853ae54ccb8e47bfa0bf3f9031fb184"
   integrity sha1-bqa989hTrlTMuOR7+gvz+QMfsYQ=
 
-codemirror@^5.63.3:
-  version "5.63.3"
-  resolved "https://registry.npmmirror.com/codemirror/download/codemirror-5.63.3.tgz#97042a242027fe0c87c09b36bc01931d37b76527"
-  integrity sha1-lwQqJCAn/gyHwJs2vAGTHTe3ZSc=
-
 collect-v8-coverage@^1.0.0:
   version "1.0.1"
   resolved "https://registry.npmmirror.com/collect-v8-coverage/download/collect-v8-coverage-1.0.1.tgz#cc2c8e94fc18bbdffe64d6534570c8a673b27f59"
@@ -4381,14 +4352,6 @@ duplexer3@^0.1.4:
   version "0.1.4"
   resolved "https://registry.npmmirror.com/duplexer3/download/duplexer3-0.1.4.tgz#ee01dd1cac0ed3cbc7fdbea37dc0a8f1ce002ce2"
   integrity sha1-7gHdHKwO08vH/b6jfcCo8c4ALOI=
-
-echarts@^5.2.1:
-  version "5.2.2"
-  resolved "https://registry.npmmirror.com/echarts/download/echarts-5.2.2.tgz?cache=0&sync_timestamp=1635742103726&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fecharts%2Fdownload%2Fecharts-5.2.2.tgz#ec3c8b2a151cbba71ba3c2c7cf9b2f2047ce4370"
-  integrity sha1-7DyLKhUcu6cbo8LHz5svIEfOQ3A=
-  dependencies:
-    tslib "2.3.0"
-    zrender "5.2.1"
 
 ee-first@1.1.1:
   version "1.1.1"
@@ -10619,11 +10582,6 @@ tinycolor2@^1.4.2:
   resolved "https://registry.nlark.com/tinycolor2/download/tinycolor2-1.4.2.tgz#3f6a4d1071ad07676d7fa472e1fac40a719d8803"
   integrity sha1-P2pNEHGtB2dtf6Ry4frECnGdiAM=
 
-tinymce@^5.10.3:
-  version "5.10.5"
-  resolved "https://registry.npmjs.org/tinymce/-/tinymce-5.10.5.tgz#02aef6a67e915f1559e51fa8fb007270d9666778"
-  integrity sha512-nFKtLhmoRtExBxUfv06JlkbQWux5D+d115vxSRAqUmccZdrtpFvOIYwZmikvulLdM9pfEpvO0B+RQ2qFV/+R7w==
-
 tmp@^0.0.33:
   version "0.0.33"
   resolved "https://registry.nlark.com/tmp/download/tmp-0.0.33.tgz#6d34335889768d21b2bcda0aa277ced3b1bfadf9"
@@ -10776,11 +10734,6 @@ ts-node@^9:
     make-error "^1.1.1"
     source-map-support "^0.5.17"
     yn "3.1.1"
-
-tslib@2.3.0:
-  version "2.3.0"
-  resolved "https://registry.nlark.com/tslib/download/tslib-2.3.0.tgz#803b8cdab3e12ba581a4ca41c8839bbb0dacb09e"
-  integrity sha1-gDuM2rPhK6WBpMpByIObuw2ssJ4=
 
 tslib@^1.8.1, tslib@^1.9.0:
   version "1.14.1"
@@ -12061,13 +12014,6 @@ yocto-queue@^0.1.0:
   version "0.1.0"
   resolved "https://registry.nlark.com/yocto-queue/download/yocto-queue-0.1.0.tgz#0294eb3dee05028d31ee1a5fa2c556a6aaf10a1b"
   integrity sha1-ApTrPe4FAo0x7hpfosVWpqrxChs=
-
-zrender@5.2.1:
-  version "5.2.1"
-  resolved "https://registry.nlark.com/zrender/download/zrender-5.2.1.tgz#5f4bbda915ba6d412b0b19dc2431beaad05417bb"
-  integrity sha1-X0u9qRW6bUErCxncJDG+qtBUF7s=
-  dependencies:
-    tslib "2.3.0"
 
 zwitch@^1.0.0:
   version "1.0.5"

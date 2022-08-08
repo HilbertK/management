@@ -9,7 +9,6 @@
   import { useDesign } from '/@/hooks/web/useDesign';
   import { useI18n } from '/@/hooks/web/useI18n';
   import { useGo, useRedo } from '/@/hooks/web/usePage';
-  import { PageEnum } from '/@/enums/pageEnum';
 
   interface MapValue {
     title: string;
@@ -62,24 +61,22 @@
       const getMapValue = computed((): MapValue => {
         return unref(statusMapRef).get(unref(getStatus)) as MapValue;
       });
-
-      const backLoginI18n = t('sys.exception.backLogin');
       const backHomeI18n = t('sys.exception.backHome');
 
       unref(statusMapRef).set(ExceptionEnum.PAGE_NOT_ACCESS, {
         title: '403',
         status: `${ExceptionEnum.PAGE_NOT_ACCESS}`,
         subTitle: t('sys.exception.subTitle403'),
-        btnText: props.full ? backLoginI18n : backHomeI18n,
-        handler: () => (props.full ? go(PageEnum.BASE_LOGIN) : go()),
+        btnText: backHomeI18n,
+        handler: () => go(),
       });
 
       unref(statusMapRef).set(ExceptionEnum.PAGE_NOT_FOUND, {
         title: '404',
         status: `${ExceptionEnum.PAGE_NOT_FOUND}`,
         subTitle: t('sys.exception.subTitle404'),
-        btnText: props.full ? backLoginI18n : backHomeI18n,
-        handler: () => (props.full ? go(PageEnum.BASE_LOGIN) : go()),
+        btnText: backHomeI18n,
+        handler: () => go(),
       });
 
       unref(statusMapRef).set(ExceptionEnum.ERROR, {

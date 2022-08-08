@@ -110,9 +110,7 @@ export class VAxios {
   /**
    * 文件上传
    */
-  //--@updateBy-begin----author:liusq---date:20211117------for:增加上传回调参数callback------
   uploadFile<T = any>(config: AxiosRequestConfig, params: UploadFileParams, callback?: UploadFileCallBack) {
-    //--@updateBy-end----author:liusq---date:20211117------for:增加上传回调参数callback------
     const formData = new window.FormData();
     const customFilename = params.name || 'file';
 
@@ -133,7 +131,7 @@ export class VAxios {
           return;
         }
 
-        formData.append(key, params.data[key]);
+        formData.append(key, params.data?.[key]);
       });
     }
 
@@ -148,14 +146,10 @@ export class VAxios {
         },
       })
       .then((res: any) => {
-        //--@updateBy-begin----author:liusq---date:20210914------for:上传判断是否包含回调方法------
         if (callback?.success && isFunction(callback?.success)) {
           callback?.success(res?.data);
-          //--@updateBy-end----author:liusq---date:20210914------for:上传判断是否包含回调方法------
         } else if (callback?.isReturnResponse) {
-          //--@updateBy-begin----author:liusq---date:20211117------for:上传判断是否返回res信息------
           return Promise.resolve(res?.data);
-          //--@updateBy-end----author:liusq---date:20211117------for:上传判断是否返回res信息------
         } else {
           if (res.data.success == true && res.data.code == 200) {
             createMessage.success(res.data.message);
@@ -220,9 +214,7 @@ export class VAxios {
           if (transformRequestHook && isFunction(transformRequestHook)) {
             try {
               const ret = transformRequestHook(res, opt);
-              //zhangyafei---添加回调方法
               config.success && config.success(res.data);
-              //zhangyafei---添加回调方法
               resolve(ret);
             } catch (err) {
               reject(err || new Error('request error!'));
