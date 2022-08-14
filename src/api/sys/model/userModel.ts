@@ -42,8 +42,6 @@ export interface GetUserInfoModel {
   desc?: string;
   // 用户信息
   userInfo?: any;
-  // 缓存字典项
-  sysAllDictItems?: any;
 }
 
 /**

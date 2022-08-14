@@ -149,26 +149,12 @@ export const useUserStore = defineStore({
      */
     async afterLoginAction(goHome?: boolean, data?: any): Promise<any | null> {
       if (!this.getToken) return null;
-      //获取用户信息
-      const userInfo = await this.getUserInfoAction();
       const sessionTimeout = this.sessionTimeout;
       if (sessionTimeout) {
         this.setSessionTimeout(false);
       } else {
-        const permissionStore = usePermissionStore();
-        if (!permissionStore.isDynamicAddedRoute) {
-          const routes = await permissionStore.buildRoutesAction();
-          routes.forEach((route) => {
-            router.addRoute(route as unknown as RouteRecordRaw);
-          });
-          router.addRoute(PAGE_NOT_FOUND_ROUTE as unknown as RouteRecordRaw);
-          permissionStore.setDynamicAddedRoute(true);
-        }
-        await this.setLoginInfo({ ...data, isLogin: true });
-        //update-begin-author:liusq date:2022-5-5 for:登录成功后缓存拖拽模块的接口前缀
-        localStorage.setItem(JDragConfigEnum.DRAG_BASE_URL, useGlobSetting().domainUrl);
-        //update-end-author:liusq date:2022-5-5 for: 登录成功后缓存拖拽模块的接口前缀
-        goHome && (await router.replace((userInfo && userInfo.homePath) || PageEnum.BASE_HOME));
+        this.setLoginInfo({ ...data, isLogin: true });
+        goHome && (await router.replace(PageEnum.BASE_HOME));
       }
       return data;
     },
@@ -200,7 +186,7 @@ export const useUserStore = defineStore({
       if (!this.getToken) {
         return null;
       }
-      const { userInfo, sysAllDictItems } = await getUserInfo();
+      const { userInfo } = await getUserInfo();
       if (userInfo) {
         const { roles = [] } = userInfo;
         if (isArray(roles)) {
@@ -211,14 +197,6 @@ export const useUserStore = defineStore({
           this.setRoleList([]);
         }
         this.setUserInfo(userInfo);
-      }
-      /**
-       * 添加字典信息到缓存
-       * @updateBy:lsq
-       * @updateDate:2021-09-08
-       */
-      if (sysAllDictItems) {
-        this.setAllDictItems(sysAllDictItems);
       }
       return userInfo;
     },
@@ -233,28 +211,16 @@ export const useUserStore = defineStore({
           console.log('注销Token失败');
         }
       }
-
-      // //update-begin-author:taoyan date:2022-5-5 for: src/layouts/default/header/index.vue showLoginSelect方法 获取tenantId 退出登录后再次登录依然能获取到值，没有清空
-      // let username:any = this.userInfo && this.userInfo.username;
-      // if(username){
-      //   removeAuthCache(username)
-      // }
-      // //update-end-author:taoyan date:2022-5-5 for: src/layouts/default/header/index.vue showLoginSelect方法 获取tenantId 退出登录后再次登录依然能获取到值，没有清空
-
       this.setToken('');
       setAuthCache(TOKEN_KEY, null);
       this.setSessionTimeout(false);
       this.setUserInfo(null);
       this.setLoginInfo(null);
-      //update-begin-author:liusq date:2022-5-5 for:退出登录后清除拖拽模块的接口前缀
-      localStorage.removeItem(JDragConfigEnum.DRAG_BASE_URL);
-      //update-end-author:liusq date:2022-5-5 for: 退出登录后清除拖拽模块的接口前缀
-
       //如果开启单点登录,则跳转到单点统一登录中心
-      const openSso = useGlobSetting().openSso;
-      if (openSso == 'true') {
-        await useSso().ssoLoginOut();
-      }
+      // const openSso = useGlobSetting().openSso;
+      // if (openSso == 'true') {
+      //   await useSso().ssoLoginOut();
+      // }
 
       goLogin && (await router.push(PageEnum.BASE_LOGIN));
     },

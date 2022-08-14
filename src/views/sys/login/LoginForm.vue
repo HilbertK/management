@@ -142,8 +142,7 @@
   }
   function handleChangeCheckCode() {
     formData.inputCode = '';
-    //TODO 兼容mock和接口，暂时这样处理
-    randCodeData.checkKey = 1629428467008; //new Date().getTime();
+    randCodeData.checkKey = new Date().getTime(); //new Date().getTime();
     getCodeInfo(randCodeData.checkKey).then((res) => {
       randCodeData.randCodeImage = res;
       randCodeData.requestCodeSuccess = true;

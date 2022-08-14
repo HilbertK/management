@@ -4,16 +4,15 @@
   </BasicModal>
 </template>
 <script lang="ts" setup>
-  // import { ref, computed, unref } from 'vue';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form/index';
-  // import { formAgentSchema } from './user.data';
+  import { formAgentSchema } from './user.data';
   import { getUserAgent, saveOrUpdateAgent } from './user.api';
   // 声明Emits
   const emit = defineEmits(['success', 'register']);
   //表单配置
   const [registerForm, { resetFields, setFieldsValue, validate }] = useForm({
-    // schemas: formAgentSchema,
+    schemas: formAgentSchema,
     showActionButtonGroup: false,
   });
   //表单赋值

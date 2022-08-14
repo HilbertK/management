@@ -19,7 +19,7 @@
   </a-modal>
 
   <!-- 第三方登录绑定手机号 -->
-  <a-modal title="绑定手机号" v-model:visible="bindingPhoneModal" :maskClosable="false">
+  <!-- <a-modal title="绑定手机号" v-model:visible="bindingPhoneModal" :maskClosable="false">
     <Form class="p-4 enter-x" style="margin: 15px 10px">
       <FormItem class="enter-x">
         <a-input size="large" placeholder="请输入手机号" v-model:value="thirdPhone" class="fix-auto-fill">
@@ -39,19 +39,24 @@
     <template #footer>
       <a-button type="primary" @click="thirdHandleOk">确定</a-button>
     </template>
-  </a-modal>
+  </a-modal> -->
 </template>
 <script lang="ts">
   import { defineComponent } from 'vue';
-  import { Form, Input } from 'ant-design-vue';
-  import { CountdownInput } from '/@/components/CountDown';
+  // import { Form, Input } from 'ant-design-vue';
+  // import { CountdownInput } from '/@/components/CountDown';
   import { useThirdLogin } from '/@/hooks/system/useThirdLogin';
-  const FormItem = Form.Item;
-  const InputPassword = Input.Password;
+  // const FormItem = Form.Item;
+  // const InputPassword = Input.Password;
 
   export default defineComponent({
     name: 'ThirdModal',
-    components: { FormItem, Form, InputPassword, CountdownInput },
+    components: {
+      // InputPassword,
+      // FormItem,
+      // Form,
+      // CountdownInput
+    },
     setup() {
       return {
         ...useThirdLogin(),

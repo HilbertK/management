@@ -43,7 +43,7 @@
     <!--修改密码-->
     <PasswordModal @register="registerPasswordModal" @success="reload" />
     <!--用户代理-->
-    <!-- <UserAgentModal @register="registerAgentModal" @success="reload" /> -->
+    <UserAgentModal @register="registerAgentModal" @success="reload" />
     <!--回收站-->
     <!-- <UserRecycleBinModal @register="registerModal" @success="reload" /> -->
   </div>
@@ -60,7 +60,6 @@
   import { useDrawer } from '/@/components/Drawer';
   import { useListPage } from '/@/hooks/system/useListPage';
   import { useModal } from '/@/components/Modal';
-  import { useMessage } from '/@/hooks/web/useMessage';
   import { columns, searchFormSchema } from './user.data';
   import { list, deleteUser, batchDeleteUser, getImportUrl, getExportUrl, frozenBatch, syncUser } from './user.api';
 
@@ -86,7 +85,7 @@
         schemas: searchFormSchema,
       },
       actionColumn: {
-        width: 120,
+        width: 220,
       },
       beforeFetch: (params) => {
         return Object.assign({ column: 'createTime', order: 'desc' }, params);
@@ -162,6 +161,12 @@
     openPasswordModal(true, { username });
   }
   /**
+   * 打开代理人弹窗
+   */
+  // function handleAgentSettings(userName) {
+  //   openAgentModal(true, { userName });
+  // }
+  /**
    * 冻结解冻
    */
   async function handleFrozen(record, status) {
@@ -191,21 +196,6 @@
         onClick: handleEdit.bind(null, record),
         // ifShow: () => hasPermission('system:user:edit'),
       },
-    ];
-  }
-  /**
-   * 下拉操作栏
-   */
-  function getDropDownAction(record): ActionItem[] {
-    return [
-      {
-        label: '详情',
-        onClick: handleDetail.bind(null, record),
-      },
-      {
-        label: '密码',
-        onClick: handleChangePassword.bind(null, record.username),
-      },
       {
         label: '删除',
         popConfirm: {
@@ -229,6 +219,25 @@
           confirm: handleFrozen.bind(null, record, 1),
         },
       },
+    ];
+  }
+  /**
+   * 下拉操作栏
+   */
+  function getDropDownAction(record): ActionItem[] {
+    return [
+      {
+        label: '详情',
+        onClick: handleDetail.bind(null, record),
+      },
+      {
+        label: '密码',
+        onClick: handleChangePassword.bind(null, record.username),
+      },
+      // {
+      //   label: '代理人',
+      //   onClick: handleAgentSettings.bind(null, record.username),
+      // },
     ];
   }
 </script>
