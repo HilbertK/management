@@ -85,6 +85,7 @@ export default {
 
     // placeholder
     accountPlaceholder: '请输入账号',
+    realNamePlaceholder: '请输入名称',
     passwordPlaceholder: '请输入密码',
     inputCodePlaceholder: '请输入验证码',
     smsPlaceholder: '请输入验证码',
@@ -101,5 +102,6 @@ export default {
     mobile: '手机号码',
 
     subTitleText: '{0}秒后返回登录页面',
+    realName: '名称',
   },
 };

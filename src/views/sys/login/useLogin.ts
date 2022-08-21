@@ -9,6 +9,11 @@ export enum LoginStateEnum {
   REGISTER,
 }
 
+export enum UserTypeEnum {
+  NaturalPerson = 'natural_person',
+  LegalPerson = 'legal_person',
+}
+
 export enum SmsEnum {
   LOGIN = '0',
   REGISTER = '1',
@@ -45,7 +50,10 @@ export function useFormRules(formData?: Recordable) {
 
   const getAccountFormRule = computed(() => createRule(t('sys.login.accountPlaceholder')));
   const getPasswordFormRule = computed(() => createRule(t('sys.login.passwordPlaceholder')));
-  const getRegisterAccountRule = computed(() => createRegisterAccountRule());
+  const getRealNameFormRule = computed(() => createRule(t('sys.login.realNamePlaceholder')));
+
+  const getRegisterAccountRule = computed(() => createRegisterAccountRule('account'));
+  const getRegisterMobileRule = computed(() => createRegisterAccountRule('mobile'));
 
   const validateConfirmPassword = (password: string) => {
     return async (_: RuleObject, value: string) => {
@@ -62,8 +70,10 @@ export function useFormRules(formData?: Recordable) {
   const getFormRules = computed((): { [k: string]: ValidationRule | ValidationRule[] } => {
     const accountFormRule = unref(getAccountFormRule);
     const passwordFormRule = unref(getPasswordFormRule);
+    const realNameFormRule = unref(getRealNameFormRule);
 
     const registerAccountRule = unref(getRegisterAccountRule);
+    const registerMobileRule = unref(getRegisterMobileRule);
 
     switch (unref(currentState)) {
       // register form rules
@@ -71,6 +81,8 @@ export function useFormRules(formData?: Recordable) {
         return {
           account: registerAccountRule,
           password: passwordFormRule,
+          realname: realNameFormRule,
+          mobile: registerMobileRule,
           confirmPassword: [{ validator: validateConfirmPassword(formData?.password), trigger: 'change' }],
         };
       // login form rules
@@ -93,15 +105,14 @@ function createRule(message: string) {
     },
   ];
 }
-function createRegisterAccountRule() {
+function createRegisterAccountRule(type) {
   return [
     {
-      validator: checkUsername,
+      validator: type == 'account' ? checkUsername : checkPhone,
       trigger: 'change',
     },
   ];
 }
-
 function checkUsername(rule, value, callback) {
   const { t } = useI18n();
   if (!value) {
@@ -115,7 +126,6 @@ function checkUsername(rule, value, callback) {
   }
 }
 
-//update-begin---author:wangshuai ---date:20220629  for：[issues/I5BG1I]vue3不支持auth2登录------------
 /**
  * 判断是否是OAuth2APP环境
  */
@@ -132,4 +142,16 @@ export function sysOAuth2Login(source) {
   url += `?state=${encodeURIComponent(window.location.origin)}`;
   window.location.href = url;
 }
-//update-end---author:wangshuai ---date:20220629  for：[issues/I5BG1I]vue3不支持auth2登录------------
+
+async function checkPhone(rule, value, callback) {
+  const reg = /^1[3456789]\d{9}$/;
+  if (!reg.test(value)) {
+    return Promise.reject(new Error('请输入正确手机号'));
+  } else {
+    return new Promise((resolve, reject) => {
+      checkOnlyUser({ phone: value }).then((res) => {
+        res.success ? resolve() : reject('手机号已存在!');
+      });
+    });
+  }
+}

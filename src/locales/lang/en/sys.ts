@@ -86,6 +86,7 @@ export default {
 
     // placeholder
     accountPlaceholder: 'Please input username',
+    realNamePlaceholder: 'Please input realname',
     passwordPlaceholder: 'Please input password',
     smsPlaceholder: 'Please input sms code',
     mobilePlaceholder: 'Please input mobile',
@@ -98,5 +99,6 @@ export default {
     email: 'Email',
     smsCode: 'SMS code',
     mobile: 'Mobile',
+    realName: 'Realname',
   },
 };

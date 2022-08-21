@@ -1,4 +1,4 @@
-import { generateAntColors, primaryColor } from '../config/themeConfig';
+import { bgColor, generateAntColors, primaryColor } from '../config/themeConfig';
 import { getThemeVariables } from 'ant-design-vue/dist/theme';
 import { resolve } from 'path';
 
@@ -7,12 +7,20 @@ import { resolve } from 'path';
  */
 export function generateModifyVars(dark = false) {
   const palettes = generateAntColors(primaryColor);
+  const bgPalettes = generateAntColors(bgColor);
   const primary = palettes[5];
+  const bg = bgPalettes[5];
 
   const primaryColorObj: Record<string, string> = {};
 
+  const bgColorObj: Record<string, string> = {};
+
   for (let index = 0; index < 10; index++) {
     primaryColorObj[`primary-${index + 1}`] = palettes[index];
+  }
+
+  for (let index = 0; index < 10; index++) {
+    bgColorObj[`bg-${index + 1}`] = bgPalettes[index];
   }
 
   const modifyVars = getThemeVariables({ dark });
@@ -23,6 +31,8 @@ export function generateModifyVars(dark = false) {
     hack: `${modifyVars.hack} @import (reference) "${resolve('src/design/config.less')}";`,
     'primary-color': primary,
     ...primaryColorObj,
+    'bg-color': bg,
+    ...bgColorObj,
     'info-color': primary,
     'processing-color': primary,
     'success-color': '#55D187', //  Success color
