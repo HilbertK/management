@@ -102,6 +102,6 @@ export default {
     mobile: '手机号码',
 
     subTitleText: '{0}秒后返回登录页面',
-    realName: '名称',
+    realName: '真实名称',
   },
 };

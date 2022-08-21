@@ -11,15 +11,10 @@
       <FormItem name="confirmPassword" class="enter-x">
         <InputPassword size="large" visibilityToggle v-model:value="formData.confirmPassword" :placeholder="t('sys.login.confirmPassword')" />
       </FormItem>
-      <FormItem name="usertype" class="enter-x">
-        <RadioGroup v-model:value="formData.usertype">
-          <Radio v-for="item in userTypeList" :key="item.value" :value="item.value">{{ item.label }}</Radio>
-        </RadioGroup>
-      </FormItem>
       <FormItem name="realname" class="enter-x">
         <Input class="fix-auto-fill" size="large" v-model:value="formData.realname" :placeholder="t('sys.login.realName')" />
       </FormItem>
-      <FormItem v-show="formData.usertype === UserTypeEnum.NaturalPerson" name="mobile">
+      <FormItem name="mobile" class="enter-x">
         <Input size="large" v-model:value="formData.mobile" :placeholder="t('sys.login.mobile')" class="fix-auto-fill" />
       </FormItem>
       <Button type="primary" class="enter-x" size="large" block @click="handleRegister" :loading="loading">
@@ -34,7 +29,7 @@
 <script lang="ts" setup>
   import { reactive, ref, unref, computed, toRaw } from 'vue';
   import LoginFormTitle from './LoginFormTitle.vue';
-  import { Form, Input, Button, Radio } from 'ant-design-vue';
+  import { Form, Input, Button } from 'ant-design-vue';
   import { StrengthMeter } from '/@/components/StrengthMeter';
   import { useI18n } from '/@/hooks/web/useI18n';
   import { useMessage } from '/@/hooks/web/useMessage';
@@ -42,7 +37,6 @@
   import { register } from '/@/api/sys/user';
   const FormItem = Form.Item;
   const InputPassword = Input.Password;
-  const RadioGroup = Radio.Group;
   const { t } = useI18n();
   const { handleBackLogin, getLoginState } = useLoginState();
   const { notification } = useMessage();
@@ -52,23 +46,12 @@
     account: '',
     password: '',
     confirmPassword: '',
-    usertype: UserTypeEnum.NaturalPerson,
     realname: '',
     mobile: '',
   });
   const { getFormRules } = useFormRules(formData);
   const { validForm } = useFormValid(formRef);
   const getShow = computed(() => unref(getLoginState) === LoginStateEnum.REGISTER);
-  const userTypeList = [
-    {
-      value: UserTypeEnum.NaturalPerson,
-      label: '自然人',
-    },
-    {
-      value: UserTypeEnum.LegalPerson,
-      label: '法人',
-    },
-  ];
   /**
    * 注册
    */
@@ -81,9 +64,8 @@
         toRaw({
           username: data.account,
           password: data.password,
-          usertype: data.usertype,
           realname: data.realname,
-          ...(data.mobile ? { phone: data.mobile } : {}),
+          phone: data.mobile,
         })
       );
       if (resultInfo && resultInfo.data.success) {
