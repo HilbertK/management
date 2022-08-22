@@ -1,6 +1,6 @@
 import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
-import { getAllRolesList } from './user.api';
+import { getAllRolesList, SexDict } from './user.api';
 import { rules } from '/@/utils/helper/validator';
 import { render } from '/@/utils/common/renderUtils';
 export const columns: BasicColumn[] = [
@@ -25,9 +25,7 @@ export const columns: BasicColumn[] = [
     dataIndex: 'sex',
     width: 80,
     sorter: true,
-    customRender: ({ text }) => {
-      return render.renderDict(text, 'sex');
-    },
+    customRender: ({ text }) => SexDict[text],
   },
   {
     title: '生日',
@@ -78,9 +76,7 @@ export const recycleColumns: BasicColumn[] = [
     dataIndex: 'sex',
     width: 80,
     sorter: true,
-    customRender: ({ text }) => {
-      return render.renderDict(text, 'sex');
-    },
+    customRender: ({ text }) => SexDict[text],
   },
 ];
 

@@ -25,6 +25,16 @@ enum Api {
   getUserAgent = '/sys/sysUserAgent/queryByUserName',
   syncUser = '/act/process/extActProcess/doSyncUser',
 }
+
+export enum SexEnum {
+  male = 1,
+  female = 2,
+}
+
+export const SexDict = {
+  [SexEnum.male]: '男',
+  [SexEnum.female]: '女',
+};
 /**
  * 导出api
  * @param params
