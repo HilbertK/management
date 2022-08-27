@@ -18,9 +18,9 @@ export function useThirdLogin() {
   //状态
   const thirdLoginState = ref(false);
   // //绑定手机号弹窗
-  // const bindingPhoneModal = ref(false);
+  const bindingPhoneModal = ref(false);
   //第三方用户UUID
-  // const thirdUserUuid = ref('');
+  const thirdUserUuid = ref('');
   //提示窗
   const thirdConfirmShow = ref(false);
   //绑定密码弹窗
@@ -49,9 +49,9 @@ export function useThirdLogin() {
         if (token === '登录失败') {
           createMessage.warning(token);
         } else if (token.includes('绑定手机号')) {
-          // bindingPhoneModal.value = true;
-          // let strings = token.split(',');
-          // thirdUserUuid.value = strings[1];
+          bindingPhoneModal.value = true;
+          const strings = token.split(',');
+          thirdUserUuid.value = strings[1];
         } else {
           doThirdLogin(token);
         }
@@ -144,36 +144,37 @@ export function useThirdLogin() {
   //   //return setThirdCaptcha({mobile:unref(thirdPhone)});
   //   return getCaptcha({ mobile: unref(thirdPhone), smsmode: '0' });
   // }
-  //绑定手机号点击确定按钮
-  // function thirdHandleOk() {
-  //   if (!unref(thirdPhone)) {
-  //     cmsFailed('请输入手机号');
-  //   }
-  //   if (!unref(thirdCaptcha)) {
-  //     cmsFailed('请输入验证码');
-  //   }
-  //   let params = {
-  //     mobile: unref(thirdPhone),
-  //     captcha: unref(thirdCaptcha),
-  //     thirdUserUuid: unref(thirdUserUuid),
-  //   };
-  //   defHttp.post({ url: '/sys/thirdLogin/bindingThirdPhone', params }, { isTransformResponse: false }).then((res) => {
-  //     if (res.success) {
-  //       bindingPhoneModal.value = false;
-  //       doThirdLogin(res.result);
-  //     } else {
-  //       createMessage.warning(res.message);
-  //     }
-  //   });
-  // }
-  // function cmsFailed(err) {
-  //   notification.error({
-  //     message: '登录失败',
-  //     description: err,
-  //     duration: 4,
-  //   });
-  //   return;
-  // }
+  // 绑定手机号点击确定按钮
+  function thirdHandleOk() {
+    if (!unref(thirdPhone)) {
+      cmsFailed('请输入手机号');
+      return;
+    }
+    const reg = /^1[3456789]\d{9}$/;
+    if (!reg.test(unref(thirdPhone))) {
+      cmsFailed('手机号不正确');
+      return;
+    }
+    const params = {
+      mobile: unref(thirdPhone),
+      thirdUserUuid: unref(thirdUserUuid),
+    };
+    defHttp.post({ url: '/sys/thirdLogin/bindingThirdPhone', params }, { isTransformResponse: false }).then((res) => {
+      if (res.success) {
+        bindingPhoneModal.value = false;
+        doThirdLogin(res.result);
+      } else {
+        createMessage.warning(res.message);
+      }
+    });
+  }
+  function cmsFailed(err) {
+    notification.error({
+      message: '登录失败',
+      description: err,
+      duration: 4,
+    });
+  }
   //返回数据和方法
   return {
     thirdPasswordShow,
@@ -184,8 +185,8 @@ export function useThirdLogin() {
     thirdCreateUserLoding,
     thirdLoginUserCreate,
     thirdLoginUserBind,
-    // bindingPhoneModal,
-    // thirdHandleOk,
+    bindingPhoneModal,
+    thirdHandleOk,
     thirdPhone,
     thirdCaptcha,
     onThirdLogin,

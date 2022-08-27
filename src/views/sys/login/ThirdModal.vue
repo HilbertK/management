@@ -19,42 +19,33 @@
   </a-modal>
 
   <!-- 第三方登录绑定手机号 -->
-  <!-- <a-modal title="绑定手机号" v-model:visible="bindingPhoneModal" :maskClosable="false">
+  <a-modal title="绑定手机号" v-model:visible="bindingPhoneModal" :maskClosable="false">
     <Form class="p-4 enter-x" style="margin: 15px 10px">
       <FormItem class="enter-x">
         <a-input size="large" placeholder="请输入手机号" v-model:value="thirdPhone" class="fix-auto-fill">
           <template #prefix>
-            <Icon icon="ant-design:mobile-outlined" :style="{ color: 'rgba(0,0,0,.25)' }"></Icon>
+            <Icon icon="ant-design:mobile-outlined" :style="{ color: 'rgba(0,0,0,.25)' }" />
           </template>
         </a-input>
-      </FormItem>
-      <FormItem name="sms" class="enter-x">
-        <CountdownInput size="large" class="fix-auto-fill" v-model:value="thirdCaptcha" placeholder="请输入验证码" :sendCodeApi="sendCodeApi">
-          <template #prefix>
-            <Icon icon="ant-design:mail-outlined" :style="{ color: 'rgba(0,0,0,.25)' }"></Icon>
-          </template>
-        </CountdownInput>
       </FormItem>
     </Form>
     <template #footer>
       <a-button type="primary" @click="thirdHandleOk">确定</a-button>
     </template>
-  </a-modal> -->
+  </a-modal>
 </template>
 <script lang="ts">
   import { defineComponent } from 'vue';
-  // import { Form, Input } from 'ant-design-vue';
+  import { Form, Input } from 'ant-design-vue';
   // import { CountdownInput } from '/@/components/CountDown';
   import { useThirdLogin } from '/@/hooks/system/useThirdLogin';
-  // const FormItem = Form.Item;
-  // const InputPassword = Input.Password;
+  const FormItem = Form.Item;
 
   export default defineComponent({
     name: 'ThirdModal',
     components: {
-      // InputPassword,
-      // FormItem,
-      // Form,
+      FormItem,
+      Form,
       // CountdownInput
     },
     setup() {
