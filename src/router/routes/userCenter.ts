@@ -8,7 +8,7 @@ export const UserRoute: AppRouteModule = {
   meta: {
     hideChildrenInMenu: true,
     icon: 'simple-icons:about-dot-me',
-    title: t('routes.userCenter.user'),
+    title: t('routes.userCenter.users'),
   },
 };
 

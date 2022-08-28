@@ -43,11 +43,6 @@ export const columns: BasicColumn[] = [
     dataIndex: 'orgCodeTxt',
   },
   {
-    title: '负责部门',
-    width: 150,
-    dataIndex: 'departIds_dictText',
-  },
-  {
     title: '状态',
     dataIndex: 'status_dictText',
     width: 80,
@@ -92,6 +87,15 @@ export const searchFormSchema: FormSchema[] = [
     field: 'phone',
     component: 'Input',
     colProps: { span: 3, xl: { span: 5 } },
+  },
+  {
+    label: '部门',
+    field: 'orgCode',
+    component: 'JSelectDept',
+    colProps: { span: 3, xl: { span: 5 } },
+    componentProps: {
+      multiple: true,
+    },
   },
   {
     label: '用户状态',
@@ -151,19 +155,19 @@ export const formSchema: FormSchema[] = [
     required: false,
     component: 'Input',
     dynamicDisabled: true,
-    dynamicRules: ({ model, schema }) => rules.duplicateCheckRule('sys_user', 'work_no', model, schema, true),
+    dynamicRules: ({ model, schema }) => rules.duplicateCheckRule('sys_user', 'work_no', model, schema, false),
   },
-  {
-    label: '职务',
-    field: 'post',
-    required: false,
-    dynamicDisabled: true,
-    component: 'JSelectPosition',
-    componentProps: {
-      rowKey: 'code',
-      labelKey: 'name',
-    },
-  },
+  // {
+  //   label: '职务',
+  //   field: 'post',
+  //   required: false,
+  //   dynamicDisabled: true,
+  //   component: 'JSelectPosition',
+  //   componentProps: {
+  //     rowKey: 'code',
+  //     labelKey: 'name',
+  //   },
+  // },
   {
     label: '角色',
     field: 'selectedroles',
@@ -184,7 +188,7 @@ export const formSchema: FormSchema[] = [
         sync: false,
         checkStrictly: true,
         defaultExpandLevel: 2,
-
+        multiple: false,
         onSelect: (options, values) => {
           const { updateSchema } = formActionType;
           //所属部门修改后更新负责部门下拉框数据
@@ -200,15 +204,15 @@ export const formSchema: FormSchema[] = [
       };
     },
   },
-  {
-    label: '负责部门',
-    field: 'departIds',
-    component: 'Select',
-    componentProps: {
-      mode: 'multiple',
-    },
-    ifShow: ({ values }) => values.userIdentity == 2,
-  },
+  // {
+  //   label: '负责部门',
+  //   field: 'departIds',
+  //   component: 'Select',
+  //   componentProps: {
+  //     mode: 'multiple',
+  //   },
+  //   ifShow: ({ values }) => values.userIdentity == 2,
+  // },
   {
     label: '头像',
     field: 'avatar',
@@ -253,7 +257,7 @@ export const formPasswordSchema: FormSchema[] = [
     label: '用户账号',
     field: 'username',
     component: 'Input',
-    componentProps: { readOnly: true },
+    componentProps: { readOnly: true, disabled: true },
   },
   {
     label: '登录密码',

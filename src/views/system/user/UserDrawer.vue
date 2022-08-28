@@ -60,9 +60,7 @@
       }
       //负责部门/赋值
       data.record.departIds && !Array.isArray(data.record.departIds) && (data.record.departIds = data.record.departIds.split(','));
-      //update-begin---author:zyf   Date:20211210  for：避免空值显示异常------------
       data.record.departIds = data.record.departIds == '' ? [] : data.record.departIds;
-      //update-begin---author:zyf   Date:20211210  for：避免空值显示异常------------
     }
     //处理角色用户列表情况(和角色列表有关系)
     data.selectedroles && (await setFieldsValue({ selectedroles: data.selectedroles }));
@@ -75,6 +73,10 @@
       {
         field: 'confirmPassword',
         ifShow: !unref(isUpdate),
+      },
+      {
+        field: 'workNo',
+        ifShow: unref(isUpdate),
       },
       {
         field: 'selectedroles',
@@ -96,12 +98,10 @@
       });
     }
     // 隐藏底部时禁用整个表单
-    //update-begin-author:taoyan date:2022-5-24 for: VUEN-1117【issue】0523周开源问题
     setProps({ disabled: !showFooter.value });
-    //update-end-author:taoyan date:2022-5-24 for: VUEN-1117【issue】0523周开源问题
   });
   //获取标题
-  const getTitle = computed(() => (!unref(isUpdate) ? '新增用户' : '编辑用户'));
+  const getTitle = computed(() => (showFooter.value ? (!unref(isUpdate) ? '新增用户' : '编辑用户') : '查看用户'));
   const { adaptiveWidth } = useDrawerAdaptiveWidth();
 
   //提交事件

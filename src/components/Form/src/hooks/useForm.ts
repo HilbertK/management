@@ -112,12 +112,6 @@ export function useForm(props?: Props): UseFormReturnType {
       return form.submit();
     },
 
-    /**
-     * 表单验证并返回表单值
-     * @update:添加表单值转换逻辑
-     * @updateBy:zyf
-     * @updateDate:2021-09-02
-     */
     validate: async (nameList?: NamePath[]): Promise<Recordable> => {
       const form = await getForm();
       let getProps = props || form.getProps;
@@ -130,9 +124,7 @@ export function useForm(props?: Props): UseFormReturnType {
             }
           }
         }
-        //--@updateBy-begin----author:liusq---date:20210916------for:处理区域事件字典信息------
         return handleRangeValue(getProps, values);
-        //--@updateBy-end----author:liusq---date:20210916------for:处理区域事件字典信息------
       });
       return values;
     },

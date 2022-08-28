@@ -204,7 +204,6 @@ export class VAxios {
       conf = beforeRequestHook(conf, opt);
     }
     conf.requestOptions = opt;
-
     conf = this.supportFormData(conf);
 
     return new Promise((resolve, reject) => {

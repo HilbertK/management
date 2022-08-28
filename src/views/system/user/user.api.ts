@@ -23,7 +23,7 @@ enum Api {
   changePassword = '/sys/user/changePassword',
   frozenBatch = '/sys/user/frozenBatch',
   getUserAgent = '/sys/sysUserAgent/queryByUserName',
-  syncUser = '/act/process/extActProcess/doSyncUser',
+  syncUser = '/sync/userAndDept',
 }
 
 export enum SexEnum {
@@ -174,4 +174,4 @@ export const saveOrUpdateAgent = (params) => {
  * 用户同步流程
  * @param params
  */
-export const syncUser = () => defHttp.put({ url: Api.syncUser });
+export const syncUser = () => defHttp.get({ url: Api.syncUser });

@@ -63,21 +63,17 @@ export function useListPage(options: ListPageOptions) {
 
   // 导出 excel
   async function onExportXls() {
-    //update-begin---author:wangshuai ---date:20220411  for：导出新增自定义参数------------
     let { url, name, params } = options?.exportConfig ?? {};
     let realUrl = typeof url === 'function' ? url() : url;
     if (realUrl) {
       let title = typeof name === 'function' ? name() : name;
-      //update-begin-author:taoyan date:20220507 for: erp代码生成 子表 导出报错，原因未知-
       let paramsForm = {};
       try {
         paramsForm = await getForm().validate();
       } catch (e) {
         console.error(e);
       }
-      //update-end-author:taoyan date:20220507 for: erp代码生成 子表 导出报错，原因未知-
       //如果参数不为空，则整合到一起
-      //update-begin-author:taoyan date:20220507 for: erp代码生成 子表 导出动态设置mainId
       if (params) {
         Object.keys(params).map((k) => {
           let temp = (params as object)[k];
@@ -86,12 +82,10 @@ export function useListPage(options: ListPageOptions) {
           }
         });
       }
-      //update-end-author:taoyan date:20220507 for: erp代码生成 子表 导出动态设置mainId
       if (selectedRowKeys.value && selectedRowKeys.value.length > 0) {
         paramsForm['selections'] = selectedRowKeys.value.join(',');
       }
       return handleExportXls(title as string, realUrl, filterObj(paramsForm));
-      //update-end---author:wangshuai ---date:20220411  for：导出新增自定义参数--------------
     } else {
       $message.createMessage.warn('没有传递 exportConfig.url 参数');
       return Promise.reject();

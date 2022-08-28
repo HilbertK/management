@@ -19,7 +19,7 @@
           <div class="ant-upload-text">{{ text }}</div>
         </div>
         <a-button v-if="listType == 'picture'" :disabled="disabled">
-          <UploadOutlined></UploadOutlined>
+          <UploadOutlined />
           {{ text }}
         </a-button>
       </div>
@@ -74,6 +74,12 @@
       },
       //上传数量
       fileMax: {
+        type: Number,
+        required: false,
+        default: 1,
+      },
+      //上传大小
+      fileSize: {
         type: Number,
         required: false,
         default: 1,
@@ -162,11 +168,18 @@
        * 上传前校验
        */
       function beforeUpload(file) {
-        let fileType = file.type;
+        const fileType = file.type;
         if (fileType.indexOf('image') < 0) {
           createMessage.info('请上传图片');
           return false;
         }
+        const fileSize = props['fileSize'] ?? 1;
+        const isLt2M = file.size / 1024 / 1024 < fileSize;
+        if (!isLt2M) {
+          createMessage.info(`上传图片大小不能超过${fileSize}MB`);
+          return false;
+        }
+        return true;
       }
       /**
        * 文件上传结果回调
