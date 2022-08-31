@@ -5,7 +5,7 @@
       <!--插槽:table标题-->
       <template #tableTitle>
         <a-button type="primary" preIcon="ant-design:plus-outlined" @click="handleCreate"> 新增</a-button>
-        <a-button type="primary" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
+        <a-button type="primary" :preIcon="getExportIcon" @click="onExportXlsHandler" :loading="loadingRef">{{ getExportText }}</a-button>
         <j-upload-button type="primary" preIcon="ant-design:import-outlined" @click="onImportXls">导入</j-upload-button>
         <a-button type="primary" @click="handleSyncUser" preIcon="ant-design:sync-outlined"> 同步律谷数据</a-button>
         <!-- <a-button type="primary" @click="openModal(true, {})" preIcon="ant-design:hdd-outlined"> 回收站</a-button> -->
@@ -43,7 +43,7 @@
     <!--修改密码-->
     <PasswordModal @register="registerPasswordModal" @success="reload" />
     <!--用户代理-->
-    <UserAgentModal @register="registerAgentModal" @success="reload" />
+    <!-- <UserAgentModal @register="registerAgentModal" @success="reload" /> -->
     <!--回收站-->
     <!-- <UserRecycleBinModal @register="registerModal" @success="reload" /> -->
   </div>
@@ -65,6 +65,11 @@
 
   //注册drawer
   const [registerDrawer, { openDrawer }] = useDrawer();
+
+  const loadingRef = ref<Nullable<boolean>>(false);
+
+  const getExportText = computed(() => (loadingRef.value ? '导出中' : '导出'));
+  const getExportIcon = computed(() => (!loadingRef.value ? 'ant-design:export-outlined' : ''));
   //回收站model
   // const [registerModal, { openModal }] = useModal();
   //密码model
@@ -99,6 +104,12 @@
       url: getImportUrl,
     },
   });
+
+  async function onExportXlsHandler() {
+    loadingRef.value = true;
+    await onExportXls();
+    loadingRef.value = false;
+  }
 
   //注册table数据
   const [registerTable, { reload, updateTableDataRecord }, { rowSelection, selectedRowKeys }] = tableContext;

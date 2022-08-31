@@ -1,4 +1,4 @@
-import { defHttp } from '/@/utils/http/axios';
+import { defHttp, defHttpWithNoTimeout } from '/@/utils/http/axios';
 import { useMessage } from '/@/hooks/web/useMessage';
 import { useGlobSetting } from '/@/hooks/setting';
 
@@ -21,7 +21,7 @@ export function useMethods() {
    * @param url
    */
   async function exportXls(name, url, params, isXlsx = false) {
-    const data = await defHttp.get({ url: url, params: params, responseType: 'blob' }, { isTransformResponse: false });
+    const data = await defHttpWithNoTimeout.get({ url: url, params: params, responseType: 'blob' }, { isTransformResponse: false });
     if (!data) {
       createMessage.warning('文件下载失败');
       return;
