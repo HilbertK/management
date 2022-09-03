@@ -83,12 +83,8 @@
         show: !data.isRole,
       },
       {
-        field: 'departIds',
-        componentProps: { options: departOptions },
-      },
-      {
-        field: 'selecteddeparts',
-        show: !data?.departDisabled ?? false,
+        field: 'teamName',
+        ifShow: unref(isUpdate),
       },
     ]);
     // 无论新增还是编辑，都可以设置表单值

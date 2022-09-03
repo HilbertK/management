@@ -38,9 +38,9 @@ export const columns: BasicColumn[] = [
     width: 100,
   },
   {
-    title: '部门',
+    title: '团队',
     width: 150,
-    dataIndex: 'orgCodeTxt',
+    dataIndex: 'teamName',
   },
   {
     title: '状态',
@@ -89,13 +89,10 @@ export const searchFormSchema: FormSchema[] = [
     colProps: { span: 3, xl: { span: 5 } },
   },
   {
-    label: '部门',
-    field: 'orgCode',
-    component: 'JSelectDept',
+    label: '团队',
+    field: 'teamName',
+    component: 'Input',
     colProps: { span: 3, xl: { span: 5 } },
-    componentProps: {
-      multiple: true,
-    },
   },
   {
     label: '用户状态',
@@ -180,30 +177,38 @@ export const formSchema: FormSchema[] = [
     },
   },
   {
-    label: '所属部门',
-    field: 'selecteddeparts',
-    component: 'JSelectDept',
-    componentProps: ({ formActionType, formModel }) => {
-      return {
-        sync: false,
-        checkStrictly: true,
-        defaultExpandLevel: 2,
-        multiple: false,
-        onSelect: (options, values) => {
-          const { updateSchema } = formActionType;
-          //所属部门修改后更新负责部门下拉框数据
-          updateSchema([
-            {
-              field: 'departIds',
-              componentProps: { options },
-            },
-          ]);
-          //所属部门修改后更新负责部门数据
-          formModel.departIds && (formModel.departIds = formModel.departIds.filter((item) => values.value.indexOf(item) > -1));
-        },
-      };
-    },
+    label: '团队',
+    field: 'teamName',
+    required: false,
+    component: 'Input',
+    dynamicDisabled: true,
   },
+  // {
+  //   label: '所属部门',
+  //   field: 'selecteddeparts',
+  //   component: 'JSelectDept',
+  //   dynamicDisabled: true,
+  //   componentProps: ({ formActionType, formModel }) => {
+  //     return {
+  //       sync: false,
+  //       checkStrictly: true,
+  //       defaultExpandLevel: 2,
+  //       multiple: false,
+  //       onSelect: (options, values) => {
+  //         const { updateSchema } = formActionType;
+  //         //所属部门修改后更新负责部门下拉框数据
+  //         updateSchema([
+  //           {
+  //             field: 'departIds',
+  //             componentProps: { options },
+  //           },
+  //         ]);
+  //         //所属部门修改后更新负责部门数据
+  //         formModel.departIds && (formModel.departIds = formModel.departIds.filter((item) => values.value.indexOf(item) > -1));
+  //       },
+  //     };
+  //   },
+  // },
   // {
   //   label: '负责部门',
   //   field: 'departIds',
