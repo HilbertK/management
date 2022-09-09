@@ -4,12 +4,12 @@
       <FormItem>
         <!-- update-begin-author:zyf   Date:20211213  for：调换按钮前后位置-->
         <slot name="submitBefore"></slot>
-        <Button type="primary" class="mr-2" v-bind="getSubmitBtnOptions" @click="submitAction" v-if="showSubmitButton">
+        <Button type="primary" :class="showResetButton ? 'mr-2' : ''" v-bind="getSubmitBtnOptions" @click="submitAction" v-if="showSubmitButton">
           {{ getSubmitBtnOptions.text }}
         </Button>
 
         <slot name="resetBefore"></slot>
-        <Button type="default" class="mr-2" v-bind="getResetBtnOptions" @click="resetAction" v-if="showResetButton">
+        <Button type="default" v-bind="getResetBtnOptions" @click="resetAction" v-if="showResetButton">
           {{ getResetBtnOptions.text }}
         </Button>
         <!-- update-end-author:zyf    Date:20211213  for：调换按钮前后位置-->

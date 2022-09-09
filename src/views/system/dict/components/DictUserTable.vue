@@ -2,21 +2,20 @@
   <BasicDrawer @register="registerBaseDrawer" :title="getTitle" width="800" destroyOnClose>
     <BasicTable @register="registerTable" :rowSelection="rowSelection">
       <template #tableTitle>
-        <a-button type="primary" @click="handleCreate"> 新增用户</a-button>
-        <a-button type="primary" @click="handleSelect"> 已有用户</a-button>
+        <a-button type="primary" @click="handleSelect"> 选择用户</a-button>
 
         <a-dropdown v-if="checkedKeys.length > 0">
           <template #overlay>
             <a-menu>
               <a-menu-item key="1" @click="batchHandleDelete">
-                <Icon icon="bx:bx-unlink"></Icon>
+                <Icon icon="bx:bx-unlink" />
                 取消关联
               </a-menu-item>
             </a-menu>
           </template>
           <a-button
             >批量操作
-            <Icon icon="ant-design:down-outlined"></Icon>
+            <Icon icon="ant-design:down-outlined" />
           </a-button>
         </a-dropdown>
       </template>
@@ -24,38 +23,31 @@
         <TableAction :actions="getTableAction(record)" />
       </template>
     </BasicTable>
-    <!--用户操作抽屉-->
-    <UserDrawer @register="registerDrawer" @success="handleSuccess" />
     <!--用户选择弹窗-->
     <UseSelectModal @register="registerModal" @select="selectOk" />
   </BasicDrawer>
 </template>
 <script lang="ts" setup>
-  import { ref, defineProps, watch, unref, computed } from 'vue';
+  import { ref, computed } from 'vue';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
-  import { BasicDrawer, useDrawer, useDrawerInner } from '/@/components/Drawer';
+  import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
   import { useModal } from '/@/components/Modal';
-  import UserDrawer from '../../user/UserDrawer.vue';
-  import UseSelectModal from './UseSelectModal.vue';
-  import { userList, deleteUserRole, batchDeleteUserRole, addUserRole } from '../role.api';
-  import { userColumns, searchUserFormSchema } from '../role.data';
-  import { getUserRoles } from '../../user/user.api';
+  import UseSelectModal from '../../role/components/UseSelectModal.vue';
+  import { userList, deleteUserRole, batchDeleteUserRole, addUserRole } from '../dict.api';
+  import { userColumns, searchUserFormSchema } from '../dict.data';
 
-  const emit = defineEmits(['register', 'hideUserList']);
   const checkedKeys = ref<Array<string | number>>([]);
-  const roleId = ref('');
+  const dictId = ref('');
   const roleName = ref('');
-  const [registerBaseDrawer, { setDrawerProps, closeDrawer }] = useDrawerInner(async (data) => {
-    roleId.value = data.id;
+  const [registerBaseDrawer] = useDrawerInner(async (data) => {
+    dictId.value = data.id;
     roleName.value = data.roleName;
-    setProps({ searchInfo: { roleId: data.id } });
+    setProps({ searchInfo: { dictId: data.id } });
     reload();
   });
   //注册drawer
-  const [registerDrawer, { openDrawer }] = useDrawer();
-  //注册drawer
   const [registerModal, { openModal }] = useModal();
-  const [registerTable, { reload, updateTableDataRecord, setProps }] = useTable({
+  const [registerTable, { reload, setProps }] = useTable({
     title: '用户列表',
     api: userList,
     columns: userColumns,
@@ -98,59 +90,24 @@
   /**
    * 选择事件
    */
-  function onSelectChange(selectedRowKeys: (string | number)[], selectionRows) {
+  function onSelectChange(selectedRowKeys: (string | number)[]) {
     checkedKeys.value = selectedRowKeys;
-  }
-
-  /**
-   * 新增
-   */
-  function handleCreate() {
-    openDrawer(true, {
-      isUpdate: false,
-      selectedroles: [roleId.value],
-      isRole: true,
-    });
-  }
-  /**
-   * 编辑
-   */
-  async function handleEdit(record: Recordable) {
-    try {
-      const userRoles = await getUserRoles({ userid: record.id });
-      if (userRoles && userRoles.length > 0) {
-        record.selectedroles = userRoles;
-      }
-    } catch (e) {
-      console.log(e);
-    }
-    openDrawer(true, {
-      record,
-      isUpdate: true,
-      isRole: true,
-    });
   }
 
   /**
    * 删除事件
    */
   async function handleDelete(record) {
-    await deleteUserRole({ userId: record.id, roleId: roleId.value }, reload);
+    await deleteUserRole({ userId: record.id, dictId: dictId.value }, reload);
   }
 
   /**
    * 批量删除事件
    */
   async function batchHandleDelete() {
-    await batchDeleteUserRole({ userIds: checkedKeys.value.join(','), roleId: roleId.value }, reload);
+    await batchDeleteUserRole({ userIds: checkedKeys.value.join(','), dictId: dictId.value }, reload);
   }
 
-  /**
-   * 成功回调
-   */
-  function handleSuccess({ isUpdate, values }) {
-    isUpdate ? updateTableDataRecord(values.id, values) : reload();
-  }
   /**
    * 选择已有用户
    */
@@ -161,17 +118,13 @@
    * 添加已有用户
    */
   async function selectOk(val) {
-    await addUserRole({ roleId: roleId.value, userIdList: val }, reload);
+    await addUserRole({ dictId: dictId.value, userIdList: val }, reload);
   }
   /**
    * 操作栏
    */
   function getTableAction(record) {
     return [
-      {
-        label: '编辑',
-        onClick: handleEdit.bind(null, record),
-      },
       {
         label: '取消关联',
         popConfirm: {

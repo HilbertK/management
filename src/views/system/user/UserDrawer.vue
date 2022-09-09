@@ -4,18 +4,17 @@
   </BasicDrawer>
 </template>
 <script lang="ts" setup>
-  import { defineComponent, ref, computed, unref, useAttrs } from 'vue';
+  import { ref, computed, unref } from 'vue';
   import { BasicForm, useForm } from '/@/components/Form/index';
   import { formSchema } from './user.data';
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
-  import { saveOrUpdateUser, getUserRoles, getUserDepartList } from './user.api';
+  import { saveOrUpdateUser, getUserRoles } from './user.api';
   import { useDrawerAdaptiveWidth } from '/@/hooks/jeecg/useAdaptiveWidth';
   // 声明Emits
   const emit = defineEmits(['success', 'register']);
-  const attrs = useAttrs();
   const isUpdate = ref(true);
   const rowId = ref('');
-  const departOptions = ref([]);
+  // const departOptions = ref([]);
   //表单配置
   const [registerForm, { setProps, resetFields, setFieldsValue, validate, updateSchema }] = useForm({
     labelWidth: 90,
@@ -32,40 +31,21 @@
     isUpdate.value = !!data?.isUpdate;
     if (unref(isUpdate)) {
       rowId.value = data.record.id;
-      //租户信息定义成数组
-      if (data.record.relTenantIds && !Array.isArray(data.record.relTenantIds)) {
-        data.record.relTenantIds = data.record.relTenantIds.split(',');
-      } else {
-        //【issues/I56C5I】用户管理中连续点两次编辑租户配置就丢失了
-        //data.record.relTenantIds = [];
-      }
-
-      //查角色/赋值/try catch 处理，不然编辑有问题
       try {
         const userRoles = await getUserRoles({ userid: data.record.id });
         if (userRoles && userRoles.length > 0) {
           data.record.selectedroles = userRoles;
         }
       } catch (error) {}
-
-      //查所属部门/赋值
-      const userDepart = await getUserDepartList({ userId: data.record.id });
-      if (userDepart && userDepart.length > 0) {
-        data.record.selecteddeparts = userDepart;
-        let selectDepartKeys = Array.from(userDepart, ({ key }) => key);
-        data.record.selecteddeparts = selectDepartKeys.join(',');
-        departOptions.value = userDepart.map((item) => {
-          return { label: item.title, value: item.key };
-        });
-      }
-      //负责部门/赋值
-      data.record.departIds && !Array.isArray(data.record.departIds) && (data.record.departIds = data.record.departIds.split(','));
-      data.record.departIds = data.record.departIds == '' ? [] : data.record.departIds;
     }
     //处理角色用户列表情况(和角色列表有关系)
     data.selectedroles && (await setFieldsValue({ selectedroles: data.selectedroles }));
     //编辑时隐藏密码/角色列表隐藏角色信息/我的部门时隐藏所属部门
     updateSchema([
+      {
+        field: 'username',
+        show: true,
+      },
       {
         field: 'password',
         show: !unref(isUpdate),

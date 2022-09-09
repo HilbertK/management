@@ -11,3 +11,25 @@ export const FlowRoute: AppRouteModule = {
     title: t('routes.flow.flows'),
   },
 };
+
+export const FlowDetailRoute: AppRouteModule = {
+  path: '/system/flow/detail',
+  name: 'SystemFlowDetail',
+  component: () => import('/@/views/system/flow/FlowDetail.vue'),
+  meta: {
+    hideChildrenInMenu: true,
+    icon: 'simple-icons:about-dot-me',
+    title: t('routes.flow.flows'),
+  },
+};
+
+export const DictRoute: AppRouteModule = {
+  path: '/system/dict',
+  name: 'SystemDict',
+  component: () => import('/@/views/system/dict/index.vue'),
+  meta: {
+    hideChildrenInMenu: true,
+    icon: 'simple-icons:about-dot-me',
+    title: t('routes.flow.dict'),
+  },
+};

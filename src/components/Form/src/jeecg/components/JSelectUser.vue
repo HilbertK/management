@@ -1,8 +1,8 @@
 <!--用户选择组件-->
 <template>
   <div>
-    <JSelectBiz @handleOpen="handleOpen" :loading="loadingEcho" v-bind="attrs"></JSelectBiz>
-    <UserSelectModal :rowKey="rowKey" @register="regModal" @getSelectResult="setValue" v-bind="getBindValue"></UserSelectModal>
+    <JSelectBiz @handleOpen="handleOpen" :loading="loadingEcho" v-bind="attrs" />
+    <UserSelectModal :rowKey="rowKey" @register="regModal" @getSelectResult="setValue" v-bind="getBindValue" :isRadioSelection="true" />
   </div>
 </template>
 <script lang="ts">

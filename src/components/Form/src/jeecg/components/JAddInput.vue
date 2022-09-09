@@ -1,22 +1,33 @@
 <template>
-  <div v-for="(param, index) in dynamicInput.params" :key="index" style="display: flex">
-    <a-input placeholder="请输入参数key" v-model:value="param.label" style="width: 30%; margin-bottom: 5px" @input="emitChange" />
-    <a-input placeholder="请输入参数value" v-model:value="param.value" style="width: 30%; margin: 0 0 5px 5px" @input="emitChange" />
-    <MinusCircleOutlined v-if="dynamicInput.params.length > min" class="dynamic-delete-button" @click="remove(param)" style="width: 50px"></MinusCircleOutlined>
-  </div>
   <div>
-    <a-button type="dashed" style="width: 60%" @click="add">
-      <PlusOutlined />
-      新增
-    </a-button>
+    <div v-for="(param, index) in dynamicInput.params" :key="index" style="margin-bottom: 16px">
+      <div style="display: flex; align-items: flex-start">
+        <a-textarea
+          placeholder="请输入内容"
+          :auto-size="{ minRows: 3, maxRows: 3 }"
+          allowClear
+          :disabled="param.label !== ''"
+          v-model:value="param.value"
+          style="margin: 0 0 5px 5px; flex-grow: 1"
+          @input="emitChange"
+        />
+        <MinusCircleOutlined v-if="!param.label && dynamicInput.params.length > min" class="dynamic-delete-button" @click="remove(param)" style="width: 50px" />
+      </div>
+      <div v-if="param.label" style="text-align: right">{{ param.label }}</div>
+    </div>
+    <div>
+      <a-button type="dashed" style="width: 100%" @click="add">
+        <PlusOutlined />
+        新增
+      </a-button>
+    </div>
   </div>
 </template>
 <script lang="ts">
   import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons-vue';
-  import { defineComponent, reactive, ref, UnwrapRef, watchEffect } from 'vue';
+  import { defineComponent, reactive, UnwrapRef, watchEffect } from 'vue';
   import { propTypes } from '/@/utils/propTypes';
   import { isEmpty } from '/@/utils/is';
-  import { tryOnMounted, tryOnUnmounted } from '@vueuse/core';
   interface Params {
     label: string;
     value: string;
@@ -24,12 +35,14 @@
 
   export default defineComponent({
     name: 'JAddInput',
+    components: {
+      MinusCircleOutlined,
+      PlusOutlined,
+    },
     props: {
       value: propTypes.string.def(''),
-      //update-begin---author:wangshuai ---date:20220516  for：[VUEN-1043]系统编码规则，最后一个输入框不能删除------------
       //自定义删除按钮多少才会显示
       min: propTypes.integer.def(1),
-      //update-end---author:wangshuai ---date:20220516  for：[VUEN-1043]系统编码规则，最后一个输入框不能删除--------------
     },
     emits: ['change', 'update:value'],
     setup(props, { emit }) {
@@ -63,10 +76,10 @@
       function initVal() {
         console.log('props.value', props.value);
         dynamicInput.params = [];
-        if (props.value && props.value.indexOf('{') == 0) {
-          let jsonObj = JSON.parse(props.value);
-          Object.keys(jsonObj).forEach((key) => {
-            dynamicInput.params.push({ label: key, value: jsonObj[key] });
+        if (props.value) {
+          let jsonList = JSON.parse(props.value);
+          jsonList.forEach(({ label, value }) => {
+            dynamicInput.params.push({ label, value });
           });
         }
       }
@@ -74,14 +87,8 @@
        * 数值改变
        */
       function emitChange() {
-        let obj = {};
-        if (dynamicInput.params.length > 0) {
-          dynamicInput.params.forEach((item) => {
-            obj[item['label']] = item['value'];
-          });
-        }
-        emit('change', isEmpty(obj) ? '' : JSON.stringify(obj));
-        emit('update:value', isEmpty(obj) ? '' : JSON.stringify(obj));
+        emit('change', isEmpty(dynamicInput.params) ? '' : JSON.stringify(dynamicInput.params));
+        emit('update:value', isEmpty(dynamicInput.params) ? '' : JSON.stringify(dynamicInput.params));
       }
 
       return {
@@ -90,10 +97,6 @@
         remove,
         add,
       };
-    },
-    components: {
-      MinusCircleOutlined,
-      PlusOutlined,
     },
   });
 </script>

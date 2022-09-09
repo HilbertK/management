@@ -1,52 +1,111 @@
 <template>
-  <div>
-    <BasicForm @register="registerForm" />
-  </div>
+  <PageWrapper contentBackground contentClass="p-4">
+    <Result status="success" title="提交成功" v-if="isFinished" />
+    <BasicForm @register="registerForm" v-else />
+  </PageWrapper>
 </template>
 <script lang="ts" setup>
-  import { ref, computed, unref, onMounted } from 'vue';
+  import { ref, unref, onMounted } from 'vue';
   import { BasicForm, useForm } from '/@/components/Form/index';
+  import { useRouter } from 'vue-router';
+  import { Result } from 'ant-design-vue';
+  import { PageWrapper } from '/@/components/Page';
+  import { useMessage } from '/@/hooks/web/useMessage';
   import { formSchema } from './flow.data';
-  import { saveOrUpdateFlow } from './flow.api';
-  // 声明Emits
-  const emit = defineEmits(['success', 'register']);
-  const isUpdate = ref(true);
+  import { useUserStore } from '/@/store/modules/user';
+  import moment from 'moment';
+  // import { saveOrUpdateFlow, detail } from './flow.api';
+  import { saveOrUpdateFlow, detail } from './mock.api';
+  const { createMessage } = useMessage();
+  const isFinished = ref(false);
   //表单配置
   const [registerForm, { setProps, resetFields, setFieldsValue, validate, updateSchema }] = useForm({
     labelWidth: 90,
+    labelCol: {
+      span: 8,
+    },
+    wrapperCol: {
+      span: 10,
+    },
+    actionColOptions: {
+      style: {
+        margin: '0 auto',
+        maxWidth: 'fit-content',
+      },
+    },
     schemas: formSchema,
-    showActionButtonGroup: false,
+    showResetButton: false,
+    submitButtonOptions: {
+      text: '提交',
+      preIcon: '',
+    },
+    submitFunc: handleSubmit,
   });
-  // TODO [VUEN-527] https://www.teambition.com/task/6239beb894b358003fe93626
-  const showFooter = ref(true);
-  //获取标题
-  const getTitle = computed(() => (showFooter.value ? (!unref(isUpdate) ? '新增工单' : '编辑工单') : '查看工单'));
-  onMounted(() => {
-    // await resetFields();
+  const { currentRoute } = useRouter();
+  const { query } = unref(currentRoute);
+  const userStore = useUserStore();
+  const fetch = async () => {
+    await resetFields();
     // 从链接中判断是新增、编辑、查看
-    // const data = 
-    // showFooter.value = data?.showFooter ?? true;
-    // isUpdate.value = !!data?.isUpdate;
-    // //编辑时隐藏密码/角色列表隐藏角色信息/我的部门时隐藏所属部门
-    // // updateSchema([]);
-    // // 无论新增还是编辑，都可以设置表单值
-    // if (typeof data.record === 'object') {
-    //   setFieldsValue({
-    //     ...data.record,
-    //   });
-    // }
-    // // 隐藏底部时禁用整个表单
-    // setProps({ disabled: !showFooter.value });
+    const isUpdate = !!query.id;
+    if (!isUpdate) {
+      updateSchema([
+        {
+          field: 'operatorId',
+          ifShow: false,
+        },
+      ]);
+      return;
+    }
+    const data: any = await detail(query.id as string);
+    if (typeof data === 'object') {
+      const userId = userStore.getUserInfo.id;
+      console.log(userId);
+      const operatorId = data.operator?.id ?? '';
+      const creatorId = data.creator?.id ?? '';
+      updateSchema([
+        {
+          field: 'title',
+          dynamicDisabled: true,
+        },
+        {
+          field: 'operatorId',
+          dynamicDisabled: userId !== operatorId,
+        },
+        {
+          field: 'endTime',
+          dynamicDisabled: userId !== creatorId,
+        },
+      ]);
+      data.operatorId = operatorId;
+      data.descriptionList = JSON.stringify((data.description ?? []).map((item: any) => ({ label: item.creator.realname, value: item.content })));
+      data.endTime = moment(parseInt(data.endTime, 10));
+      setFieldsValue({
+        ...data,
+      });
+    }
+  };
+  onMounted(async () => {
+    await fetch();
   });
   //提交事件
   async function handleSubmit() {
     try {
-      let values = await validate();
-      values.userIdentity === 1 && (values.departIds = '');
+      const values = await validate();
+      setProps({
+        submitButtonOptions: {
+          loading: true,
+        },
+      });
       //提交表单
-      await saveOrUpdateFlow(values, unref(isUpdate));
-      //刷新列表
-      emit('success');
+      await saveOrUpdateFlow(values, !!query.id);
+      setProps({
+        submitButtonOptions: {
+          loading: false,
+        },
+      });
+      createMessage.success('提交成功！');
+      isFinished.value = true;
     } finally {
     }
   }

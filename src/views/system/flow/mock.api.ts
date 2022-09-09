@@ -10,25 +10,25 @@ const mockFlowList: Array<IFlowItem> = [
       {
         content: '测试描述描述',
         creator: {
-          id: '1231',
-          realname: 'dev用户',
+          id: 'f0019fdebedb443c98dcb17d88222c38',
+          realname: '张小红',
         },
       },
       {
         content: '测试描述描述2',
         creator: {
-          id: '1232',
-          realname: 'dev用户2',
+          id: '3d464b4ea0d2491aab8a7bde74c57e95',
+          realname: '张三',
         },
       },
     ],
     creator: {
-      id: '1231',
-      realname: 'dev用户',
+      id: '1563438670858362882',
+      realname: '李博文',
     },
     operator: {
-      id: '1233',
-      realname: 'dev用户3',
+      id: 'f0019fdebedb443c98dcb17d88222c38',
+      realname: '张小红',
     },
     createTime: '1662181264984',
     endTime: '1662181264984',

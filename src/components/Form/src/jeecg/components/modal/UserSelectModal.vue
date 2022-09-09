@@ -86,6 +86,9 @@
         canResize: false,
         bordered: true,
         size: 'small',
+        pagination: {
+          pageSize: 5,
+        },
       };
       const getBindValue = Object.assign({}, unref(props), unref(attrs), config);
       const [{ rowSelection, visibleChange, selectValues, indexColumnProps, getSelectResult, handleDeleteSelected, selectRows }] = useSelectBiz(getUserList, getBindValue);
@@ -112,11 +115,6 @@
         },
         //update-end-author:taoyan date:2022-5-24 for: VUEN-1086 【移动端】用户选择 查询按钮 效果不好 列表展示没有滚动条---查询表单按钮的栅格布局和表单的保持一致
         schemas: [
-          {
-            label: '账号',
-            field: 'username',
-            component: 'JInput',
-          },
           {
             label: '姓名',
             field: 'realname',

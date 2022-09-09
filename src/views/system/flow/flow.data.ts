@@ -1,5 +1,9 @@
+import moment from 'moment';
+import { getAllDictList } from './flow.api';
 import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
+
+const timeFormat = 'YYYY-MM-DD HH:mm:ss';
 
 export const columns: BasicColumn[] = [
   {
@@ -16,6 +20,7 @@ export const columns: BasicColumn[] = [
     title: '经办人',
     dataIndex: 'operator',
     width: 120,
+    customRender: ({ text }) => text?.realname ?? '',
   },
   {
     title: '发起人',
@@ -34,8 +39,9 @@ export const columns: BasicColumn[] = [
   },
   {
     title: '截止时间',
-    dataIndex: 'endTime',
+    dataIndex: 'endTimeStr',
     width: 120,
+    customRender: ({ record }) => moment(parseInt(record.endTime, 10)).format(timeFormat),
   },
   {
     title: '状态',
@@ -54,8 +60,12 @@ export const searchFormSchema: FormSchema[] = [
   {
     label: '创建时间',
     field: 'createTime',
-    component: 'Input',
+    component: 'DatePicker',
     colProps: { span: 3, xl: { span: 5 } },
+    componentProps: {
+      showTime: false,
+      placeholder: '请选择创建时间',
+    },
   },
   {
     label: '状态',
@@ -80,26 +90,50 @@ export const formSchema: FormSchema[] = [
   {
     label: '标题',
     field: 'title',
-    component: 'Input',
-  },
-  {
-    label: '描述',
-    field: 'description',
-    component: 'Input',
-  },
-  {
-    label: '经办人',
-    field: 'operator',
     required: true,
     component: 'Input',
   },
   {
+    label: '分类',
+    field: 'selecteddict',
+    required: true,
+    component: 'ApiSelect',
+    componentProps: {
+      mode: 'multiple',
+      api: getAllDictList,
+      labelField: 'dictName',
+      valueField: 'id',
+    },
+  },
+  {
+    label: '描述',
+    field: 'descriptionList',
+    component: 'JAddInput',
+    componentProps: {
+      value: '',
+      min: 0,
+    },
+  },
+  {
+    label: '经办人',
+    field: 'operatorId',
+    required: true,
+    component: 'JSelectUser',
+    componentProps: {
+      value: [],
+      labelKey: 'realname',
+      rowKey: 'id',
+      maxSelectCount: 1,
+    },
+  },
+  {
     label: '截止时间',
-    field: 'endTime',
+    field: 'endTimeStr',
+    required: true,
     component: 'DatePicker',
     componentProps: {
       showTime: true,
-      valueFormat: 'YYYY-MM-DD HH:mm:ss',
+      valueFormat: timeFormat,
       placeholder: '请选择截止时间',
     },
   },

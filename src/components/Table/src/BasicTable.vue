@@ -88,7 +88,14 @@
       const innerPropsRef = ref<Partial<BasicTableProps>>();
 
       const { prefixCls } = useDesign('basic-table');
-      const [registerForm, formActions] = useForm();
+      const [registerForm, formActions] = useForm({
+        submitButtonOptions: {
+          preIcon: '',
+        },
+        resetButtonOptions: {
+          preIcon: '',
+        },
+      });
 
       const getProps = computed(() => {
         return { ...props, ...unref(innerPropsRef) } as BasicTableProps;

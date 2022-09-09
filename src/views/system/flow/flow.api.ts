@@ -6,10 +6,11 @@ enum Api {
   detail = '/sys/flow/detail',
   save = '/sys/flow/add',
   edit = '/sys/flow/edit',
-  deleteUser = '/sys/flow/delete',
+  deleteFlow = '/sys/flow/delete',
   deleteBatch = '/sys/flow/deleteBatch',
   importExcel = '/sys/flow/importExcel',
   exportXls = '/sys/flow/exportXls',
+  allDictList = '/sys/dict/queryall',
 }
 /**
  * 导出api
@@ -35,7 +36,7 @@ export const detail = (params) => defHttp.get({ url: Api.detail, params });
  * 删除
  */
 export const deleteFlow = (params, handleSuccess) => {
-  return defHttp.delete({ url: Api.deleteUser, params }, { joinParamsToUrl: true }).then(() => {
+  return defHttp.delete({ url: Api.deleteFlow, params }, { joinParamsToUrl: true }).then(() => {
     handleSuccess();
   });
 };
@@ -64,3 +65,9 @@ export const saveOrUpdateFlow = (params, isUpdate) => {
   const url = isUpdate ? Api.edit : Api.save;
   return defHttp.post({ url: url, params });
 };
+
+/**
+ * 获取全部分类
+ * @param params
+ */
+export const getAllDictList = (params) => defHttp.get({ url: Api.allDictList, params });

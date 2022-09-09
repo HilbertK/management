@@ -23,7 +23,7 @@
       </template>
       <!--操作栏-->
       <template #action="{ record }">
-        <TableAction :actions="getTableAction(record)" :dropDownActions="getDropDownAction(record)" />
+        <TableAction :actions="getTableAction(record)" />
       </template>
     </BasicTable>
     <!--用户抽屉-->
@@ -107,13 +107,13 @@
    * 删除事件
    */
   async function handleDelete(record) {
-    await deleteFlow({ id: record.id }, reload);
+    await deleteFlow(record.id, reload);
   }
   /**
    * 批量删除事件
    */
   async function batchHandleDelete() {
-    await batchDeleteFlow({ ids: selectedRowKeys.value }, () => {
+    await batchDeleteFlow(selectedRowKeys.value, () => {
       selectedRowKeys.value = [];
       reload();
     });
@@ -136,22 +136,15 @@
         // ifShow: () => hasPermission('system:user:edit'),
       },
       {
+        label: '详情',
+        onClick: handleDetail.bind(null, record),
+      },
+      {
         label: '删除',
         popConfirm: {
           title: '是否确认删除',
           confirm: handleDelete.bind(null, record),
         },
-      },
-    ];
-  }
-  /**
-   * 下拉操作栏
-   */
-  function getDropDownAction(record): ActionItem[] {
-    return [
-      {
-        label: '详情',
-        onClick: handleDetail.bind(null, record),
       },
     ];
   }
