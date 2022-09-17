@@ -1,4 +1,5 @@
 import '/@/design/index.less';
+import 'vant/lib/index.css';
 // 注册 windi
 import 'virtual:windi-base.css';
 import 'virtual:windi-components.css';

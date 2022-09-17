@@ -4,7 +4,7 @@
 -->
 <template>
   <div class="anticon" :class="getAppLogoClass" @click="goHome">
-    <img src="../../../assets/images/logo.png" />
+    <img src="../../../assets/svg/zw-logo.svg" />
   </div>
 </template>
 <script lang="ts" setup>

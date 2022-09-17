@@ -37,8 +37,8 @@
   import { useDrawer } from '/@/components/Drawer';
   import { useListPage } from '/@/hooks/system/useListPage';
   import { columns, searchFormSchema } from './flow.data';
-  import { getImportUrl, getExportUrl } from './flow.api';
-  import { list, deleteFlow, batchDeleteFlow } from './mock.api';
+  import { list, deleteFlow, batchDeleteFlow, getImportUrl, getExportUrl } from './flow.api';
+  // import { list, deleteFlow, batchDeleteFlow } from './mock.api';
 
   //注册drawer
   const [registerDrawer, { openDrawer }] = useDrawer();

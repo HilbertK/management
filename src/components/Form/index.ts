@@ -21,6 +21,7 @@ export { default as JAreaSelect } from './src/jeecg/components/JAreaSelect.vue';
 export { JEasyCron, JEasyCronInner, JEasyCronModal } from '/@/components/Form/src/jeecg/components/JEasyCron';
 export { default as JCheckbox } from './src/jeecg/components/JCheckbox.vue';
 export { default as JInput } from './src/jeecg/components/JInput.vue';
+export { default as JTextArea } from './src/jeecg/components/JTextArea.vue';
 export { default as JEllipsis } from './src/jeecg/components/JEllipsis.vue';
 export { default as JDictSelectTag } from './src/jeecg/components/JDictSelectTag.vue';
 export { default as JTreeSelect } from './src/jeecg/components/JTreeSelect.vue';

@@ -8,12 +8,14 @@
   import { BasicForm, useForm } from '/@/components/Form/index';
   import { formSchema } from './flow.data';
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
+  import { useUserStore } from '/@/store/modules/user';
   import { saveOrUpdateFlow } from './flow.api';
   import { useDrawerAdaptiveWidth } from '/@/hooks/jeecg/useAdaptiveWidth';
   import moment from 'moment';
   // 声明Emits
   const emit = defineEmits(['success', 'register']);
   const isUpdate = ref(true);
+  const userStore = useUserStore();
   //表单配置
   const [registerForm, { setProps, resetFields, setFieldsValue, validate, updateSchema }] = useForm({
     labelWidth: 90,
@@ -28,21 +30,37 @@
     showFooter.value = data?.showFooter ?? true;
     setDrawerProps({ confirmLoading: false, showFooter: showFooter.value });
     isUpdate.value = !!data?.isUpdate;
-    updateSchema([
-      {
-        field: 'title',
-        dynamicDisabled: isUpdate.value,
-      },
-      {
-        field: 'endTimeStr',
-        dynamicDisabled: isUpdate.value,
-      },
-    ]);
+    if (!isUpdate.value) {
+      updateSchema([
+        {
+          field: 'operatorId',
+          ifShow: false,
+        },
+      ]);
+      return;
+    }
     // 无论新增还是编辑，都可以设置表单值
     if (typeof data.record === 'object') {
-      data.record.operatorId = data.record.operator?.id ?? '';
+      const userId = userStore.getUserInfo.id;
+      const operatorId = data.record.operator?.id ?? '';
+      const creatorId = data.record.creator?.id ?? '';
+      updateSchema([
+        {
+          field: 'title',
+          dynamicDisabled: true,
+        },
+        {
+          field: 'operatorId',
+          dynamicDisabled: userId !== operatorId,
+        },
+        {
+          field: 'endTimeStr',
+          dynamicDisabled: userId !== creatorId,
+        },
+      ]);
+      data.record.operatorId = operatorId;
       data.record.descriptionList = JSON.stringify((data.record.description ?? []).map((item: any) => ({ label: item.creator.realname, value: item.content })));
-      data.record.endTimeStr = moment(parseInt(data.record.endTime, 10));
+      data.record.endTimeStr = moment(data.record.endTime);
       setFieldsValue({
         ...data.record,
       });

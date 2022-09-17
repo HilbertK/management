@@ -1,9 +1,13 @@
 <template>
   <div :class="prefixCls" class="relative w-full h-full">
+    <span class="-enter-x">
+      <AppLogo :alwaysShowTitle="false" />
+    </span>
     <div class="container relative h-full py-2 mx-auto sm:px-10">
       <div class="flex h-full">
         <div class="hidden min-h-full pl-4 mr-4 xl:flex xl:flex-col xl:w-6/12">
           <div class="my-auto">
+            <img :alt="title" src="../../../assets/svg/login-box-bg.png" class="w-1/2 -mt-16 -enter-x" />
             <div class="mt-10 font-medium text-white -enter-x"></div>
           </div>
         </div>
@@ -22,6 +26,7 @@
 </template>
 <script lang="ts" setup>
   import { computed } from 'vue';
+  import { AppLogo } from '/@/components/Application';
   import LoginForm from './LoginForm.vue';
   import RegisterForm from './RegisterForm.vue';
   import { useGlobSetting } from '/@/hooks/setting';
@@ -101,11 +106,11 @@
       left: 0;
       width: 100%;
       height: 100%;
-      margin-left: -52%;
+      margin-left: -44%;
       background-image: url(/@/assets/svg/login-bg.png);
-      background-position: 100% top;
+      background-position: left top;
       background-repeat: no-repeat;
-      background-size: auto 100%;
+      background-size: 100% 100%;
       content: '';
       @media (max-width: @screen-xl) {
         display: none;

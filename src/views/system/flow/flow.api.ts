@@ -6,6 +6,7 @@ enum Api {
   detail = '/sys/flow/detail',
   save = '/sys/flow/add',
   edit = '/sys/flow/edit',
+  evaluate = '/sys/flow/evaluate',
   deleteFlow = '/sys/flow/delete',
   deleteBatch = '/sys/flow/deleteBatch',
   importExcel = '/sys/flow/importExcel',
@@ -65,6 +66,12 @@ export const saveOrUpdateFlow = (params, isUpdate) => {
   const url = isUpdate ? Api.edit : Api.save;
   return defHttp.post({ url: url, params });
 };
+
+/**
+ * 提交评价
+ * @param params
+ */
+export const evaluateFlow = (params) => defHttp.post({ url: Api.evaluate, params });
 
 /**
  * 获取全部分类

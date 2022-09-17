@@ -2,6 +2,7 @@ import moment from 'moment';
 import { getAllDictList } from './flow.api';
 import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
+import { platform } from '/@/utils/platform';
 
 const timeFormat = 'YYYY-MM-DD HH:mm:ss';
 
@@ -41,7 +42,7 @@ export const columns: BasicColumn[] = [
     title: '截止时间',
     dataIndex: 'endTimeStr',
     width: 120,
-    customRender: ({ record }) => moment(parseInt(record.endTime, 10)).format(timeFormat),
+    customRender: ({ record }) => moment(record.endTime).format(timeFormat),
   },
   {
     title: '状态',
@@ -130,11 +131,45 @@ export const formSchema: FormSchema[] = [
     label: '截止时间',
     field: 'endTimeStr',
     required: true,
-    component: 'DatePicker',
+    component: platform.isMobile() ? 'MDatePicker' : 'DatePicker',
+    componentProps: !platform.isMobile() ? { showTime: true, valueFormat: 'YYYY-MM-DD HH:mm:ss', placeholder: '请选择截止时间' } : {},
+  },
+];
+
+export const evaluateFormSchema: FormSchema[] = [
+  {
+    label: '标题',
+    field: 'title',
+    dynamicDisabled: true,
+    component: 'Input',
+  },
+  {
+    label: '解决情况',
+    field: 'resolved',
+    required: true,
+    component: 'RadioButtonGroup',
+    defaultValue: '0',
     componentProps: {
-      showTime: true,
-      valueFormat: timeFormat,
-      placeholder: '请选择截止时间',
+      options: [
+        { label: '已解决', value: '0' },
+        { label: '未解决', value: '1' },
+      ],
     },
+  },
+  {
+    label: '评分',
+    field: 'score',
+    required: true,
+    component: 'Rate',
+    componentProps: {
+      allowHalf: true,
+    },
+  },
+  {
+    label: '评价',
+    field: 'content',
+    required: true,
+    component: 'JTextArea',
+    componentProps: {},
   },
 ];

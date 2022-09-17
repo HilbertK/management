@@ -33,6 +33,7 @@ import JInputPop from './jeecg/components/JInputPop.vue';
 import { JEasyCron } from './jeecg/components/JEasyCron';
 import JCheckbox from './jeecg/components/JCheckbox.vue';
 import JInput from './jeecg/components/JInput.vue';
+import JTextArea from './jeecg/components/JTextArea.vue';
 import JTreeSelect from './jeecg/components/JTreeSelect.vue';
 import JEllipsis from './jeecg/components/JEllipsis.vue';
 import JSelectUserByDept from './jeecg/components/JSelectUserByDept.vue';
@@ -41,6 +42,7 @@ import JSearchSelect from './jeecg/components/JSearchSelect.vue';
 import JAddInput from './jeecg/components/JAddInput.vue';
 import { Time } from '/@/components/Time';
 import JRangeNumber from './jeecg/components/JRangeNumber.vue';
+import MDatePicker from './jeecg/components/MDatePicker.vue';
 
 const componentMap = new Map<ComponentType, Component>();
 
@@ -68,6 +70,7 @@ componentMap.set('Slider', Slider);
 componentMap.set('Rate', Rate);
 
 componentMap.set('DatePicker', DatePicker);
+componentMap.set('MDatePicker', MDatePicker);
 componentMap.set('MonthPicker', DatePicker.MonthPicker);
 componentMap.set('RangePicker', DatePicker.RangePicker);
 componentMap.set('WeekPicker', DatePicker.WeekPicker);
@@ -99,6 +102,7 @@ componentMap.set('JInputPop', JInputPop);
 componentMap.set('JEasyCron', JEasyCron);
 componentMap.set('JCheckbox', JCheckbox);
 componentMap.set('JInput', JInput);
+componentMap.set('JTextArea', JTextArea);
 componentMap.set('JTreeSelect', JTreeSelect);
 componentMap.set('JEllipsis', JEllipsis);
 componentMap.set('JSelectUserByDept', JSelectUserByDept);

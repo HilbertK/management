@@ -18,12 +18,11 @@ enum Api {
   itemEdit = '/sys/dictItem/edit',
   dictItemCheck = '/sys/dictItem/dictItemCheck',
   refreshCache = '/sys/dict/refleshCache',
-  queryAllDictItems = '/sys/dict/queryAllDictItems',
-  //TODO: 分类下的用户相关接口，需调整
-  userList = '/sys/user/userRoleList',
-  deleteUserRole = '/sys/user/deleteUserRole',
-  batchDeleteUserRole = '/sys/user/deleteUserRoleBatch',
-  addUserRole = '/sys/user/addSysUserRole',
+  queryAllDictItems = '● /sys/dictItem/problemTypeList',
+  dictItemUserList = '/sys/user/dictItemUserList',
+  deleteDictUser = '/sys/user/deleteDictItemUser',
+  batchDeleteDictUser = '/sys/user/deleteDictItemUserBatch',
+  addDictUser = '/sys/user/addDictItemUser',
 }
 /**
  * 导出api
@@ -145,12 +144,12 @@ export const queryAllDictItems = () => defHttp.get({ url: Api.queryAllDictItems 
  * @param params
  */
 
-export const userList = (params) => defHttp.get({ url: Api.userList, params });
+export const userList = (params) => defHttp.get({ url: Api.dictItemUserList, params });
 /**
  * 删除角色用户
  */
 export const deleteUserRole = (params, handleSuccess) => {
-  return defHttp.delete({ url: Api.deleteUserRole, params }, { joinParamsToUrl: true }).then(() => {
+  return defHttp.delete({ url: Api.deleteDictUser, params }, { joinParamsToUrl: true }).then(() => {
     handleSuccess();
   });
 };
@@ -165,7 +164,7 @@ export const batchDeleteUserRole = (params, handleSuccess) => {
     okText: '确认',
     cancelText: '取消',
     onOk: () => {
-      return defHttp.delete({ url: Api.batchDeleteUserRole, params }, { joinParamsToUrl: true }).then(() => {
+      return defHttp.delete({ url: Api.batchDeleteDictUser, params }, { joinParamsToUrl: true }).then(() => {
         handleSuccess();
       });
     },
@@ -175,7 +174,7 @@ export const batchDeleteUserRole = (params, handleSuccess) => {
  * 添加已有用户
  */
 export const addUserRole = (params, handleSuccess) => {
-  return defHttp.post({ url: Api.addUserRole, params }).then(() => {
+  return defHttp.post({ url: Api.addDictUser, params }).then(() => {
     handleSuccess();
   });
 };

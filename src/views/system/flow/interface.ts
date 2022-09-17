@@ -32,6 +32,6 @@ export interface IFlowItem {
   orgTxt: string;
   resolved: boolean; // 经办人标记
   evaluation: IFlowEvaluation | null;
-  createTime: string; // 时间戳
-  endTime: string;
+  createTime: number; // 时间戳
+  endTime: number;
 }

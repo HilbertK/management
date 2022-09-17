@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="_图层_2" data-name="图层 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 145.67 84.54">
+  <defs>
+    <style>
+      .cls-1, .cls-2, .cls-3, .cls-4, .cls-5 {
+        fill: #ffc897;
+      }
+
+      .cls-2 {
+        opacity: .2;
+      }
+
+      .cls-3 {
+        opacity: .6;
+      }
+
+      .cls-4 {
+        opacity: .8;
+      }
+
+      .cls-5 {
+        opacity: .4;
+      }
+    </style>
+  </defs>
+  <g id="_图层_1-2" data-name="图层 1">
+    <g>
+      <circle class="cls-1" cx="4.75" cy="56.59" r="4.27"/>
+      <circle class="cls-4" cx="38.91" cy="56.59" r="4.27"/>
+      <circle class="cls-3" cx="73.08" cy="56.59" r="4.27"/>
+      <circle class="cls-5" cx="107.24" cy="56.59" r="4.27"/>
+      <circle class="cls-2" cx="141.4" cy="56.59" r="4.27"/>
+      <circle class="cls-1" cx="4.75" cy="30.43" r="4.27"/>
+      <circle class="cls-4" cx="38.91" cy="30.43" r="4.27"/>
+      <circle class="cls-3" cx="73.08" cy="30.43" r="4.27"/>
+      <circle class="cls-5" cx="107.24" cy="30.43" r="4.27"/>
+      <circle class="cls-2" cx="141.4" cy="30.43" r="4.27"/>
+      <circle class="cls-1" cx="4.75" cy="4.27" r="4.27"/>
+      <circle class="cls-4" cx="38.91" cy="4.27" r="4.27"/>
+      <circle class="cls-3" cx="73.08" cy="4.27" r="4.27"/>
+      <circle class="cls-5" cx="107.24" cy="4.27" r="4.27"/>
+      <circle class="cls-2" cx="141.4" cy="4.27" r="4.27"/>
+      <circle class="cls-1" cx="4.27" cy="80.27" r="4.27"/>
+      <circle class="cls-4" cx="38.43" cy="80.27" r="4.27"/>
+      <circle class="cls-3" cx="72.59" cy="80.27" r="4.27"/>
+      <circle class="cls-5" cx="106.75" cy="80.27" r="4.27"/>
+      <circle class="cls-2" cx="140.91" cy="80.27" r="4.27"/>
+    </g>
+  </g>
+</svg>

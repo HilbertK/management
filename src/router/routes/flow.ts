@@ -23,6 +23,17 @@ export const FlowDetailRoute: AppRouteModule = {
   },
 };
 
+export const FlowEvaluateRoute: AppRouteModule = {
+  path: '/system/flow/evaluate',
+  name: 'SystemFlowEvaluate',
+  component: () => import('/@/views/system/flow/FlowEvaluate.vue'),
+  meta: {
+    hideChildrenInMenu: true,
+    icon: 'simple-icons:about-dot-me',
+    title: t('routes.flow.flows'),
+  },
+};
+
 export const DictRoute: AppRouteModule = {
   path: '/system/dict',
   name: 'SystemDict',

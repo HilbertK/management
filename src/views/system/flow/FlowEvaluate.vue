@@ -11,15 +11,14 @@
   import { Result } from 'ant-design-vue';
   import { PageWrapper } from '/@/components/Page';
   import { useMessage } from '/@/hooks/web/useMessage';
-  import { formSchema } from './flow.data';
+  import { evaluateFormSchema } from './flow.data';
   import { useUserStore } from '/@/store/modules/user';
-  import moment from 'moment';
   // import { saveOrUpdateFlow, detail } from './flow.api';
   import { saveOrUpdateFlow, detail } from './mock.api';
   const { createMessage } = useMessage();
   const isFinished = ref(false);
   //表单配置
-  const [registerForm, { setProps, resetFields, setFieldsValue, validate, updateSchema }] = useForm({
+  const [registerForm, { setProps, resetFields, setFieldsValue, validate }] = useForm({
     labelWidth: 90,
     labelCol: {
       span: 8,
@@ -33,7 +32,7 @@
         maxWidth: 'fit-content',
       },
     },
-    schemas: formSchema,
+    schemas: evaluateFormSchema,
     showResetButton: false,
     submitButtonOptions: {
       text: '提交',
@@ -46,42 +45,22 @@
   const userStore = useUserStore();
   const fetch = async () => {
     await resetFields();
-    // 从链接中判断是新增、编辑、查看
-    const isUpdate = !!query.id;
-    if (!isUpdate) {
-      updateSchema([
-        {
-          field: 'operatorId',
-          ifShow: false,
-        },
-      ]);
+    const hasFlow = !!query.id;
+    if (!hasFlow) {
+      createMessage.success('工单不存在！');
       return;
     }
     const data: any = await detail(query.id as string);
     if (typeof data === 'object') {
-      const userId = userStore.getUserInfo.id;
-      const operatorId = data.operator?.id ?? '';
-      const creatorId = data.creator?.id ?? '';
-      updateSchema([
-        {
-          field: 'title',
-          dynamicDisabled: true,
-        },
-        {
-          field: 'operatorId',
-          dynamicDisabled: userId !== operatorId,
-        },
-        {
-          field: 'endTimeStr',
-          dynamicDisabled: userId !== creatorId,
-        },
-      ]);
-      data.operatorId = operatorId;
-      data.descriptionList = JSON.stringify((data.description ?? []).map((item: any) => ({ label: item.creator.realname, value: item.content })));
-      data.endTimeStr = moment(data.endTime);
       setFieldsValue({
-        ...data,
+        title: data.title,
       });
+      const userId = userStore.getUserInfo.id;
+      const creatorId = data.creator?.id ?? '';
+      if (creatorId !== userId) {
+        createMessage.success('没有评价权限！');
+        setProps({ disabled: true });
+      }
     }
   };
   onMounted(async () => {
