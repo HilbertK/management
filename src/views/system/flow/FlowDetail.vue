@@ -78,7 +78,7 @@
       ]);
       data.operatorId = operatorId;
       data.descriptionList = JSON.stringify((data.description ?? []).map((item: any) => ({ label: item.creator.realname, value: item.content })));
-      data.endTimeStr = moment(data.endTime);
+      data.endTimeStr = moment(data.expectHandleTime);
       setFieldsValue({
         ...data,
       });

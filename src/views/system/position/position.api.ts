@@ -2,14 +2,14 @@ import { defHttp } from '/@/utils/http/axios';
 import { Modal } from 'ant-design-vue';
 
 enum Api {
-  list = '/sys/position/list',
-  save = '/sys/position/add',
-  edit = '/sys/position/edit',
-  get = '/sys/position/queryById',
-  delete = '/sys/position/delete',
-  importExcel = '/sys/position/importExcel',
-  exportXls = '/sys/position/exportXls',
-  deleteBatch = '/sys/position/deleteBatch',
+  list = '/jeecg-system/sys/position/list',
+  save = '/jeecg-system/sys/position/add',
+  edit = '/jeecg-system/sys/position/edit',
+  get = '/jeecg-system/sys/position/queryById',
+  delete = '/jeecg-system/sys/position/delete',
+  importExcel = '/jeecg-system/sys/position/importExcel',
+  exportXls = '/jeecg-system/sys/position/exportXls',
+  deleteBatch = '/jeecg-system/sys/position/deleteBatch',
 }
 /**
  * 导出api

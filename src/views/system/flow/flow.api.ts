@@ -2,16 +2,16 @@ import { defHttp } from '/@/utils/http/axios';
 import { Modal } from 'ant-design-vue';
 
 enum Api {
-  list = '/sys/flow/list',
-  detail = '/sys/flow/detail',
-  save = '/sys/flow/add',
-  edit = '/sys/flow/edit',
-  evaluate = '/sys/flow/evaluate',
-  deleteFlow = '/sys/flow/delete',
-  deleteBatch = '/sys/flow/deleteBatch',
-  importExcel = '/sys/flow/importExcel',
-  exportXls = '/sys/flow/exportXls',
-  allDictList = '/sys/dict/queryall',
+  list = '/bpm/work/order/pageAll',
+  detail = '/bpm/sys/flow/detail',
+  save = '/bpm/work/order/create',
+  edit = '/bpm/sys/flow/edit',
+  evaluate = '/bpm/work/order/evaluate',
+  deleteFlow = '/bpm/sys/flow/delete',
+  deleteBatch = '/bpm/sys/flow/deleteBatch',
+  importExcel = '/bpm/sys/flow/importExcel',
+  exportXls = '/bpm/sys/flow/exportXls',
+  allDictList = '/bpm/sys/dict/queryall',
 }
 /**
  * 导出api

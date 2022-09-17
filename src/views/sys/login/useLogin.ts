@@ -138,7 +138,7 @@ export function isOAuth2AppEnv() {
  * @param source
  */
 export function sysOAuth2Login(source) {
-  let url = `${window._CONFIG['domianURL']}/sys/thirdLogin/oauth2/${source}/login`;
+  let url = `${window._CONFIG['domianURL']}/jeecg-system/sys/thirdLogin/oauth2/${source}/login`;
   url += `?state=${encodeURIComponent(window.location.origin)}`;
   window.location.href = url;
 }

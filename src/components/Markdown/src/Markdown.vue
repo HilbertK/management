@@ -76,7 +76,7 @@
         return lang;
       });
       //update-begin-author:taoyan date:2022-5-24 for: VUEN-1090 markdown 无法上传
-      const uploadUrl = `${window._CONFIG['domianURL']}/sys/common/upload`;
+      const uploadUrl = `${window._CONFIG['domianURL']}/jeecg-system/sys/common/upload`;
       const token = getToken();
       function formatResult(files, responseText): string {
         let data: any = JSON.parse(responseText);

@@ -5,22 +5,22 @@ import { useMessage } from '/@/hooks/web/useMessage';
 const { createConfirm } = useMessage();
 
 export enum Api {
-  queryDepartTreeSync = '/sys/sysDepart/queryDepartTreeSync',
-  save = '/sys/sysDepart/add',
-  edit = '/sys/sysDepart/edit',
-  delete = '/sys/sysDepart/delete',
-  deleteBatch = '/sys/sysDepart/deleteBatch',
-  exportXlsUrl = '/sys/sysDepart/exportXls',
-  importExcelUrl = '/sys/sysDepart/importExcel',
+  queryDepartTreeSync = '/jeecg-system/sys/sysDepart/queryDepartTreeSync',
+  save = '/jeecg-system/sys/sysDepart/add',
+  edit = '/jeecg-system/sys/sysDepart/edit',
+  delete = '/jeecg-system/sys/sysDepart/delete',
+  deleteBatch = '/jeecg-system/sys/sysDepart/deleteBatch',
+  exportXlsUrl = '/jeecg-system/sys/sysDepart/exportXls',
+  importExcelUrl = '/jeecg-system/sys/sysDepart/importExcel',
 
-  roleQueryTreeList = '/sys/role/queryTreeList',
-  queryDepartPermission = '/sys/permission/queryDepartPermission',
-  saveDepartPermission = '/sys/permission/saveDepartPermission',
+  roleQueryTreeList = '/jeecg-system/sys/role/queryTreeList',
+  queryDepartPermission = '/jeecg-system/sys/permission/queryDepartPermission',
+  saveDepartPermission = '/jeecg-system/sys/permission/saveDepartPermission',
 
-  dataRule = '/sys/sysDepartPermission/datarule',
+  dataRule = '/jeecg-system/sys/sysDepartPermission/datarule',
 
-  getCurrentUserDeparts = '/sys/user/getCurrentUserDeparts',
-  selectDepart = '/sys/selectDepart',
+  getCurrentUserDeparts = '/jeecg-system/sys/user/getCurrentUserDeparts',
+  selectDepart = '/jeecg-system/sys/selectDepart',
 }
 
 /**

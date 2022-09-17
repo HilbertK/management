@@ -5,31 +5,31 @@ import { useMessage } from '/@/hooks/web/useMessage';
 const { createConfirm } = useMessage();
 
 enum Api {
-  treeList = '/sys/sysDepart/queryMyDeptTreeList',
-  queryIdTree = '/sys/sysDepart/queryIdTree',
-  searchBy = '/sys/sysDepart/searchBy',
+  treeList = '/jeecg-system/sys/sysDepart/queryMyDeptTreeList',
+  queryIdTree = '/jeecg-system/sys/sysDepart/queryIdTree',
+  searchBy = '/jeecg-system/sys/sysDepart/searchBy',
 }
 
 // 部门用户API
 enum DepartUserApi {
-  list = '/sys/user/departUserList',
-  link = '/sys/user/editSysDepartWithUser',
-  unlink = '/sys/user/deleteUserInDepartBatch',
+  list = '/jeecg-system/sys/user/departUserList',
+  link = '/jeecg-system/sys/user/editSysDepartWithUser',
+  unlink = '/jeecg-system/sys/user/deleteUserInDepartBatch',
 }
 
 // 部门角色API
 enum DepartRoleApi {
-  list = '/sys/sysDepartRole/list',
-  deleteBatch = '/sys/sysDepartRole/deleteBatch',
-  save = '/sys/sysDepartRole/add',
-  edit = '/sys/sysDepartRole/edit',
-  queryTreeListForDeptRole = '/sys/sysDepartPermission/queryTreeListForDeptRole',
-  queryDeptRolePermission = '/sys/sysDepartPermission/queryDeptRolePermission',
-  saveDeptRolePermission = '/sys/sysDepartPermission/saveDeptRolePermission',
-  dataRule = '/sys/sysDepartRole/datarule',
-  getDeptRoleList = '/sys/sysDepartRole/getDeptRoleList',
-  getDeptRoleByUserId = '/sys/sysDepartRole/getDeptRoleByUserId',
-  saveDeptRoleUser = '/sys/sysDepartRole/deptRoleUserAdd',
+  list = '/jeecg-system/sys/sysDepartRole/list',
+  deleteBatch = '/jeecg-system/sys/sysDepartRole/deleteBatch',
+  save = '/jeecg-system/sys/sysDepartRole/add',
+  edit = '/jeecg-system/sys/sysDepartRole/edit',
+  queryTreeListForDeptRole = '/jeecg-system/sys/sysDepartPermission/queryTreeListForDeptRole',
+  queryDeptRolePermission = '/jeecg-system/sys/sysDepartPermission/queryDeptRolePermission',
+  saveDeptRolePermission = '/jeecg-system/sys/sysDepartPermission/saveDeptRolePermission',
+  dataRule = '/jeecg-system/sys/sysDepartRole/datarule',
+  getDeptRoleList = '/jeecg-system/sys/sysDepartRole/getDeptRoleList',
+  getDeptRoleByUserId = '/jeecg-system/sys/sysDepartRole/getDeptRoleByUserId',
+  saveDeptRoleUser = '/jeecg-system/sys/sysDepartRole/deptRoleUserAdd',
 }
 
 /**

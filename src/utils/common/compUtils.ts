@@ -17,7 +17,7 @@ export const getFileAccessHttpUrl = (fileUrl, prefix = 'http') => {
       //判断是否是数组格式
       let isArray = fileUrl.indexOf('[') != -1;
       if (!isArray) {
-        let prefix = `${baseApiUrl}/sys/common/static/`;
+        let prefix = `${baseApiUrl}/jeecg-system/sys/common/static/`;
         // 判断是否已包含前缀
         if (!fileUrl.startsWith(prefix)) {
           result = `${prefix}${fileUrl}`;

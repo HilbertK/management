@@ -204,7 +204,7 @@
             resolve();
           } else {
             let params = { orgCode: formState.orgCode, username: unref(username) };
-            defHttp.put({ url: '/sys/selectDepart', params }).then((res) => {
+            defHttp.put({ url: '/jeecg-system/sys/selectDepart', params }).then((res) => {
               if (res.userInfo) {
                 userStore.setUserInfo(res.userInfo);
                 resolve();

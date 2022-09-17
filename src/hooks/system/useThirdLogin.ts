@@ -3,7 +3,6 @@ import { defHttp } from '/@/utils/http/axios';
 import { useGlobSetting } from '/@/hooks/setting';
 import { useMessage } from '/@/hooks/web/useMessage';
 import { useUserStore } from '/@/store/modules/user';
-// import { setThirdCaptcha, getCaptcha } from '/@/api/sys/user';
 import { useI18n } from '/@/hooks/web/useI18n';
 
 export function useThirdLogin() {
@@ -37,7 +36,7 @@ export function useThirdLogin() {
   const thirdCaptcha = ref('');
   //第三方登录
   function onThirdLogin(source) {
-    const url = `${glob.uploadUrl}/sys/thirdLogin/render/${source}`;
+    const url = `${glob.uploadUrl}/jeecg-system/sys/thirdLogin/render/${source}`;
     window.open(url, `login ${source}`, 'height=500, width=500, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=n o, status=no');
     thirdType.value = source;
     thirdLoginInfo.value = {};
@@ -106,7 +105,7 @@ export function useThirdLogin() {
     // 账号名后面添加两位随机数
     thirdLoginInfo.value.suffix = parseInt(Math.random() * 98 + 1);
     defHttp
-      .post({ url: '/sys/third/user/create', params: { thirdLoginInfo: unref(thirdLoginInfo) } }, { isTransformResponse: false })
+      .post({ url: '/jeecg-system/sys/third/user/create', params: { thirdLoginInfo: unref(thirdLoginInfo) } }, { isTransformResponse: false })
       .then((res) => {
         if (res.success) {
           const token = res.result;
@@ -123,7 +122,7 @@ export function useThirdLogin() {
   // 核实密码
   function thirdLoginCheckPassword() {
     const params = Object.assign({}, unref(thirdLoginInfo), { password: unref(thirdLoginPassword) });
-    defHttp.post({ url: '/sys/third/user/checkPassword', params }, { isTransformResponse: false }).then((res) => {
+    defHttp.post({ url: '/jeecg-system/sys/third/user/checkPassword', params }, { isTransformResponse: false }).then((res) => {
       if (res.success) {
         thirdLoginNoPassword();
         doThirdLogin(res.result);
@@ -159,7 +158,7 @@ export function useThirdLogin() {
       mobile: unref(thirdPhone),
       thirdUserUuid: unref(thirdUserUuid),
     };
-    defHttp.post({ url: '/sys/thirdLogin/bindingThirdPhone', params }, { isTransformResponse: false }).then((res) => {
+    defHttp.post({ url: '/jeecg-system/sys/thirdLogin/bindingThirdPhone', params }, { isTransformResponse: false }).then((res) => {
       if (res.success) {
         bindingPhoneModal.value = false;
         doThirdLogin(res.result);

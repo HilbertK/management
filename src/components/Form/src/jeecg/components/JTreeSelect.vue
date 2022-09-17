@@ -29,8 +29,8 @@
   import { useMessage } from '/@/hooks/web/useMessage';
 
   enum Api {
-    url = '/sys/dict/loadTreeData',
-    view = '/sys/dict/loadDictItem/',
+    url = '/jeecg-system/sys/dict/loadTreeData',
+    view = '/jeecg-system/sys/dict/loadDictItem/',
   }
 
   const props = defineProps({

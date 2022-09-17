@@ -14,18 +14,17 @@ export const columns: BasicColumn[] = [
   },
   {
     title: '分类',
-    dataIndex: 'type',
+    dataIndex: 'problemTypeLabel',
     width: 120,
   },
   {
     title: '经办人',
-    dataIndex: 'operator',
+    dataIndex: 'takingByName',
     width: 120,
-    customRender: ({ text }) => text?.realname ?? '',
   },
   {
     title: '发起人',
-    dataIndex: 'creator',
+    dataIndex: 'createByName',
     width: 120,
   },
   {
@@ -35,18 +34,18 @@ export const columns: BasicColumn[] = [
   },
   {
     title: '评价',
-    dataIndex: 'evaluation',
+    dataIndex: 'remark',
     width: 120,
   },
   {
     title: '截止时间',
     dataIndex: 'endTimeStr',
     width: 120,
-    customRender: ({ record }) => moment(record.endTime).format(timeFormat),
+    customRender: ({ record }) => moment(record.expectHandleTime).format(timeFormat),
   },
   {
     title: '状态',
-    dataIndex: 'status',
+    dataIndex: 'statusLabel',
     width: 80,
   },
 ];
@@ -145,7 +144,7 @@ export const evaluateFormSchema: FormSchema[] = [
   },
   {
     label: '解决情况',
-    field: 'resolved',
+    field: 'solved',
     required: true,
     component: 'RadioButtonGroup',
     defaultValue: '0',

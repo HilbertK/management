@@ -11,37 +11,37 @@ import { PageEnum } from '/@/enums/pageEnum';
 
 const { createErrorModal } = useMessage();
 enum Api {
-  Login = '/sys/login',
-  phoneLogin = '/sys/phoneLogin',
-  Logout = '/sys/logout',
-  GetUserInfo = '/sys/user/getUserInfo',
+  Login = '/jeecg-system/sys/login',
+  phoneLogin = '/jeecg-system/sys/phoneLogin',
+  Logout = '/jeecg-system/sys/logout',
+  GetUserInfo = '/jeecg-system/sys/user/getUserInfo',
   // 获取系统权限
   // 1、查询用户拥有的按钮/表单访问权限
   // 2、所有权限
   // 3、系统安全模式
-  GetPermCode = '/sys/permission/getPermCode',
+  GetPermCode = '/jeecg-system/sys/permission/getPermCode',
   //新加的获取图形验证码的接口
-  getInputCode = '/sys/randomImage',
+  getInputCode = '/jeecg-system/sys/randomImage',
   //获取短信验证码的接口
-  getCaptcha = '/sys/sms',
+  getCaptcha = '/jeecg-system/sys/sms',
   //注册接口
-  registerApi = '/sys/user/register',
+  registerApi = '/jeecg-system/sys/user/register',
   //校验用户接口
-  checkOnlyUser = '/sys/user/checkOnlyUser',
+  checkOnlyUser = '/jeecg-system/sys/user/checkOnlyUser',
   //SSO登录校验
-  validateCasLogin = '/sys/cas/client/validateLogin',
+  validateCasLogin = '/jeecg-system/sys/cas/client/validateLogin',
   //校验手机号
-  phoneVerify = '/sys/user/phoneVerification',
+  phoneVerify = '/jeecg-system/sys/user/phoneVerification',
   //修改密码
-  passwordChange = '/sys/user/passwordChange',
+  passwordChange = '/jeecg-system/sys/user/passwordChange',
   //第三方登录
-  thirdLogin = '/sys/thirdLogin/getLoginUser',
+  thirdLogin = '/jeecg-system/sys/thirdLogin/getLoginUser',
   //第三方登录
-  getThirdCaptcha = '/sys/thirdSms',
+  getThirdCaptcha = '/jeecg-system/sys/thirdSms',
   //获取二维码信息
-  getLoginQrcode = '/sys/getLoginQrcode',
+  getLoginQrcode = '/jeecg-system/sys/getLoginQrcode',
   //监控二维码扫描状态
-  getQrcodeToken = '/sys/getQrcodeToken',
+  getQrcodeToken = '/jeecg-system/sys/getQrcodeToken',
 }
 
 /**

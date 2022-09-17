@@ -4,22 +4,22 @@ import { useGlobSetting } from '/@/hooks/setting';
 const globSetting = useGlobSetting();
 const baseUploadUrl = globSetting.uploadUrl;
 enum Api {
-  positionList = '/sys/position/list',
-  userList = '/sys/user/list',
-  roleList = '/sys/role/list',
-  queryDepartTreeSync = '/sys/sysDepart/queryDepartTreeSync',
-  queryTreeList = '/sys/sysDepart/queryTreeList',
-  loadTreeData = '/sys/category/loadTreeData',
-  loadDictItem = '/sys/category/loadDictItem/',
-  getDictItems = '/sys/dict/getDictItems/',
-  getTableList = '/sys/user/queryUserComponentData',
-  getCategoryData = '/sys/category/loadAllData',
+  positionList = '/jeecg-system/sys/position/list',
+  userList = '/jeecg-system/sys/user/list',
+  roleList = '/jeecg-system/sys/role/list',
+  queryDepartTreeSync = '/jeecg-system/sys/sysDepart/queryDepartTreeSync',
+  queryTreeList = '/jeecg-system/sys/sysDepart/queryTreeList',
+  loadTreeData = '/jeecg-system/sys/category/loadTreeData',
+  loadDictItem = '/jeecg-system/sys/category/loadDictItem/',
+  getDictItems = '/jeecg-system/sys/dict/getDictItems/',
+  getTableList = '/jeecg-system/sys/user/queryUserComponentData',
+  getCategoryData = '/jeecg-system/sys/category/loadAllData',
 }
 
 /**
  * 上传父路径
  */
-export const uploadUrl = `${baseUploadUrl}/sys/common/upload`;
+export const uploadUrl = `${baseUploadUrl}/jeecg-system/sys/common/upload`;
 
 /**
  * 职务列表

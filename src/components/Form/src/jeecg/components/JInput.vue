@@ -6,7 +6,7 @@
   import { defineComponent, PropType, ref, watchEffect, unref, watch } from 'vue';
   import { useAttrs } from '/@/hooks/core/useAttrs';
   import { propTypes } from '/@/utils/propTypes';
-  import { JInputTypeEnum } from '/@/enums/jeecgEnum.ts';
+  import { JInputTypeEnum } from '/@/enums/jeecgEnum';
 
   export default defineComponent({
     name: 'JInput',

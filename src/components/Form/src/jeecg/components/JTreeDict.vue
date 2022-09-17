@@ -23,9 +23,9 @@
   import { TreeSelect } from 'ant-design-vue';
 
   enum Api {
-    view = '/sys/category/loadOne',
-    root = '/sys/category/loadTreeRoot',
-    children = '/sys/category/loadTreeChildren',
+    view = '/jeecg-system/sys/category/loadOne',
+    root = '/jeecg-system/sys/category/loadTreeRoot',
+    children = '/jeecg-system/sys/category/loadTreeChildren',
   }
 
   const { prefixCls } = useDesign('j-tree-dict');

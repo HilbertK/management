@@ -119,7 +119,7 @@
         // 字典code格式：table,text,code
         defHttp
           .get({
-            url: `/sys/dict/loadDict/${props.dict}`,
+            url: `/jeecg-system/sys/dict/loadDict/${props.dict}`,
             params: { keyword: value, pageSize: props.pageSize },
           })
           .then((res) => {
@@ -145,7 +145,7 @@
         let { async, value, dict } = props;
         if (async) {
           if (!selectedAsyncValue || !selectedAsyncValue.key || selectedAsyncValue.key !== value) {
-            defHttp.get({ url: `/sys/dict/loadDictItem/${dict}`, params: { key: value } }).then((res) => {
+            defHttp.get({ url: `/jeecg-system/sys/dict/loadDictItem/${dict}`, params: { key: value } }).then((res) => {
               if (res && res.length > 0) {
                 let obj = {
                   key: value,
@@ -193,7 +193,7 @@
             loading.value = true;
             defHttp
               .get({
-                url: `/sys/dict/loadDict/${dict}`,
+                url: `/jeecg-system/sys/dict/loadDict/${dict}`,
                 params: { pageSize: pageSize, keyword: '' },
               })
               .then((res) => {

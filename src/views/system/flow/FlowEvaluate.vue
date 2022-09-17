@@ -1,6 +1,6 @@
 <template>
   <PageWrapper contentBackground contentClass="p-4">
-    <Result status="success" title="提交成功" v-if="isFinished" />
+    <Result :status="noFlow ? 'error' : 'success'" :title="noFlow ? '工单不存在' : '提交成功'" v-if="isFinished" />
     <BasicForm @register="registerForm" v-else />
   </PageWrapper>
 </template>
@@ -17,6 +17,7 @@
   import { saveOrUpdateFlow, detail } from './mock.api';
   const { createMessage } = useMessage();
   const isFinished = ref(false);
+  const noFlow = ref(false);
   //表单配置
   const [registerForm, { setProps, resetFields, setFieldsValue, validate }] = useForm({
     labelWidth: 90,
@@ -47,7 +48,9 @@
     await resetFields();
     const hasFlow = !!query.id;
     if (!hasFlow) {
-      createMessage.success('工单不存在！');
+      noFlow.value = true;
+      isFinished.value = true;
+      createMessage.error('工单不存在！');
       return;
     }
     const data: any = await detail(query.id as string);
@@ -58,7 +61,7 @@
       const userId = userStore.getUserInfo.id;
       const creatorId = data.creator?.id ?? '';
       if (creatorId !== userId) {
-        createMessage.success('没有评价权限！');
+        createMessage.error('没有评价权限！');
         setProps({ disabled: true });
       }
     }

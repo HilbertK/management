@@ -3,16 +3,16 @@ import { cloneObject } from '/@/utils/index';
 
 export const backEndUrl = {
   // 获取启用的第三方App
-  getEnabledType: '/sys/thirdApp/getEnabledType',
+  getEnabledType: '/jeecg-system/sys/thirdApp/getEnabledType',
   // 企业微信
   wechatEnterprise: {
-    user: '/sys/thirdApp/sync/wechatEnterprise/user',
-    depart: '/sys/thirdApp/sync/wechatEnterprise/depart',
+    user: '/jeecg-system/sys/thirdApp/sync/wechatEnterprise/user',
+    depart: '/jeecg-system/sys/thirdApp/sync/wechatEnterprise/depart',
   },
   // 钉钉
   dingtalk: {
-    user: '/sys/thirdApp/sync/dingtalk/user',
-    depart: '/sys/thirdApp/sync/dingtalk/depart',
+    user: '/jeecg-system/sys/thirdApp/sync/dingtalk/user',
+    depart: '/jeecg-system/sys/thirdApp/sync/dingtalk/depart',
   },
 };
 // 启用了哪些第三方App（在此缓存）

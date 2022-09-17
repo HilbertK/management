@@ -1,8 +1,8 @@
 import { defHttp } from '/@/utils/http/axios';
 
 enum Api {
-  listCementByUser = '/sys/annountCement/listByUser',
-  editCementSend = '/sys/sysAnnouncementSend/editByAnntIdAndUserId',
+  listCementByUser = '/jeecg-system/sys/annountCement/listByUser',
+  editCementSend = '/jeecg-system/sys/sysAnnouncementSend/editByAnntIdAndUserId',
 }
 
 /**
