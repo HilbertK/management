@@ -1,6 +1,6 @@
 <template>
   <PageWrapper contentBackground contentClass="p-4">
-    <Result :status="noFlow ? 'error' : 'success'" :title="noFlow ? '工单不存在' : '提交成功'" v-if="isFinished" />
+    <Result :status="noFlow ? 'error' : 'success'" :title="noFlow ? '工单有误' : '提交成功'" v-if="isFinished" />
     <BasicForm @register="registerForm" v-else />
   </PageWrapper>
 </template>
@@ -13,8 +13,7 @@
   import { useMessage } from '/@/hooks/web/useMessage';
   import { evaluateFormSchema } from './flow.data';
   import { useUserStore } from '/@/store/modules/user';
-  // import { saveOrUpdateFlow, detail } from './flow.api';
-  import { saveOrUpdateFlow, detail } from './mock.api';
+  import { updateFlow, detail } from './flow.api';
   const { createMessage } = useMessage();
   const isFinished = ref(false);
   const noFlow = ref(false);
@@ -33,7 +32,15 @@
         maxWidth: 'fit-content',
       },
     },
-    schemas: evaluateFormSchema,
+    schemas: [
+      {
+        label: '标题',
+        field: 'title',
+        dynamicDisabled: true,
+        component: 'Input',
+      },
+      ...evaluateFormSchema,
+    ],
     showResetButton: false,
     submitButtonOptions: {
       text: '提交',
@@ -59,10 +66,12 @@
         title: data.title,
       });
       const userId = userStore.getUserInfo.id;
-      const creatorId = data.creator?.id ?? '';
+      const creatorId = data.createBy ?? '';
       if (creatorId !== userId) {
         createMessage.error('没有评价权限！');
         setProps({ disabled: true, showSubmitButton: false });
+      } else if (data.evaluateTime) {
+        setProps({ disabled: true });
       }
     }
   };
@@ -71,6 +80,8 @@
   });
   //提交事件
   async function handleSubmit() {
+    const workNoId = (query.id ?? '') as string;
+    if (!workNoId) return;
     try {
       const values = await validate();
       setProps({
@@ -79,7 +90,7 @@
         },
       });
       //提交表单
-      await saveOrUpdateFlow(values, !!query.id);
+      await updateFlow(values, workNoId);
       setProps({
         submitButtonOptions: {
           loading: false,

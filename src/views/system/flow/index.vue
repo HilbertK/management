@@ -110,7 +110,7 @@ import { FlowOpMode } from './constants';
   async function handleDetail(record: Recordable) {
     openDrawer(true, {
       record,
-      mode: FlowOpMode.Edit,
+      mode: FlowOpMode.NoPermission,
       showFooter: false,
     });
   }

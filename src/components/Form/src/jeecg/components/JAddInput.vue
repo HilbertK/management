@@ -6,17 +6,17 @@
           placeholder="请输入内容"
           :auto-size="{ minRows: 3, maxRows: 3 }"
           allowClear
-          :disabled="param.label !== ''"
+          :disabled="!param.new"
           v-model:value="param.value"
           style="margin: 0 0 5px 5px; flex-grow: 1"
           @input="emitChange"
         />
-        <MinusCircleOutlined v-if="!param.label && dynamicInput.params.length > min" class="dynamic-delete-button" @click="remove(param)" style="width: 50px" />
+        <MinusCircleOutlined v-if="param.new && dynamicInput.params.length > min" class="dynamic-delete-button" @click="remove(param)" style="width: 50px" />
       </div>
       <div v-if="param.label" style="text-align: right">{{ param.label }}</div>
     </div>
     <div>
-      <a-button type="dashed" style="width: 100%" @click="add">
+      <a-button :disabled="props.disabled" type="dashed" style="width: 100%" @click="add">
         <PlusOutlined />
         新增
       </a-button>
@@ -27,10 +27,10 @@
   import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons-vue';
   import { defineComponent, reactive, UnwrapRef, watchEffect } from 'vue';
   import { propTypes } from '/@/utils/propTypes';
-  import { isEmpty } from '/@/utils/is';
   interface Params {
     label: string;
     value: string;
+    new?: boolean;
   }
 
   export default defineComponent({
@@ -43,6 +43,8 @@
       value: propTypes.string.def(''),
       //自定义删除按钮多少才会显示
       min: propTypes.integer.def(1),
+      disabled: propTypes.bool.def(false),
+      defaultLabel: propTypes.string.def(''),
     },
     emits: ['change', 'update:value'],
     setup(props, { emit }) {
@@ -59,8 +61,9 @@
       //新增Input
       const add = () => {
         dynamicInput.params.push({
-          label: '',
+          label: props.defaultLabel ?? '',
           value: '',
+          new: true,
         });
         emitChange();
       };
@@ -78,8 +81,8 @@
         dynamicInput.params = [];
         if (props.value) {
           let jsonList = JSON.parse(props.value);
-          jsonList.forEach(({ label, value }) => {
-            dynamicInput.params.push({ label, value });
+          jsonList.forEach((item) => {
+            dynamicInput.params.push(item);
           });
         }
       }
@@ -87,8 +90,8 @@
        * 数值改变
        */
       function emitChange() {
-        emit('change', isEmpty(dynamicInput.params) ? '' : JSON.stringify(dynamicInput.params));
-        emit('update:value', isEmpty(dynamicInput.params) ? '' : JSON.stringify(dynamicInput.params));
+        emit('change', JSON.stringify(dynamicInput.params));
+        emit('update:value', JSON.stringify(dynamicInput.params));
       }
 
       return {
@@ -96,6 +99,7 @@
         emitChange,
         remove,
         add,
+        props,
       };
     },
   });

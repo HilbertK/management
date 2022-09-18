@@ -1,6 +1,6 @@
 <template>
   <PageWrapper contentBackground contentClass="p-4">
-    <Result status="success" title="提交成功" v-if="isFinished" />
+    <Result :status="noFlow ? 'error' : 'success'" :title="noFlow ? '工单有误' : '提交成功'" v-if="isFinished" />
     <BasicForm @register="registerForm" v-else />
   </PageWrapper>
 </template>
@@ -11,13 +11,15 @@
   import { Result } from 'ant-design-vue';
   import { PageWrapper } from '/@/components/Page';
   import { useMessage } from '/@/hooks/web/useMessage';
-  import { formSchema } from './flow.data';
+  import { evaluateFormSchema, formSchema } from './flow.data';
   import { useUserStore } from '/@/store/modules/user';
   import moment from 'moment';
-  // import { saveOrUpdateFlow, detail } from './flow.api';
-  import { saveOrUpdateFlow, detail } from './mock.api';
+  import { updateFlow, reassignFlow, saveFlow, detail } from './flow.api';
+  import { FlowOpMode } from './constants';
   const { createMessage } = useMessage();
   const isFinished = ref(false);
+  const noFlow = ref(false);
+  const mode = ref(FlowOpMode.Add);
   //表单配置
   const [registerForm, { setProps, resetFields, setFieldsValue, validate, updateSchema }] = useForm({
     labelWidth: 90,
@@ -33,7 +35,7 @@
         maxWidth: 'fit-content',
       },
     },
-    schemas: formSchema,
+    schemas: [...formSchema, ...evaluateFormSchema.map((item) => ({ ...item, ifShow: false }))],
     showResetButton: false,
     submitButtonOptions: {
       text: '提交',
@@ -46,37 +48,62 @@
   const userStore = useUserStore();
   const fetch = async () => {
     await resetFields();
-    // 从链接中判断是新增、编辑、查看
-    const isUpdate = !!query.id;
-    if (!isUpdate) {
+    if (!query.id) {
       updateSchema([
         {
-          field: 'operatorId',
+          field: 'handleBy',
           ifShow: false,
         },
       ]);
       return;
     }
-    const data: any = await detail(query.id as string);
+    let data: any;
+    try {
+      data = await detail(query.id as string);
+    } catch (e) {
+      console.error(e);
+      noFlow.value = true;
+      isFinished.value = true;
+      createMessage.error('获取工单信息出错！');
+      return;
+    }
     if (typeof data === 'object') {
-      const userId = userStore.getUserInfo.id;
-      const operatorId = data.operator?.id ?? '';
-      const creatorId = data.creator?.id ?? '';
-      updateSchema([
+      const userId = userStore.getUserInfo.username;
+      const operatorId = data.handleBy ?? '';
+      const creatorId = data.createBy ?? '';
+      if (operatorId === userId) {
+        mode.value = FlowOpMode.Reassign;
+      } else if (creatorId === userId) {
+        mode.value = FlowOpMode.Edit;
+      } else {
+        mode.value = FlowOpMode.NoPermission;
+        setProps({ showSubmitButton: false, disabled: true });
+      }
+      const newSchema = [
         {
           field: 'title',
           dynamicDisabled: true,
         },
         {
+          field: 'problemType',
+          dynamicDisabled: mode.value !== FlowOpMode.Reassign,
+        },
+        {
+          field: 'description',
+          componentProps: {
+            defaultLabel: userStore.userInfo?.realname,
+          },
+        },
+        {
           field: 'handleBy',
-          dynamicDisabled: userId !== operatorId,
+          dynamicDisabled: mode.value !== FlowOpMode.Reassign,
         },
         {
           field: 'expectHandleTime',
-          dynamicDisabled: userId !== creatorId,
+          dynamicDisabled: mode.value !== FlowOpMode.Edit,
         },
-      ]);
-      data.descriptionList = JSON.stringify((data.description ?? []).map((item: any) => ({ label: item.creator.realname, value: item.content })));
+      ];
+      updateSchema([...newSchema, ...(mode.value === FlowOpMode.NoPermission && data.evaluateTime ? evaluateFormSchema.map((item) => ({ field: item.field, ifShow: true })) : [])]);
       data.expectHandleTime = moment(data.expectHandleTime);
       setFieldsValue({
         ...data,
@@ -90,13 +117,27 @@
   async function handleSubmit() {
     try {
       const values = await validate();
+      delete values.id;
+      delete values.title;
       setProps({
         submitButtonOptions: {
           loading: true,
         },
       });
-      //提交表单
-      await saveOrUpdateFlow(values, !!query.id);
+      values.description = JSON.stringify(
+        JSON.parse(values.description ?? '[]')
+          .filter((item) => item.value)
+          .map(({ label, value }) => ({ label, value }))
+      );
+      const flowMode = unref(mode);
+      const workNoId = (query.id ?? '') as string;
+      if (flowMode === FlowOpMode.Edit && workNoId) {
+        await updateFlow(values, workNoId);
+      } else if (flowMode === FlowOpMode.Reassign && workNoId) {
+        await reassignFlow(values, workNoId);
+      } else if (flowMode === FlowOpMode.Add && !workNoId) {
+        await saveFlow(values);
+      }
       setProps({
         submitButtonOptions: {
           loading: false,

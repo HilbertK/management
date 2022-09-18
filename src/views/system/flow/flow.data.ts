@@ -92,38 +92,28 @@ export const formSchema: FormSchema[] = [
         api: getAllDictList,
         labelField: 'itemText',
         valueField: 'itemValue',
-        onClear: () => {
-          const { updateSchema } = formActionType;
-          updateSchema([
-            {
-              field: 'handleBy',
-              componentProps: {
-                params: {
-                  dictItemId: '',
-                },
-              },
-            },
-          ]);
-        },
         onChange: (value, option) => {
-          const { updateSchema } = formActionType;
+          const { updateSchema, setFieldsValue } = formActionType;
           updateSchema([
             {
               field: 'handleBy',
               componentProps: {
                 params: {
-                  dictItemId: option.id,
+                  dictItemId: option?.id ?? '',
                 },
               },
             },
           ]);
+          setFieldsValue({
+            handleBy: '',
+          });
         },
       };
     },
   },
   {
     label: '描述',
-    field: 'descriptionList',
+    field: 'description',
     component: 'JAddInput',
     componentProps: {
       value: '',
@@ -138,7 +128,7 @@ export const formSchema: FormSchema[] = [
     componentProps: {
       value: [],
       labelKey: 'realname',
-      rowKey: 'id',
+      rowKey: 'username',
       maxSelectCount: 1,
       params: {
         dictItemId: '',
@@ -155,12 +145,6 @@ export const formSchema: FormSchema[] = [
 ];
 
 export const evaluateFormSchema: FormSchema[] = [
-  {
-    label: '标题',
-    field: 'title',
-    dynamicDisabled: true,
-    component: 'Input',
-  },
   {
     label: '解决情况',
     field: 'solved',
@@ -185,7 +169,7 @@ export const evaluateFormSchema: FormSchema[] = [
   },
   {
     label: '评价',
-    field: 'content',
+    field: 'remark',
     required: true,
     component: 'JTextArea',
     componentProps: {},

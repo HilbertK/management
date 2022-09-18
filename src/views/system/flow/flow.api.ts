@@ -3,7 +3,7 @@ import { Modal } from 'ant-design-vue';
 
 enum Api {
   list = '/bpm/work/order/pageAll',
-  detail = '/bpm/sys/flow/detail',
+  detail = '/bpm/work/order/get',
   save = '/bpm/work/order/create',
   edit = '/bpm/work/order/edit',
   reassign = '/bpm/work/order/reassign',
@@ -32,7 +32,7 @@ export const list = (params) => defHttp.get({ url: Api.list, params });
  * 详情接口
  * @param params
  */
-export const detail = (params) => defHttp.get({ url: Api.detail, params });
+export const detail = (workOrderId: string) => defHttp.get({ url: `${Api.detail}/${workOrderId}` });
 
 /**
  * 删除
