@@ -49,7 +49,10 @@
       // 判断是否携带了Token，是就说明登录成功
       if (route.query.oauth2LoginToken) {
         let token = route.query.oauth2LoginToken;
-        const redirect = route.query.redirect;
+        let redirect = route.query.target;
+        if (redirect) {
+          redirect = decodeURIComponent(redirect as string);
+        }
         //执行登录操作
         thirdLogin({ token, thirdType: route.query.thirdType, redirect, goHome: !redirect });
       } else if (env.value.wxWork) {

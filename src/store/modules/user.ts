@@ -157,7 +157,7 @@ export const useUserStore = defineStore({
         if (goHome) {
           await router.replace(PageEnum.BASE_HOME);
         } else if (redirect) {
-          await router.replace(redirect);
+          window.location.href = redirect;
         }
       }
       return data;

@@ -138,9 +138,9 @@ export function isOAuth2AppEnv() {
  * 后台构造oauth2登录地址
  * @param source
  */
-export function sysOAuth2Login(source) {
+export function sysOAuth2Login(source, redirect = '') {
   let url = `${window._CONFIG['domianURL']}/jeecg-system/sys/thirdLogin/oauth2/${source}/login`;
-  url += `?state=${encodeURIComponent(`${window.location.origin + Oauth2LoginRoute.path}?redirect=${window.location.pathname}`)}`;
+  url += `?state=${encodeURIComponent(`${window.location.origin}${Oauth2LoginRoute.path}?target=${encodeURIComponent(redirect)}`)}`;
   window.location.href = url;
 }
 

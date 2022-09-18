@@ -88,7 +88,8 @@ export function getUserInfo() {
       userStore.setToken('');
       setAuthCache(TOKEN_KEY, null);
       if (platform.isQYWeixin()) {
-        sysOAuth2Login('wechat_enterprise');
+        const redirect = window.location.href;
+        sysOAuth2Login('wechat_enterprise', redirect);
       } else {
         router.push(PageEnum.BASE_LOGIN);
       }
