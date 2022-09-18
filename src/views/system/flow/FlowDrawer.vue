@@ -9,12 +9,14 @@
   import { formSchema } from './flow.data';
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
   import { useUserStore } from '/@/store/modules/user';
-  import { saveOrUpdateFlow } from './flow.api';
+  import { updateFlow, saveFlow, reassignFlow } from './flow.api';
+  import { FlowOpMode } from './constants';
   import { useDrawerAdaptiveWidth } from '/@/hooks/jeecg/useAdaptiveWidth';
   import moment from 'moment';
   // 声明Emits
   const emit = defineEmits(['success', 'register']);
-  const isUpdate = ref(true);
+  const mode = ref(null);
+  const workOrderId = ref('');
   const userStore = useUserStore();
   //表单配置
   const [registerForm, { setProps, resetFields, setFieldsValue, validate, updateSchema }] = useForm({
@@ -29,11 +31,11 @@
     await resetFields();
     showFooter.value = data?.showFooter ?? true;
     setDrawerProps({ confirmLoading: false, showFooter: showFooter.value });
-    isUpdate.value = !!data?.isUpdate;
-    if (!isUpdate.value) {
+    mode.value = data.mode;
+    if (mode.value === FlowOpMode.Add) {
       updateSchema([
         {
-          field: 'operatorId',
+          field: 'handleBy',
           ifShow: false,
         },
       ]);
@@ -41,21 +43,22 @@
     }
     // 无论新增还是编辑，都可以设置表单值
     if (typeof data.record === 'object') {
-      const userId = userStore.getUserInfo.id;
-      const operatorId = data.record.operator?.id ?? '';
-      const creatorId = data.record.creator?.id ?? '';
+      const userName = userStore.getUserInfo.username;
+      const operatorId = data.record.handleBy ?? '';
+      const creatorId = data.record.createBy ?? '';
+      workOrderId.value = data.record.id;
       updateSchema([
         {
           field: 'title',
           dynamicDisabled: true,
         },
         {
-          field: 'operatorId',
-          dynamicDisabled: userId !== operatorId,
+          field: 'handleBy',
+          // dynamicDisabled: userName !== operatorId,
         },
         {
           field: 'endTimeStr',
-          dynamicDisabled: userId !== creatorId,
+          dynamicDisabled: userName !== creatorId,
         },
       ]);
       data.record.operatorId = operatorId;
@@ -69,7 +72,7 @@
     setProps({ disabled: !showFooter.value });
   });
   //获取标题
-  const getTitle = computed(() => (showFooter.value ? (!unref(isUpdate) ? '新增工单' : '编辑工单') : '查看工单'));
+  const getTitle = computed(() => (showFooter.value ? (unref(mode) === FlowOpMode.Add ? '新增工单' : '编辑工单') : '查看工单'));
   const { adaptiveWidth } = useDrawerAdaptiveWidth();
 
   //提交事件
@@ -77,9 +80,14 @@
     try {
       let values = await validate();
       setDrawerProps({ confirmLoading: true });
-      values.userIdentity === 1 && (values.departIds = '');
-      //提交表单
-      await saveOrUpdateFlow(values, unref(isUpdate));
+      const flowMode = unref(mode);
+      if (flowMode === FlowOpMode.Edit) {
+        await updateFlow(values, unref(workOrderId));
+      } else if (flowMode === FlowOpMode.Reassign) {
+        await reassignFlow(values, unref(workOrderId));
+      } else {
+        await saveFlow(values);
+      }
       //关闭弹窗
       closeDrawer();
       //刷新列表

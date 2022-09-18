@@ -5,13 +5,14 @@ enum Api {
   list = '/bpm/work/order/pageAll',
   detail = '/bpm/sys/flow/detail',
   save = '/bpm/work/order/create',
-  edit = '/bpm/sys/flow/edit',
+  edit = '/bpm/work/order/edit',
+  reassign = '/bpm/work/order/reassign',
   evaluate = '/bpm/work/order/evaluate',
   deleteFlow = '/bpm/sys/flow/delete',
   deleteBatch = '/bpm/sys/flow/deleteBatch',
   importExcel = '/bpm/sys/flow/importExcel',
   exportXls = '/bpm/sys/flow/exportXls',
-  allDictList = '/bpm/sys/dict/queryall',
+  allDictList = '/jeecg-system/sys/dictItem/problemTypeList',
 }
 /**
  * 导出api
@@ -59,14 +60,22 @@ export const batchDeleteFlow = (params, handleSuccess) => {
   });
 };
 /**
- * 保存或者更新
+ * 保存
  * @param params
  */
-export const saveOrUpdateFlow = (params, isUpdate) => {
-  const url = isUpdate ? Api.edit : Api.save;
-  return defHttp.post({ url: url, params });
-};
+export const saveFlow = (params) => defHttp.post({ url: Api.save, params });
 
+/**
+ * 更新
+ * @param params
+ */
+export const updateFlow = (params: any, workOrderId: string) => defHttp.post({ url: `${Api.edit}/${workOrderId}`, params });
+
+/**
+ * 转交
+ * @param params
+ */
+export const reassignFlow = (params: any, workOrderId: string) => defHttp.post({ url: `${Api.reassign}/${workOrderId}`, params });
 /**
  * 提交评价
  * @param params

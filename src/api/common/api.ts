@@ -13,6 +13,7 @@ enum Api {
   loadDictItem = '/jeecg-system/sys/category/loadDictItem/',
   getDictItems = '/jeecg-system/sys/dict/getDictItems/',
   getTableList = '/jeecg-system/sys/user/queryUserComponentData',
+  dictItemUserList = '/jeecg-system/sys/user/dictItemUserList',
   getCategoryData = '/jeecg-system/sys/category/loadAllData',
 }
 
@@ -84,6 +85,12 @@ export const getDictItems = (dictCode) => {
 export const getTableList = (params) => {
   return defHttp.get({ url: Api.getTableList, params });
 };
+/**
+ * 角色列表接口
+ * @param params
+ */
+
+export const userListByDictItem = (params) => defHttp.get({ url: Api.dictItemUserList, params });
 /**
  * 加载全部分类字典数据
  */

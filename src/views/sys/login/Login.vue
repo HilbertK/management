@@ -22,6 +22,7 @@
         </div>
       </div>
     </div>
+    <img :alt="title" src="../../../assets/svg/zw-title-en.svg" class="zw-title -enter-x" />
   </div>
 </template>
 <script lang="ts" setup>
@@ -119,8 +120,9 @@
 
     .@{logo-prefix-cls} {
       position: absolute;
-      top: 12px;
-      height: 30px;
+      top: 30px;
+      left: 23px;
+      height: 50px;
 
       &__title {
         font-size: 16px;
@@ -146,6 +148,16 @@
         img {
           width: 48px;
         }
+      }
+    }
+    .zw-title {
+      position: absolute;
+      left: 30px;
+      bottom: 30px;
+      width: 20%;
+      height: auto;
+      @media (max-width: @screen-xl) {
+        display: none;
       }
     }
 

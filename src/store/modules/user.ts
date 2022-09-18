@@ -147,14 +147,18 @@ export const useUserStore = defineStore({
      * 登录完成处理
      * @param goHome
      */
-    async afterLoginAction(goHome?: boolean, data?: any): Promise<any | null> {
+    async afterLoginAction(goHome?: boolean, data?: any, redirect?: string): Promise<any | null> {
       if (!this.getToken) return null;
       const sessionTimeout = this.sessionTimeout;
       if (sessionTimeout) {
         this.setSessionTimeout(false);
       } else {
         this.setLoginInfo({ ...data, isLogin: true });
-        goHome && (await router.replace(PageEnum.BASE_HOME));
+        if (goHome) {
+          await router.replace(PageEnum.BASE_HOME);
+        } else if (redirect) {
+          await router.replace(redirect);
+        }
       }
       return data;
     },
@@ -231,15 +235,16 @@ export const useUserStore = defineStore({
       params: ThirdLoginParams & {
         goHome?: boolean;
         mode?: ErrorMessageMode;
+        redirect?: string;
       }
     ): Promise<any | null> {
       try {
-        const { goHome = true, mode, ...ThirdLoginParams } = params;
+        const { goHome = true, mode, redirect, ...ThirdLoginParams } = params;
         const data = await thirdLogin(ThirdLoginParams, mode);
         const { token } = data;
         // save token
         this.setToken(token);
-        return this.afterLoginAction(goHome, data);
+        return this.afterLoginAction(goHome, data, redirect);
       } catch (error) {
         return Promise.reject(error);
       }

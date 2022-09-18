@@ -1,5 +1,6 @@
 import { defHttp } from '/@/utils/http/axios';
 import { Modal } from 'ant-design-vue';
+import { currDictId } from './dict.data';
 enum Api {
   list = '/jeecg-system/sys/dict/list',
   save = '/jeecg-system/sys/dict/add',
@@ -9,20 +10,23 @@ enum Api {
   deleteBatch = '/jeecg-system/sys/dict/deleteBatch',
   importExcel = '/jeecg-system/sys/dict/importExcel',
   exportXls = '/jeecg-system/sys/dict/exportXls',
+  importDictItemExcel = '/jeecg-system/sys/dictItem/importExcel',
+  exportDictItemXls = '/jeecg-system/sys/dictItem/exportXls',
   recycleBinList = '/jeecg-system/sys/dict/deleteList',
   putRecycleBin = '/jeecg-system/sys/dict/back',
   deleteRecycleBin = '/jeecg-system/sys/dict/deletePhysic',
   itemList = '/jeecg-system/sys/dictItem/list',
-  deleteItem = '/jeecg-system/sys/dictItem/delete',
+  itemAll = '/jeecg-system/sys/dictItem/all',
+  deleteDictItem = '/jeecg-system/sys/dictItem/delete',
+  deleteDictItemBatch = '/jeecg-system/sys/dictItem/deleteBatch',
   itemSave = '/jeecg-system/sys/dictItem/add',
   itemEdit = '/jeecg-system/sys/dictItem/edit',
   dictItemCheck = '/jeecg-system/sys/dictItem/dictItemCheck',
   refreshCache = '/jeecg-system/sys/dict/refleshCache',
-  queryAllDictItems = '● /jeecg-system/sys/dictItem/problemTypeList',
   dictItemUserList = '/jeecg-system/sys/user/dictItemUserList',
-  deleteDictUser = '/jeecg-system/sys/user/deleteDictItemUser',
-  batchDeleteDictUser = '/jeecg-system/sys/user/deleteDictItemUserBatch',
-  addDictUser = '/jeecg-system/sys/user/addDictItemUser',
+  deleteDictItemUser = '/jeecg-system/sys/user/deleteDictItemUser',
+  batchDeleteDictItemUser = '/jeecg-system/sys/user/deleteDictItemUserBatch',
+  addDictItemUser = '/jeecg-system/sys/user/addDictItemUser',
 }
 /**
  * 导出api
@@ -34,6 +38,16 @@ export const getExportUrl = Api.exportXls;
  * @param params
  */
 export const getImportUrl = Api.importExcel;
+/**
+ * 导出dict item api
+ * @param params
+ */
+export const getDictItemExportUrl = Api.exportDictItemXls;
+/**
+ * 导入dict item api
+ * @param params
+ */
+export const getDictItemImportUrl = Api.importDictItemExcel;
 /**
  * 字典列表接口
  * @param params
@@ -65,11 +79,28 @@ export const batchDeleteDict = (params, handleSuccess) => {
   });
 };
 /**
+ * 批量删除字典子项
+ * @param params
+ */
+export const batchDeleteDictItem = (params, handleSuccess) => {
+  Modal.confirm({
+    title: '确认删除',
+    content: '是否删除选中数据',
+    okText: '确认',
+    cancelText: '取消',
+    onOk: () => {
+      return defHttp.delete({ url: Api.deleteDictItemBatch, data: params }, { joinParamsToUrl: true }).then(() => {
+        handleSuccess();
+      });
+    },
+  });
+};
+/**
  * 保存或者更新字典
  * @param params
  */
 export const saveOrUpdateDict = (params, isUpdate) => {
-  let url = isUpdate ? Api.edit : Api.save;
+  const url = isUpdate ? Api.edit : Api.save;
   return defHttp.post({ url: url, params });
 };
 /**
@@ -106,11 +137,16 @@ export const deleteRecycleBin = (id, handleSuccess) => {
  */
 export const itemList = (params) => defHttp.get({ url: Api.itemList, params });
 /**
+ * 字典子项列表
+ * @param params
+ */
+export const problemDictItemList = (params) => defHttp.get({ url: `${Api.itemAll}/${currDictId}`, params: { ...params, dictId: currDictId } });
+/**
  * 字典配置删除
  * @param params
  */
-export const deleteItem = (params, handleSuccess) => {
-  return defHttp.delete({ url: Api.deleteItem, params }, { joinParamsToUrl: true }).then(() => {
+export const deleteDictItem = (params, handleSuccess) => {
+  return defHttp.delete({ url: Api.deleteDictItem, params }, { joinParamsToUrl: true }).then(() => {
     handleSuccess();
   });
 };
@@ -119,7 +155,7 @@ export const deleteItem = (params, handleSuccess) => {
  * @param params
  */
 export const saveOrUpdateDictItem = (params, isUpdate) => {
-  let url = isUpdate ? Api.itemEdit : Api.itemSave;
+  const url = isUpdate ? Api.itemEdit : Api.itemSave;
   return defHttp.post({ url: url, params });
 };
 /**
@@ -132,13 +168,7 @@ export const dictItemCheck = (params) => defHttp.get({ url: Api.dictItemCheck, p
  * @param params
  */
 export const refreshCache = () => defHttp.get({ url: Api.refreshCache }, { isTransformResponse: false });
-/**
- * 获取所有字典项
- * @param params
- */
-export const queryAllDictItems = () => defHttp.get({ url: Api.queryAllDictItems }, { isTransformResponse: false });
 
-//TODO: 分类下的用户相关接口，需调整
 /**
  * 角色列表接口
  * @param params
@@ -149,7 +179,7 @@ export const userList = (params) => defHttp.get({ url: Api.dictItemUserList, par
  * 删除角色用户
  */
 export const deleteUserRole = (params, handleSuccess) => {
-  return defHttp.delete({ url: Api.deleteDictUser, params }, { joinParamsToUrl: true }).then(() => {
+  return defHttp.delete({ url: Api.deleteDictItemUser, params }, { joinParamsToUrl: true }).then(() => {
     handleSuccess();
   });
 };
@@ -164,7 +194,7 @@ export const batchDeleteUserRole = (params, handleSuccess) => {
     okText: '确认',
     cancelText: '取消',
     onOk: () => {
-      return defHttp.delete({ url: Api.batchDeleteDictUser, params }, { joinParamsToUrl: true }).then(() => {
+      return defHttp.delete({ url: Api.batchDeleteDictItemUser, params }, { joinParamsToUrl: true }).then(() => {
         handleSuccess();
       });
     },
@@ -174,7 +204,7 @@ export const batchDeleteUserRole = (params, handleSuccess) => {
  * 添加已有用户
  */
 export const addUserRole = (params, handleSuccess) => {
-  return defHttp.post({ url: Api.addDictUser, params }).then(() => {
+  return defHttp.post({ url: Api.addDictItemUser, params }).then(() => {
     handleSuccess();
   });
 };

@@ -30,6 +30,9 @@
     bordered: true,
     showIndexColumn: false,
     canResize: false,
+    pagination: {
+      pageSize: 5,
+    },
   });
   /**
    * 选择列配置

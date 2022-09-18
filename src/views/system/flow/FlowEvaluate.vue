@@ -62,7 +62,7 @@
       const creatorId = data.creator?.id ?? '';
       if (creatorId !== userId) {
         createMessage.error('没有评价权限！');
-        setProps({ disabled: true });
+        setProps({ disabled: true, showSubmitButton: false });
       }
     }
   };

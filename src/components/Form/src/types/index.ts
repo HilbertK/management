@@ -139,6 +139,7 @@ export type ComponentType =
   | 'JTreeSelect'
   | 'JEllipsis'
   | 'JSelectUserByDept'
+  | 'JSelectUserByDictItem'
   | 'JUpload'
   | 'JSearchSelect'
   | 'JAddInput'

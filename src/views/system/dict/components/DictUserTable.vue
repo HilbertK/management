@@ -38,16 +38,17 @@
 
   const checkedKeys = ref<Array<string | number>>([]);
   const dictId = ref('');
-  const roleName = ref('');
+  const dictTitle = ref('');
   const [registerBaseDrawer] = useDrawerInner(async (data) => {
+    console.log(data);
     dictId.value = data.id;
-    roleName.value = data.roleName;
-    setProps({ searchInfo: { dictId: data.id } });
+    dictTitle.value = data.itemText;
+    setProps({ searchInfo: { dictItemId: data.id } });
     reload();
   });
   //注册drawer
   const [registerModal, { openModal }] = useModal();
-  const [registerTable, { reload, setProps }] = useTable({
+  const [registerTable, { reload, setProps, clearSelectedRowKeys }] = useTable({
     title: '用户列表',
     api: userList,
     columns: userColumns,
@@ -85,7 +86,7 @@
     onChange: onSelectChange,
   };
 
-  const getTitle = computed(() => roleName.value);
+  const getTitle = computed(() => dictTitle.value);
 
   /**
    * 选择事件
@@ -98,14 +99,20 @@
    * 删除事件
    */
   async function handleDelete(record) {
-    await deleteUserRole({ userId: record.id, dictId: dictId.value }, reload);
+    await deleteUserRole({ userId: record.id, dictItemId: dictId.value }, () => {
+      reload();
+      clearSelectedRowKeys();
+    });
   }
 
   /**
    * 批量删除事件
    */
   async function batchHandleDelete() {
-    await batchDeleteUserRole({ userIds: checkedKeys.value.join(','), dictId: dictId.value }, reload);
+    await batchDeleteUserRole({ userIds: checkedKeys.value.join(','), dictItemId: dictId.value }, () => {
+      reload();
+      clearSelectedRowKeys();
+    });
   }
 
   /**
@@ -118,7 +125,7 @@
    * 添加已有用户
    */
   async function selectOk(val) {
-    await addUserRole({ dictId: dictId.value, userIdList: val }, reload);
+    await addUserRole({ dictItemId: dictId.value, userIdList: val }, reload);
   }
   /**
    * 操作栏

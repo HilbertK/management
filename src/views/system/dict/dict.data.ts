@@ -82,36 +82,6 @@ export const formSchema: FormSchema[] = [
   },
 ];
 
-export const dictItemColumns: BasicColumn[] = [
-  {
-    title: '名称',
-    dataIndex: 'itemText',
-    width: 80,
-  },
-  {
-    title: '数据值',
-    dataIndex: 'itemValue',
-    width: 80,
-  },
-];
-
-export const dictItemSearchFormSchema: FormSchema[] = [
-  {
-    label: '名称',
-    field: 'itemText',
-    component: 'Input',
-  },
-  {
-    label: '状态',
-    field: 'status',
-    component: 'JDictSelectTag',
-    componentProps: {
-      dictCode: 'dict_item_status',
-      stringToNumber: true,
-    },
-  },
-];
-
 export const itemFormSchema: FormSchema[] = [
   {
     label: '',
@@ -120,13 +90,13 @@ export const itemFormSchema: FormSchema[] = [
     show: false,
   },
   {
-    label: '名称',
+    label: '分类名称',
     field: 'itemText',
     required: true,
     component: 'Input',
   },
   {
-    label: '数据值',
+    label: '分类编码',
     field: 'itemValue',
     component: 'Input',
     dynamicRules: ({ values, model }) => {
@@ -135,13 +105,13 @@ export const itemFormSchema: FormSchema[] = [
           required: true,
           validator: (_, value) => {
             if (!value) {
-              return Promise.reject('请输入数据值');
+              return Promise.reject('请输入分类编码');
             }
             if (new RegExp("[`~!@#$^&*()=|{}'.<>《》/?！￥（）—【】‘；：”“。，、？]").test(value)) {
-              return Promise.reject('数据值不能包含特殊字符！');
+              return Promise.reject('分类编码不能包含特殊字符！');
             }
             return new Promise<void>((resolve, reject) => {
-              let params = {
+              const params = {
                 dictId: values.dictId,
                 id: model.id,
                 itemValue: value,
@@ -164,22 +134,26 @@ export const itemFormSchema: FormSchema[] = [
     field: 'description',
     component: 'Input',
   },
+];
+
+export const dictItemColumns: BasicColumn[] = [
   {
-    field: 'sortOrder',
-    label: '排序',
-    component: 'InputNumber',
-    defaultValue: 1,
+    title: '分类名称',
+    dataIndex: 'itemText',
+    width: 80,
   },
   {
-    field: 'status',
-    label: '是否启用',
-    defaultValue: 1,
-    component: 'JDictSelectTag',
-    componentProps: {
-      type: 'radioButton',
-      dictCode: 'dict_item_status',
-      stringToNumber: true,
-    },
+    title: '分类编码',
+    dataIndex: 'itemValue',
+    width: 80,
+  },
+];
+
+export const dictItemSearchFormSchema: FormSchema[] = [
+  {
+    label: '分类名称',
+    field: 'itemText',
+    component: 'Input',
   },
 ];
 
@@ -209,6 +183,8 @@ export const searchUserFormSchema: FormSchema[] = [
     field: 'username',
     label: '用户账号',
     component: 'Input',
-    colProps: { span: 12 },
+    colProps: { span: 15 },
   },
 ];
+
+export const currDictId = 'problemType';

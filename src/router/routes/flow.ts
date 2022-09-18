@@ -35,8 +35,8 @@ export const FlowEvaluateRoute: AppRouteModule = {
 };
 
 export const DictRoute: AppRouteModule = {
-  path: '/system/dict',
-  name: 'SystemDict',
+  path: '/system/flow/dict',
+  name: 'SystemFlowDictItem',
   component: () => import('/@/views/system/dict/index.vue'),
   meta: {
     hideChildrenInMenu: true,

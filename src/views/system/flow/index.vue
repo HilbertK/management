@@ -38,6 +38,7 @@
   import { useListPage } from '/@/hooks/system/useListPage';
   import { columns, searchFormSchema } from './flow.data';
   import { list, deleteFlow, batchDeleteFlow, getImportUrl, getExportUrl } from './flow.api';
+import { FlowOpMode } from './constants';
   // import { list, deleteFlow, batchDeleteFlow } from './mock.api';
 
   //注册drawer
@@ -79,7 +80,7 @@
    */
   function handleCreate() {
     openDrawer(true, {
-      isUpdate: false,
+      mode: FlowOpMode.Add,
       showFooter: true,
     });
   }
@@ -89,7 +90,17 @@
   async function handleEdit(record: Recordable) {
     openDrawer(true, {
       record,
-      isUpdate: true,
+      mode: FlowOpMode.Edit,
+      showFooter: true,
+    });
+  }
+  /**
+   * 编辑事件
+   */
+  async function handleReassign(record: Recordable) {
+    openDrawer(true, {
+      record,
+      mode: FlowOpMode.Reassign,
       showFooter: true,
     });
   }
@@ -99,7 +110,7 @@
   async function handleDetail(record: Recordable) {
     openDrawer(true, {
       record,
-      isUpdate: true,
+      mode: FlowOpMode.Edit,
       showFooter: false,
     });
   }
@@ -130,6 +141,11 @@
    */
   function getTableAction(record): ActionItem[] {
     return [
+      {
+        label: '转交',
+        onClick: handleReassign.bind(null, record),
+        // ifShow: () => hasPermission('system:user:edit'),
+      },
       {
         label: '编辑',
         onClick: handleEdit.bind(null, record),

@@ -67,17 +67,6 @@ export const searchFormSchema: FormSchema[] = [
       placeholder: '请选择创建时间',
     },
   },
-  {
-    label: '状态',
-    field: 'status',
-    component: 'JDictSelectTag',
-    componentProps: {
-      dictCode: 'status',
-      placeholder: '请选择状态',
-      stringToNumber: true,
-    },
-    colProps: { span: 3, xl: { span: 5 } },
-  },
 ];
 
 export const formSchema: FormSchema[] = [
@@ -95,14 +84,41 @@ export const formSchema: FormSchema[] = [
   },
   {
     label: '分类',
-    field: 'selecteddict',
+    field: 'problemType',
     required: true,
     component: 'ApiSelect',
-    componentProps: {
-      mode: 'multiple',
-      api: getAllDictList,
-      labelField: 'dictName',
-      valueField: 'id',
+    componentProps: ({ formActionType }) => {
+      return {
+        api: getAllDictList,
+        labelField: 'itemText',
+        valueField: 'itemValue',
+        onClear: () => {
+          const { updateSchema } = formActionType;
+          updateSchema([
+            {
+              field: 'handleBy',
+              componentProps: {
+                params: {
+                  dictItemId: '',
+                },
+              },
+            },
+          ]);
+        },
+        onChange: (value, option) => {
+          const { updateSchema } = formActionType;
+          updateSchema([
+            {
+              field: 'handleBy',
+              componentProps: {
+                params: {
+                  dictItemId: option.id,
+                },
+              },
+            },
+          ]);
+        },
+      };
     },
   },
   {
@@ -116,14 +132,17 @@ export const formSchema: FormSchema[] = [
   },
   {
     label: '经办人',
-    field: 'operatorId',
+    field: 'handleBy',
     required: true,
-    component: 'JSelectUser',
+    component: 'JSelectUserByDictItem',
     componentProps: {
       value: [],
       labelKey: 'realname',
       rowKey: 'id',
       maxSelectCount: 1,
+      params: {
+        dictItemId: '',
+      },
     },
   },
   {
