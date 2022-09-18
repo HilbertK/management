@@ -8,6 +8,8 @@ import { setAuthCache } from '/@/utils/auth';
 import { TOKEN_KEY } from '/@/enums/cacheEnum';
 import { router } from '/@/router';
 import { PageEnum } from '/@/enums/pageEnum';
+import { platform } from '/@/utils/platform';
+import { sysOAuth2Login } from '/@/views/sys/login/useLogin';
 
 const { createErrorModal } = useMessage();
 enum Api {
@@ -85,7 +87,11 @@ export function getUserInfo() {
       const userStore = useUserStoreWithOut();
       userStore.setToken('');
       setAuthCache(TOKEN_KEY, null);
-      router.push(PageEnum.BASE_LOGIN);
+      if (platform.isQYWeixin()) {
+        sysOAuth2Login('wechat_enterprise');
+      } else {
+        router.push(PageEnum.BASE_LOGIN);
+      }
     }
     // update-end--author:zyf---date:20220425---for:【VUEN-76】捕获接口超时异常,跳转到登录界面
   });

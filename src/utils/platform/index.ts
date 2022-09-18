@@ -110,6 +110,10 @@ class Platform {
     return /electron/i.test(window.navigator.userAgent);
   }
 
+  public isQYWeixin() {
+    return /wxwork/i.test(window.navigator.userAgent);
+  }
+
   public getMobileApp() {
     const app = [Browser.WEIXIN, Browser.CHROME, Browser.SAFARI].find((browser) => this.browser === browser);
     return app === Browser.WEIXIN ? 'weixin' : app ?? 'other';

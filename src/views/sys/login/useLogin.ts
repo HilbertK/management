@@ -3,6 +3,7 @@ import type { RuleObject } from 'ant-design-vue/lib/form/interface';
 import { ref, computed, unref, Ref } from 'vue';
 import { useI18n } from '/@/hooks/web/useI18n';
 import { checkOnlyUser } from '/@/api/sys/user';
+import { Oauth2LoginRoute } from '/@/router/routes';
 
 export enum LoginStateEnum {
   LOGIN,
@@ -139,7 +140,7 @@ export function isOAuth2AppEnv() {
  */
 export function sysOAuth2Login(source) {
   let url = `${window._CONFIG['domianURL']}/jeecg-system/sys/thirdLogin/oauth2/${source}/login`;
-  url += `?state=${encodeURIComponent(window.location.origin)}`;
+  url += `?state=${encodeURIComponent(`${window.location.origin + Oauth2LoginRoute.path}?redirect=${window.location.pathname}`)}`;
   window.location.href = url;
 }
 
