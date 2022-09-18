@@ -68,17 +68,16 @@
           dynamicDisabled: true,
         },
         {
-          field: 'operatorId',
+          field: 'handleBy',
           dynamicDisabled: userId !== operatorId,
         },
         {
-          field: 'endTimeStr',
+          field: 'expectHandleTime',
           dynamicDisabled: userId !== creatorId,
         },
       ]);
-      data.operatorId = operatorId;
       data.descriptionList = JSON.stringify((data.description ?? []).map((item: any) => ({ label: item.creator.realname, value: item.content })));
-      data.endTimeStr = moment(data.expectHandleTime);
+      data.expectHandleTime = moment(data.expectHandleTime);
       setFieldsValue({
         ...data,
       });

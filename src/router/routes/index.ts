@@ -30,7 +30,7 @@ export const Oauth2LoginRoute: AppRouteRecordRaw = {
   name: 'oauth2-app-login',
   component: () => import('/@/views/sys/login/OAuth2Login.vue'),
   meta: {
-    title: t('routes.oauth2.login'),
+    title: t('routes.basic.login'),
   },
 };
 //update-end---author:wangshuai ---date:20220629  for：auth2登录页面路由------------

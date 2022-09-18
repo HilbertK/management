@@ -49,12 +49,8 @@
       // 判断是否携带了Token，是就说明登录成功
       if (route.query.oauth2LoginToken) {
         let token = route.query.oauth2LoginToken;
-        let redirect = route.query.target;
-        if (redirect) {
-          redirect = decodeURIComponent(redirect as string);
-        }
         //执行登录操作
-        thirdLogin({ token, thirdType: route.query.thirdType, redirect, goHome: !redirect });
+        thirdLogin({ token, thirdType: route.query.thirdType });
       } else if (env.value.wxWork) {
         sysOAuth2Login('wechat_enterprise');
       } else if (env.value.dingtalk) {

@@ -43,9 +43,6 @@
     }
     // 无论新增还是编辑，都可以设置表单值
     if (typeof data.record === 'object') {
-      const userName = userStore.getUserInfo.username;
-      const operatorId = data.record.handleBy ?? '';
-      const creatorId = data.record.createBy ?? '';
       workOrderId.value = data.record.id;
       updateSchema([
         {
@@ -54,16 +51,15 @@
         },
         {
           field: 'handleBy',
-          // dynamicDisabled: userName !== operatorId,
+          dynamicDisabled: mode.value !== FlowOpMode.Reassign,
         },
         {
-          field: 'endTimeStr',
-          dynamicDisabled: userName !== creatorId,
+          field: 'expectHandleTime',
+          dynamicDisabled: mode.value === FlowOpMode.Edit,
         },
       ]);
-      data.record.operatorId = operatorId;
       data.record.descriptionList = JSON.stringify((data.record.description ?? []).map((item: any) => ({ label: item.creator.realname, value: item.content })));
-      data.record.endTimeStr = moment(data.record.expectHandleTime);
+      data.record.expectHandleTime = moment(data.record.expectHandleTime);
       setFieldsValue({
         ...data.record,
       });

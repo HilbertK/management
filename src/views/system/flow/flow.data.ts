@@ -39,7 +39,7 @@ export const columns: BasicColumn[] = [
   },
   {
     title: '截止时间',
-    dataIndex: 'endTimeStr',
+    dataIndex: 'expectHandleTime',
     width: 120,
     customRender: ({ record }) => moment(record.expectHandleTime).format(timeFormat),
   },
@@ -147,7 +147,7 @@ export const formSchema: FormSchema[] = [
   },
   {
     label: '截止时间',
-    field: 'endTimeStr',
+    field: 'expectHandleTime',
     required: true,
     component: platform.isMobile() ? 'MDatePicker' : 'DatePicker',
     componentProps: !platform.isMobile() ? { showTime: true, valueFormat: 'YYYY-MM-DD HH:mm:ss', placeholder: '请选择截止时间' } : {},
