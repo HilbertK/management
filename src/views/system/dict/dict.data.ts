@@ -2,6 +2,9 @@ import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
 import { dictItemCheck } from './dict.api';
 import { rules } from '/@/utils/helper/validator';
+
+const hasInvalidSymbol = (value: string) => new RegExp("[`~!@#$^&*()=|{}'.<>《》/?！￥（）—【】‘；：”“。，、？]").test(value);
+
 export const columns: BasicColumn[] = [
   {
     title: '分类名称',
@@ -94,6 +97,35 @@ export const itemFormSchema: FormSchema[] = [
     field: 'itemText',
     required: true,
     component: 'Input',
+    dynamicRules: ({ values, model }) => {
+      return [
+        {
+          required: true,
+          validator: (_, value) => {
+            if (!value) {
+              return Promise.reject('请输入分类名');
+            }
+            if (hasInvalidSymbol(value)) {
+              return Promise.reject('分类名不能包含特殊字符！');
+            }
+            return new Promise<void>((resolve, reject) => {
+              const params = {
+                dictId: values.dictId,
+                id: model.id,
+                itemText: value,
+              };
+              dictItemCheck(params)
+                .then((res) => {
+                  res.success ? resolve() : reject(res.message || '校验失败');
+                })
+                .catch((err) => {
+                  reject(err.message || '验证失败');
+                });
+            });
+          },
+        },
+      ];
+    },
   },
   {
     label: '分类编码',
@@ -107,7 +139,7 @@ export const itemFormSchema: FormSchema[] = [
             if (!value) {
               return Promise.reject('请输入分类编码');
             }
-            if (new RegExp("[`~!@#$^&*()=|{}'.<>《》/?！￥（）—【】‘；：”“。，、？]").test(value)) {
+            if (hasInvalidSymbol(value)) {
               return Promise.reject('分类编码不能包含特殊字符！');
             }
             return new Promise<void>((resolve, reject) => {

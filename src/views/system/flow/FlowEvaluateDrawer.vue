@@ -1,27 +1,32 @@
 <template>
-  <BasicDrawer v-bind="$attrs" @register="registerDrawer" :title="getTitle" :width="adaptiveWidth" @ok="handleSubmit" :showFooter="showFooter" destroyOnClose>
+  <BasicDrawer v-bind="$attrs" @register="registerDrawer" title="评价" :width="adaptiveWidth" @ok="handleSubmit" :showFooter="showFooter" destroyOnClose>
     <BasicForm @register="registerForm" />
   </BasicDrawer>
 </template>
 <script lang="ts" setup>
-  import { ref, computed, unref } from 'vue';
+  import { ref } from 'vue';
   import { BasicForm, useForm } from '/@/components/Form/index';
-  import { formSchema } from './flow.data';
+  import { evaluateFormSchema } from './flow.data';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
-  import { updateFlow, saveFlow, reassignFlow } from './flow.api';
-  import { FlowOpMode } from './constants';
+  import { evaluateFlow } from './flow.api';
   import { useDrawerAdaptiveWidth } from '/@/hooks/jeecg/useAdaptiveWidth';
-  import { formatValues } from './utils';
   // 声明Emits
   const emit = defineEmits(['success', 'register']);
   const { createMessage } = useMessage();
-  const mode = ref(null);
   const workOrderId = ref('');
   //表单配置
   const [registerForm, { setProps, resetFields, setFieldsValue, validate }] = useForm({
     labelWidth: 90,
-    schemas: formSchema,
+    schemas: [
+      {
+        label: '标题',
+        field: 'title',
+        dynamicDisabled: true,
+        component: 'Input',
+      },
+      ...evaluateFormSchema,
+    ],
     showActionButtonGroup: false,
   });
   const showFooter = ref(true);
@@ -30,7 +35,6 @@
     await resetFields();
     showFooter.value = data?.showFooter ?? true;
     setDrawerProps({ confirmLoading: false, showFooter: showFooter.value });
-    mode.value = data.mode ?? FlowOpMode.NoPermission;
     if (typeof data.record === 'object') {
       workOrderId.value = data.record.id;
       setFieldsValue({
@@ -42,31 +46,15 @@
       setProps({ disabled: true });
     }
   });
-  //获取标题
-  const getTitle = computed(() => {
-    if (!mode.value) return '';
-    return {
-      [FlowOpMode.Add]: '新增工单',
-      [FlowOpMode.Edit]: '编辑工单',
-      [FlowOpMode.Reassign]: '转交工单',
-      [FlowOpMode.NoPermission]: '查看工单',
-    }[mode.value];
-  });
   const { adaptiveWidth } = useDrawerAdaptiveWidth();
 
   //提交事件
   async function handleSubmit() {
     try {
-      const values = formatValues(await validate());
+      const values = await validate();
+      delete values.title;
       setDrawerProps({ confirmLoading: true });
-      const flowMode = unref(mode);
-      if (flowMode === FlowOpMode.Edit) {
-        await updateFlow(values, unref(workOrderId));
-      } else if (flowMode === FlowOpMode.Reassign) {
-        await reassignFlow(values, unref(workOrderId));
-      } else {
-        await saveFlow(values);
-      }
+      await evaluateFlow(values, workOrderId.value);
       createMessage.success('提交成功！');
       //关闭弹窗
       closeDrawer();

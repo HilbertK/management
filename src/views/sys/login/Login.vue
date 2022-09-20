@@ -7,8 +7,7 @@
       <div class="flex h-full">
         <div class="hidden min-h-full pl-4 mr-4 xl:flex xl:flex-col xl:w-6/12">
           <div class="my-auto">
-            <img :alt="title" src="../../../assets/svg/login-box-bg.png" class="w-1/2 -mt-16 -enter-x" />
-            <div class="mt-10 font-medium text-white -enter-x"></div>
+            <img :alt="title" src="../../../assets/svg/login-box-bg.png" style="width: 50%; height: auto" class="w-1/2 -mt-16 -enter-x" />
           </div>
         </div>
         <div class="flex w-full h-full py-5 xl:h-auto xl:py-0 xl:my-0 xl:w-6/12">
@@ -23,6 +22,7 @@
       </div>
     </div>
     <img :alt="title" src="../../../assets/svg/zw-title-en.svg" class="zw-title -enter-x" />
+    <img :alt="title" src="../../../assets/svg/zw-dots.svg" class="zw-dots -enter-x" />
   </div>
 </template>
 <script lang="ts" setup>
@@ -107,11 +107,11 @@
       left: 0;
       width: 100%;
       height: 100%;
-      margin-left: -44%;
-      background-image: url(/@/assets/svg/login-bg.png);
-      background-position: left top;
+      margin-left: -50%;
+      background-image: url(/@/assets/svg/login-bg.svg);
+      background-position: 100% top;
       background-repeat: no-repeat;
-      background-size: 100% 100%;
+      background-size: auto 100%;
       content: '';
       @media (max-width: @screen-xl) {
         display: none;
@@ -155,6 +155,16 @@
       left: 30px;
       bottom: 30px;
       width: 20%;
+      height: auto;
+      @media (max-width: @screen-xl) {
+        display: none;
+      }
+    }
+    .zw-dots {
+      position: absolute;
+      bottom: 30px;
+      margin-left: 38%;
+      width: 6%;
       height: auto;
       @media (max-width: @screen-xl) {
         display: none;
