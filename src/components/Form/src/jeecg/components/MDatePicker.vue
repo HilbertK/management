@@ -2,7 +2,7 @@
   <div>
     <a-input readonly :value="dateStr" @click="select" v-bind="attrs" />
     <van-popup :show="show" round position="bottom" @close="close">
-      <van-datetime-picker v-model="currentDate" type="datetime" title="选择时间" :min-date="minDate" :max-date="maxDate" @confirm="confirm" @cancel="close" />
+      <van-datetime-picker v-model="currentDate" type="datetime" title="选择时间" :min-date="props.minDate" :max-date="props.maxDate" @confirm="confirm" @cancel="close" />
     </van-popup>
   </div>
 </template>
@@ -16,14 +16,14 @@
   export default defineComponent({
     name: 'MDatePicker',
     props: {
+      minDate: null,
+      maxDate: null,
       value: null,
     },
     emits: ['options-change', 'change', 'update:value'],
     setup(props, { emit }) {
-      console.log(props);
       let currentDate = ref(new Date());
       const attrs = useAttrs();
-      console.log(currentDate);
       const show = ref(false);
       const select = () => {
         show.value = true;
@@ -45,7 +45,6 @@
        * 初始化数值
        */
       function initVal() {
-        console.log('props.value', props.value);
         currentDate.value = new Date();
         if (props.value) {
           currentDate.value = moment(props.value).toDate();
@@ -55,8 +54,8 @@
        * 数值改变
        */
       function emitChange() {
-        emit('change', moment(currentDate.value));
-        emit('update:value', moment(currentDate.value));
+        emit('change', formatToDateTime(moment(currentDate.value)));
+        emit('update:value', formatToDateTime(moment(currentDate.value)));
       }
       const dateStr = computed(() => (props.value ? formatToDateTime(props.value) : ''));
       return {
@@ -65,10 +64,9 @@
         close,
         confirm,
         attrs,
-        minDate: new Date(),
-        maxDate: new Date(new Date().getFullYear() + 5, 0, 0),
         currentDate,
         dateStr,
+        props,
       };
     },
   });

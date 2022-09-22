@@ -1,6 +1,6 @@
 <template>
   <PageWrapper contentBackground contentClass="p-4">
-    <Result :status="noFlow ? 'error' : 'success'" :title="noFlow ? '工单有误' : '提交成功'" v-if="isFinished" />
+    <Result :status="flowError ? 'error' : 'success'" :title="flowError || '提交成功'" v-if="isFinished" />
     <BasicForm @register="registerForm" v-else />
   </PageWrapper>
 </template>
@@ -10,15 +10,13 @@
   import { useRouter } from 'vue-router';
   import { Result } from 'ant-design-vue';
   import { PageWrapper } from '/@/components/Page';
-  import { useMessage } from '/@/hooks/web/useMessage';
   import { formSchema } from './flow.data';
   import { useUserStore } from '/@/store/modules/user';
   import { updateFlow, reassignFlow, saveFlow, detail } from './flow.api';
   import { FlowOpMode } from './constants';
-  import { formatValues } from './utils';
-  const { createMessage } = useMessage();
+  import { formatFormFieldValue, formatValues } from './utils';
   const isFinished = ref(false);
-  const noFlow = ref(false);
+  const flowError = ref('');
   const mode = ref(FlowOpMode.Add);
   //表单配置
   const [registerForm, { setProps, resetFields, setFieldsValue, validate, updateSchema }] = useForm({
@@ -49,12 +47,19 @@
   const fetch = async () => {
     await resetFields();
     if (!query.id) {
-      updateSchema([
-        {
-          field: 'handleBy',
-          ifShow: false,
-        },
-      ]);
+      mode.value = FlowOpMode.Add;
+      if (query.prev) {
+        try {
+          const prevData = formatFormFieldValue(await detail(query.prev as string)) as any;
+          setFieldsValue({
+            title: prevData.title,
+            problemType: prevData.problemType,
+            problemTypeLabel: prevData.problemTypeLabel,
+          });
+        } catch (e) {
+          console.error(e);
+        }
+      }
       return;
     }
     let data: any;
@@ -62,15 +67,24 @@
       data = await detail(query.id as string);
     } catch (e) {
       console.error(e);
-      noFlow.value = true;
+      flowError.value = '获取工单信息出错';
       isFinished.value = true;
-      createMessage.error('获取工单信息出错！');
       return;
     }
-    if (typeof data === 'object') {
+    if (data != null && typeof data === 'object') {
       const userId = userStore.getUserInfo.username;
       const operatorId = data.handleBy ?? '';
       const creatorId = data.createBy ?? '';
+      updateSchema([
+        {
+          field: 'handleBy',
+          componentProps: {
+            params: {
+              dictItemValue: data.problemType ?? '',
+            },
+          },
+        },
+      ]);
       if (operatorId === userId) {
         mode.value = FlowOpMode.Reassign;
       } else if (creatorId === userId) {
@@ -80,8 +94,11 @@
         setProps({ showSubmitButton: false, disabled: true });
       }
       setFieldsValue({
-        ...data,
+        ...formatFormFieldValue(data),
       });
+    } else {
+      flowError.value = '工单不存在';
+      isFinished.value = true;
     }
   };
   onMounted(async () => {
@@ -104,13 +121,14 @@
         await reassignFlow(values, workNoId);
       } else if (flowMode === FlowOpMode.Add && !workNoId) {
         await saveFlow(values);
+      } else {
+        flowError.value = '提交失败';
       }
       setProps({
         submitButtonOptions: {
           loading: false,
         },
       });
-      createMessage.success('提交成功！');
       isFinished.value = true;
     } catch (e) {
       setProps({

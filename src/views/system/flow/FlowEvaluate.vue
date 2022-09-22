@@ -1,6 +1,11 @@
 <template>
   <PageWrapper contentBackground contentClass="p-4">
-    <Result :status="noFlow ? 'error' : 'success'" :title="noFlow ? '工单有误' : '提交成功'" v-if="isFinished" />
+    <a-result :status="flowError ? 'error' : 'success'" :title="flowError || '提交成功'" v-if="isFinished">
+      <template #extra v-if="!isSolved">
+        <a-button key="recreate" type="primary" @click="handleCreateFlow">重新发起工单</a-button>
+        <a-button key="report" @click="handleReport">举报</a-button>
+      </template>
+    </a-result>
     <BasicForm @register="registerForm" v-else />
   </PageWrapper>
 </template>
@@ -8,15 +13,16 @@
   import { ref, unref, onMounted } from 'vue';
   import { BasicForm, useForm } from '/@/components/Form/index';
   import { useRouter } from 'vue-router';
-  import { Result } from 'ant-design-vue';
   import { PageWrapper } from '/@/components/Page';
-  import { useMessage } from '/@/hooks/web/useMessage';
+  import { router } from '/@/router';
   import { evaluateFormSchema } from './flow.data';
   import { useUserStore } from '/@/store/modules/user';
-  import { updateFlow, detail } from './flow.api';
-  const { createMessage } = useMessage();
+  import { evaluateFlow, detail } from './flow.api';
+  import { FlowStatus } from './constants';
+  import { formatFormFieldValue, getCreateFlowRouteByPrev } from './utils';
   const isFinished = ref(false);
-  const noFlow = ref(false);
+  const flowError = ref('');
+  const isSolved = ref(true);
   //表单配置
   const [registerForm, { setProps, resetFields, setFieldsValue, validate }] = useForm({
     labelWidth: 90,
@@ -55,24 +61,28 @@
     await resetFields();
     const hasFlow = !!query.id;
     if (!hasFlow) {
-      noFlow.value = true;
+      flowError.value = '工单不存在';
       isFinished.value = true;
-      createMessage.error('工单不存在！');
       return;
     }
     const data: any = await detail(query.id as string);
-    if (typeof data === 'object') {
-      setFieldsValue({
-        title: data.title,
-      });
-      const userId = userStore.getUserInfo.id;
+    if (data != null && typeof data === 'object') {
+      const userId = userStore.getUserInfo.username;
       const creatorId = data.createBy ?? '';
       if (creatorId !== userId) {
-        createMessage.error('没有评价权限！');
-        setProps({ disabled: true, showSubmitButton: false });
-      } else if (data.evaluateTime) {
-        setProps({ disabled: true });
+        flowError.value = '无评价权限';
+        isFinished.value = true;
+        return;
       }
+      setFieldsValue({
+        ...formatFormFieldValue(data),
+      });
+      if (data.status !== FlowStatus.Evaluate) {
+        setProps({ disabled: true, showSubmitButton: false });
+      }
+    } else {
+      flowError.value = '工单不存在';
+      isFinished.value = true;
     }
   };
   onMounted(async () => {
@@ -84,21 +94,30 @@
     if (!workNoId) return;
     try {
       const values = await validate();
+      isSolved.value = values.solved;
       setProps({
         submitButtonOptions: {
           loading: true,
         },
       });
       //提交表单
-      await updateFlow(values, workNoId);
+      await evaluateFlow(values, workNoId);
       setProps({
         submitButtonOptions: {
           loading: false,
         },
       });
-      createMessage.success('提交成功！');
       isFinished.value = true;
     } finally {
     }
+  }
+
+  function handleCreateFlow() {
+    const workNoId = (query.id ?? '') as string;
+    router.push(getCreateFlowRouteByPrev(workNoId));
+  }
+
+  function handleReport() {
+    // TODO:跳转举报页面
   }
 </script>

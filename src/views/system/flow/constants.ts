@@ -22,7 +22,7 @@ export const flowStatusDict = {
   [FlowStatus.Draft]: '未开始',
   [FlowStatus.Taking]: '待接单',
   [FlowStatus.Receiving]: '客服接待',
-  [FlowStatus.Handle]: '待处理',
+  [FlowStatus.Handle]: '处理中',
   [FlowStatus.Evaluate]: '待评价',
   [FlowStatus.End]: '已完成',
   [FlowStatus.Invalid]: '已作废',

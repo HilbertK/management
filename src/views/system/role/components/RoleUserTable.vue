@@ -31,7 +31,7 @@
   </BasicDrawer>
 </template>
 <script lang="ts" setup>
-  import { ref, defineProps, watch, unref, computed } from 'vue';
+  import { ref, computed } from 'vue';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
   import { BasicDrawer, useDrawer, useDrawerInner } from '/@/components/Drawer';
   import { useModal } from '/@/components/Modal';

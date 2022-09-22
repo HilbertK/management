@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, inject, ref, unref, watch } from 'vue';
+  import { computed, unref, watch } from 'vue';
   import { ActionItem, BasicTable, TableAction } from '/@/components/Table';
   import { useModal } from '/@/components/Modal';
   import { useDrawer } from '/@/components/Drawer';
@@ -46,7 +46,6 @@
   import { userInfoColumns, userInfoSearchFormSchema } from '../depart.user.data';
   import { ColEx } from '/@/components/Form/src/types';
 
-  const prefixCls = inject('prefixCls');
   const props = defineProps({
     data: { require: true, type: Object },
   });

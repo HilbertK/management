@@ -90,6 +90,7 @@
       };
       const getBindValue = Object.assign({}, unref(props), unref(attrs), config);
       const [{ rowSelection, visibleChange, selectValues, indexColumnProps, getSelectResult, handleDeleteSelected, selectRows }] = useSelectBiz(getUserList, getBindValue);
+      console.log('props.params', props.params);
       const searchInfo = ref(props.params);
       //查询form
       const formConfig = {

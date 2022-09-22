@@ -4,7 +4,7 @@
     <BasicTable @register="registerTable">
       <!--插槽:table标题-->
       <template #tableTitle>
-        <a-button type="primary" preIcon="ant-design:plus-outlined" @click="handleCreate"> 新增</a-button>
+        <a-button type="primary" preIcon="ant-design:plus-outlined" @click="handleCreate" v-if="isMyCreatePage"> 新增</a-button>
         <a-button type="primary" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
       </template>
       <!--操作栏-->
@@ -24,10 +24,11 @@
   import FlowEvaluateDrawer from './FlowEvaluateDrawer.vue';
   import { useDrawer } from '/@/components/Drawer';
   import { useListPage } from '/@/hooks/system/useListPage';
+  import { useMessage } from '/@/hooks/web/useMessage';
   import { useUserStore } from '/@/store/modules/user';
   import { useRouter } from 'vue-router';
   import { columns, searchFormSchema } from './flow.data';
-  import { list, createlist, handlingList, getImportUrl, getExportUrl, invalidateFlow, solveFlow, takeFlow } from './flow.api';
+  import { list, createlist, handlingList, takeList, getImportUrl, getExportUrl, invalidateFlow, solveFlow, takeFlow } from './flow.api';
   import { flowFinishedStatusList, FlowOpMode, FlowStatus } from './constants';
   import { unref } from 'vue';
 
@@ -35,16 +36,18 @@
   const [registerDetailDrawer, { openDrawer: openDetailDrawer }] = useDrawer();
   const [registerEvaluateDrawer, { openDrawer: openEvaluateDrawer }] = useDrawer();
   const { currentRoute } = useRouter();
+  const { createMessage } = useMessage();
   const { query } = unref(currentRoute);
   const isMyHandlePage = !!query.handle;
   const isMyCreatePage = !!query.create;
+  const isToTakePage = !!query.take;
 
   // 列表页面公共参数、方法
   const { tableContext, onExportXls } = useListPage({
     designScope: 'flow-list',
     tableProps: {
       title: '工单列表',
-      api: isMyCreatePage ? createlist : isMyHandlePage ? handlingList : list,
+      api: isMyCreatePage ? createlist : isMyHandlePage ? handlingList : isToTakePage ? takeList : list,
       columns: columns,
       size: 'small',
       formConfig: {
@@ -68,7 +71,7 @@
   });
 
   //注册table数据
-  const [registerTable, { reload }, { rowSelection }] = tableContext;
+  const [registerTable, { reload }] = tableContext;
 
   /**
    * 新增事件
@@ -131,24 +134,25 @@
    * 解决工单
    */
   async function handleSolve(record) {
-    await solveFlow(record.id, reload);
+    await solveFlow(record.id, handleSuccess);
   }
   /**
    * 接单
    */
   async function handleTake(record) {
-    await takeFlow(record.id, reload);
+    await takeFlow(record.id, handleSuccess);
   }
   /**
    * 撤销事件
    */
   async function handleInvalidate(record) {
-    await invalidateFlow(record.id, reload);
+    await invalidateFlow(record.id, handleSuccess);
   }
   /**
    * 成功回调
    */
   function handleSuccess() {
+    createMessage.success('操作成功！');
     reload();
   }
 
@@ -179,7 +183,7 @@
       {
         label: '查看评价',
         onClick: showEvaluation.bind(null, record),
-        ifShow: () => !isMyCreatePage && record.status === FlowStatus.End,
+        ifShow: () => !isMyHandlePage && userName !== record.handleBy && record.status === FlowStatus.End,
       },
       {
         label: '详情',
@@ -201,10 +205,14 @@
         },
         ifShow: () => showCreateOp && !flowFinishedStatusList.includes(record.status),
       },
-      // {
-      //   label: '接单',
-      //   onClick: handleTake.bind(null, record),
-      // },
+      {
+        label: '接单',
+        popConfirm: {
+          title: '确认要接单吗？',
+          confirm: handleTake.bind(null, record),
+        },
+        ifShow: () => isToTakePage,
+      },
     ];
   }
 </script>

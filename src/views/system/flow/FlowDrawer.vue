@@ -12,14 +12,14 @@
   import { updateFlow, saveFlow, reassignFlow } from './flow.api';
   import { FlowOpMode } from './constants';
   import { useDrawerAdaptiveWidth } from '/@/hooks/jeecg/useAdaptiveWidth';
-  import { formatValues } from './utils';
+  import { formatFormFieldValue, formatValues } from './utils';
   // 声明Emits
   const emit = defineEmits(['success', 'register']);
   const { createMessage } = useMessage();
   const mode = ref(null);
   const workOrderId = ref('');
   //表单配置
-  const [registerForm, { setProps, resetFields, setFieldsValue, validate }] = useForm({
+  const [registerForm, { setProps, resetFields, setFieldsValue, validate, updateSchema }] = useForm({
     labelWidth: 90,
     schemas: formSchema,
     showActionButtonGroup: false,
@@ -33,8 +33,18 @@
     mode.value = data.mode ?? FlowOpMode.NoPermission;
     if (typeof data.record === 'object') {
       workOrderId.value = data.record.id;
+      updateSchema([
+        {
+          field: 'handleBy',
+          componentProps: {
+            params: {
+              dictItemValue: data.record.problemType ?? '',
+            },
+          },
+        },
+      ]);
       setFieldsValue({
-        ...data.record,
+        ...formatFormFieldValue(data.record),
       });
     }
     // 隐藏底部时禁用整个表单

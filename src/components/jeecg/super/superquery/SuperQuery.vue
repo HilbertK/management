@@ -339,17 +339,17 @@
     margin-bottom: 9px;
   }
   .j-super-query-history-tree {
-    ::v-deep .ant-tree-switcher {
+    :deep .ant-tree-switcher {
       width: 0px;
     }
-    ::v-deep .ant-tree-node-content-wrapper {
+    :deep .ant-tree-node-content-wrapper {
       width: 100%;
       &:hover {
         background-color: #e6f7ff !important;
         border-radius: 0;
       }
     }
-    ::v-deep .ant-tree-treenode-switcher-close {
+    :deep .ant-tree-treenode-switcher-close {
       .ant-tree-title {
         display: inline-block;
         width: calc(100% - 30px);
@@ -371,20 +371,20 @@
         }
       }
     }
-    ::v-deep .ant-card-body {
+    :deep .ant-card-body {
       padding: 0;
     }
   }
   .j-super-query-history-card {
-    ::v-deep .ant-card-body,
-    ::v-deep.ant-card-head-title {
+    :deep .ant-card-body,
+    :deep.ant-card-head-title {
       padding: 0;
     }
   }
 
   /*VUEN-1087 【移动端】高级查询显示不全 */
   @media only screen and(max-width: 1050px) {
-    ::v-deep .jee-super-query-form {
+    :deep .jee-super-query-form {
       .ant-space {
         flex-direction: column;
         gap: 0 !important;

@@ -1,3 +1,5 @@
+import { FlowDetailRoute } from '/@/router/routes/flow';
+
 export const formatValues = (values: any) => {
   const newDescription = JSON.stringify(
     JSON.parse(values.description ?? '[]')
@@ -14,3 +16,11 @@ export const formatValues = (values: any) => {
       {}
     );
 };
+
+export const formatFormFieldValue = (data: any) =>
+  Object.entries(data ?? {}).reduce((prev, curr) => {
+    const [key, value] = curr;
+    return value != null ? { ...prev, [key]: value } : prev;
+  }, {});
+
+export const getCreateFlowRouteByPrev = (prevId: string) => `${FlowDetailRoute.path}?prev=${prevId}`;

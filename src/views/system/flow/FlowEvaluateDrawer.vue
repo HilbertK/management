@@ -11,6 +11,7 @@
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
   import { evaluateFlow } from './flow.api';
   import { useDrawerAdaptiveWidth } from '/@/hooks/jeecg/useAdaptiveWidth';
+  import { formatFormFieldValue } from './utils';
   // 声明Emits
   const emit = defineEmits(['success', 'register']);
   const { createMessage } = useMessage();
@@ -38,7 +39,7 @@
     if (typeof data.record === 'object') {
       workOrderId.value = data.record.id;
       setFieldsValue({
-        ...data.record,
+        ...formatFormFieldValue(data.record),
       });
     }
     // 隐藏底部时禁用整个表单

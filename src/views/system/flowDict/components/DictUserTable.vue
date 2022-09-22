@@ -1,5 +1,5 @@
 <template>
-  <BasicDrawer @register="registerBaseDrawer" :title="getTitle" width="800" destroyOnClose>
+  <BasicDrawer @register="registerBaseDrawer" :title="getTitle" :width="adaptiveWidth" destroyOnClose>
     <BasicTable @register="registerTable" :rowSelection="rowSelection">
       <template #tableTitle>
         <a-button type="primary" @click="handleSelect"> 选择用户</a-button>
@@ -35,6 +35,7 @@
   import UseSelectModal from '../../role/components/UseSelectModal.vue';
   import { userList, deleteUserRole, batchDeleteUserRole, addUserRole } from '../dict.api';
   import { userColumns, searchUserFormSchema } from '../dict.data';
+  import { useDrawerAdaptiveWidth } from '/@/hooks/jeecg/useAdaptiveWidth';
 
   const checkedKeys = ref<Array<string | number>>([]);
   const dictId = ref('');
@@ -87,6 +88,7 @@
   };
 
   const getTitle = computed(() => dictTitle.value);
+  const { adaptiveWidth } = useDrawerAdaptiveWidth();
 
   /**
    * 选择事件

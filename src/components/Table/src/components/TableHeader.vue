@@ -28,7 +28,7 @@
         <a-alert type="info" show-icon class="alert" v-if="openRowSelection != null">
           <template #message>
             <template v-if="selectRowKeys.length > 0">
-              <span>已选中 {{ selectRowKeys.length }} 条记录(可跨页)</span>
+              <span>已选中 {{ selectRowKeys.length }} 条记录</span>
               <a-divider type="vertical" />
               <a @click="setSelectedRowKeys([])">清空</a>
               <slot name="alertAfter" />
