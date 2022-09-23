@@ -55,3 +55,8 @@
     },
   });
 </script>
+<style lang="less">
+  .ant-radio-button-wrapper-checked {
+    color: @primary-color !important;
+  }
+</style>

@@ -77,7 +77,6 @@
        * 初始化数值
        */
       function initVal() {
-        console.log('props.value', props.value);
         dynamicInput.params = [];
         if (props.value) {
           let jsonList = JSON.parse(props.value);

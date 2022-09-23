@@ -94,7 +94,7 @@
         setProps({ showSubmitButton: false, disabled: true });
       }
       setFieldsValue({
-        ...formatFormFieldValue(data),
+        ...formatFormFieldValue(data, mode.value),
       });
     } else {
       flowError.value = '工单不存在';
@@ -107,13 +107,13 @@
   //提交事件
   async function handleSubmit() {
     try {
-      const values = formatValues(await validate());
+      const flowMode = unref(mode);
+      const values = formatValues(await validate(), flowMode);
       setProps({
         submitButtonOptions: {
           loading: true,
         },
       });
-      const flowMode = unref(mode);
       const workNoId = (query.id ?? '') as string;
       if (flowMode === FlowOpMode.Edit && workNoId) {
         await updateFlow(values, workNoId);

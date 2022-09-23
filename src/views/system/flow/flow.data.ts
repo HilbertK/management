@@ -1,6 +1,6 @@
 import moment, { Moment } from 'moment';
 import { useRouter } from 'vue-router';
-import { flowStatusDict } from './constants';
+import { FlowOpMode, flowStatusDict } from './constants';
 import { getAllDictList } from './flow.api';
 import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
@@ -9,16 +9,14 @@ import { platform } from '/@/utils/platform';
 
 const timeFormat = 'YYYY-MM-DD HH:mm:ss';
 
-const isHandleByFieldsDisabled = (values: any) => {
+const isNotReassign = (values: any) => {
   if (!values.id) return false;
-  const userStore = useUserStore();
-  return values.handleBy !== userStore.userInfo?.username;
+  return values.flowOpMode !== FlowOpMode.Reassign;
 };
 
-const isCreateByFieldsDisabled = (values: any) => {
+const isNotEdit = (values: any) => {
   if (!values.id) return false;
-  const userStore = useUserStore();
-  return values.createBy !== userStore.userInfo?.username;
+  return values.flowOpMode !== FlowOpMode.Edit;
 };
 
 export const columns: BasicColumn[] = [
@@ -33,12 +31,12 @@ export const columns: BasicColumn[] = [
     width: 120,
   },
   {
-    title: '经办人',
+    title: '处理人',
     dataIndex: 'handleByName',
     width: 120,
   },
   {
-    title: '发起人',
+    title: '创建人',
     dataIndex: 'createByName',
     width: 120,
   },
@@ -98,6 +96,12 @@ export const formSchema: FormSchema[] = [
     show: false,
   },
   {
+    label: '',
+    field: 'flowOpMode',
+    component: 'Input',
+    show: false,
+  },
+  {
     label: '标题',
     field: 'title',
     required: ({ values }) => !values.id,
@@ -105,11 +109,18 @@ export const formSchema: FormSchema[] = [
     dynamicDisabled: ({ values }) => !!values.id,
   },
   {
+    label: '描述',
+    field: 'description',
+    component: 'JTextArea',
+    dynamicDisabled: ({ values }) => isNotEdit(values),
+    componentProps: {},
+  },
+  {
     label: '分类',
     field: 'problemType',
-    required: ({ values }) => !isHandleByFieldsDisabled(values),
+    required: ({ values }) => !isNotReassign(values),
     component: 'ApiSelect',
-    dynamicDisabled: ({ values }) => isHandleByFieldsDisabled(values),
+    dynamicDisabled: ({ values }) => isNotReassign(values),
     componentProps: ({ formActionType }) => {
       return {
         api: getAllDictList,
@@ -129,7 +140,7 @@ export const formSchema: FormSchema[] = [
             },
           ]);
           setFieldsValue({
-            handleBy: '',
+            handleBy: null,
             problemTypeLabel: options?.label ?? '',
           });
         },
@@ -143,10 +154,11 @@ export const formSchema: FormSchema[] = [
     show: false,
   },
   {
-    label: '描述',
-    field: 'description',
+    label: '处理备注',
+    field: 'handleDescription',
     component: 'JAddInput',
-    dynamicDisabled: ({ values }) => isHandleByFieldsDisabled(values) && isCreateByFieldsDisabled(values),
+    ifShow: ({ values }) => !!values.id && values.flowOpMode === FlowOpMode.Reassign,
+    dynamicDisabled: ({ values }) => isNotReassign(values),
     componentProps: () => {
       const userStore = useUserStore();
       return {
@@ -157,12 +169,12 @@ export const formSchema: FormSchema[] = [
     },
   },
   {
-    label: '经办人',
+    label: '处理人',
     field: 'handleBy',
     ifShow: ({ values }) => !!values.id,
-    required: ({ values }) => !isHandleByFieldsDisabled(values),
+    required: ({ values }) => !isNotReassign(values),
     component: 'JSelectUserByDictItem',
-    dynamicDisabled: ({ values }) => isHandleByFieldsDisabled(values),
+    dynamicDisabled: ({ values }) => isNotReassign(values),
     componentProps: {
       value: [],
       labelKey: 'realname',
@@ -177,8 +189,8 @@ export const formSchema: FormSchema[] = [
   {
     label: '截止时间',
     field: 'expectHandleTime',
-    required: ({ values }) => !isCreateByFieldsDisabled(values),
-    dynamicDisabled: ({ values }) => isCreateByFieldsDisabled(values),
+    required: ({ values }) => !isNotEdit(values),
+    dynamicDisabled: ({ values }) => isNotEdit(values),
     component: platform.isMobile() ? 'MDatePicker' : 'DatePicker',
     componentProps: !platform.isMobile()
       ? {
@@ -198,10 +210,9 @@ export const evaluateFormSchema: FormSchema[] = [
   {
     label: '解决情况',
     field: 'solved',
-    required: ({ values }) => !isCreateByFieldsDisabled(values),
+    required: ({ values }) => !isNotEdit(values),
     component: 'RadioButtonGroup',
-    defaultValue: true,
-    dynamicDisabled: ({ values }) => isCreateByFieldsDisabled(values),
+    dynamicDisabled: ({ values }) => isNotEdit(values),
     componentProps: {
       options: [
         { label: '已解决', value: true },
@@ -212,9 +223,9 @@ export const evaluateFormSchema: FormSchema[] = [
   {
     label: '评分',
     field: 'score',
-    required: ({ values }) => !isCreateByFieldsDisabled(values),
+    required: ({ values }) => !isNotEdit(values),
     component: 'Rate',
-    dynamicDisabled: ({ values }) => isCreateByFieldsDisabled(values),
+    dynamicDisabled: ({ values }) => isNotEdit(values),
     componentProps: {
       allowHalf: true,
     },
@@ -222,9 +233,9 @@ export const evaluateFormSchema: FormSchema[] = [
   {
     label: '评价',
     field: 'remark',
-    required: ({ values }) => !isCreateByFieldsDisabled(values),
+    required: ({ values }) => !isNotEdit(values),
     component: 'JTextArea',
     componentProps: {},
-    dynamicDisabled: ({ values }) => isCreateByFieldsDisabled(values),
+    dynamicDisabled: ({ values }) => isNotEdit(values),
   },
 ];

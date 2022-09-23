@@ -24,7 +24,6 @@
   import FlowEvaluateDrawer from './FlowEvaluateDrawer.vue';
   import { useDrawer } from '/@/components/Drawer';
   import { useListPage } from '/@/hooks/system/useListPage';
-  import { useMessage } from '/@/hooks/web/useMessage';
   import { useUserStore } from '/@/store/modules/user';
   import { useRouter } from 'vue-router';
   import { columns, searchFormSchema } from './flow.data';
@@ -36,7 +35,6 @@
   const [registerDetailDrawer, { openDrawer: openDetailDrawer }] = useDrawer();
   const [registerEvaluateDrawer, { openDrawer: openEvaluateDrawer }] = useDrawer();
   const { currentRoute } = useRouter();
-  const { createMessage } = useMessage();
   const { query } = unref(currentRoute);
   const isMyHandlePage = !!query.handle;
   const isMyCreatePage = !!query.create;
@@ -152,7 +150,6 @@
    * 成功回调
    */
   function handleSuccess() {
-    createMessage.success('操作成功！');
     reload();
   }
 
@@ -186,16 +183,16 @@
         ifShow: () => !isMyHandlePage && userName !== record.handleBy && record.status === FlowStatus.End,
       },
       {
-        label: '详情',
-        onClick: handleDetail.bind(null, record),
-      },
-      {
         label: '解决',
         popConfirm: {
           title: '是否确认解决？',
           confirm: handleSolve.bind(null, record),
         },
         ifShow: () => showHandleOp && record.status === FlowStatus.Handle,
+      },
+      {
+        label: '详情',
+        onClick: handleDetail.bind(null, record),
       },
       {
         label: '撤销',

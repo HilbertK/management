@@ -44,7 +44,7 @@
         },
       ]);
       setFieldsValue({
-        ...formatFormFieldValue(data.record),
+        ...formatFormFieldValue(data.record, mode.value),
       });
     }
     // 隐藏底部时禁用整个表单
@@ -67,9 +67,9 @@
   //提交事件
   async function handleSubmit() {
     try {
-      const values = formatValues(await validate());
-      setDrawerProps({ confirmLoading: true });
       const flowMode = unref(mode);
+      const values = formatValues(await validate(), flowMode);
+      setDrawerProps({ confirmLoading: true });
       if (flowMode === FlowOpMode.Edit) {
         await updateFlow(values, unref(workOrderId));
       } else if (flowMode === FlowOpMode.Reassign) {

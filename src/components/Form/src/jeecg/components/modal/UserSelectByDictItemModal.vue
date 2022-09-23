@@ -92,6 +92,7 @@
       const [{ rowSelection, visibleChange, selectValues, indexColumnProps, getSelectResult, handleDeleteSelected, selectRows }] = useSelectBiz(getUserList, getBindValue);
       console.log('props.params', props.params);
       const searchInfo = ref(props.params);
+      console.log('searchInfo', searchInfo);
       //查询form
       const formConfig = {
         labelWidth: 200,
