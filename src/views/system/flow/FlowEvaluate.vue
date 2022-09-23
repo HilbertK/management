@@ -70,7 +70,7 @@
       const userId = userStore.getUserInfo.username;
       const creatorId = data.createBy ?? '';
       if (creatorId !== userId) {
-        flowError.value = '无评价权限';
+        flowError.value = '无法评价';
         isFinished.value = true;
         return;
       }

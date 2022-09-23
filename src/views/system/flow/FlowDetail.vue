@@ -43,6 +43,8 @@
   });
   const { currentRoute } = useRouter();
   const { query } = unref(currentRoute);
+  const isReassignPage = !!query.reassign;
+  const isEditPage = !!query.edit;
   const userStore = useUserStore();
   const fetch = async () => {
     await resetFields();
@@ -50,9 +52,10 @@
       mode.value = FlowOpMode.Add;
       if (query.prev) {
         try {
-          const prevData = formatFormFieldValue(await detail(query.prev as string)) as any;
+          const prevData = formatFormFieldValue(await detail(query.prev as string), FlowOpMode.Add) as any;
           setFieldsValue({
             title: prevData.title,
+            description: prevData.description,
             problemType: prevData.problemType,
             problemTypeLabel: prevData.problemTypeLabel,
           });
@@ -85,9 +88,9 @@
           },
         },
       ]);
-      if (operatorId === userId) {
+      if (isReassignPage && operatorId === userId) {
         mode.value = FlowOpMode.Reassign;
-      } else if (creatorId === userId) {
+      } else if (isEditPage && creatorId === userId) {
         mode.value = FlowOpMode.Edit;
       } else {
         mode.value = FlowOpMode.NoPermission;
