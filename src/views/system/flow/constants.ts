@@ -16,7 +16,7 @@ export enum FlowStatus {
 }
 
 // 已经结单、无法操作的工单
-export const flowFinishedStatusList = [FlowStatus.End, FlowStatus.Invalid];
+export const flowFinishedStatusList = [FlowStatus.Evaluate, FlowStatus.End, FlowStatus.Invalid];
 
 export const flowStatusDict = {
   [FlowStatus.Draft]: '未开始',
