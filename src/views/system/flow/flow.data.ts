@@ -208,11 +208,16 @@ export const formSchema: FormSchema[] = [
 
 export const evaluateFormSchema: FormSchema[] = [
   {
+    label: '标题',
+    field: 'title',
+    dynamicDisabled: true,
+    component: 'Input',
+  },
+  {
     label: '解决情况',
     field: 'solved',
-    required: ({ values }) => !isNotEdit(values),
+    required: true,
     component: 'RadioButtonGroup',
-    dynamicDisabled: ({ values }) => isNotEdit(values),
     componentProps: {
       options: [
         { label: '已解决', value: true },
@@ -223,9 +228,8 @@ export const evaluateFormSchema: FormSchema[] = [
   {
     label: '评分',
     field: 'score',
-    required: ({ values }) => !isNotEdit(values),
+    required: true,
     component: 'Rate',
-    dynamicDisabled: ({ values }) => isNotEdit(values),
     componentProps: {
       allowHalf: true,
     },
@@ -233,9 +237,24 @@ export const evaluateFormSchema: FormSchema[] = [
   {
     label: '评价',
     field: 'remark',
-    required: ({ values }) => !isNotEdit(values),
+    required: false,
     component: 'JTextArea',
-    componentProps: {},
-    dynamicDisabled: ({ values }) => isNotEdit(values),
+  },
+];
+
+export const reportFormSchema: FormSchema[] = [
+  {
+    label: '举报理由',
+    field: 'reportDescription',
+    required: true,
+    component: 'JTextArea',
+  },
+  {
+    label: '附件',
+    field: 'reportAttachments',
+    component: 'JImageUpload',
+    componentProps: {
+      fileMax: 9,
+    },
   },
 ];

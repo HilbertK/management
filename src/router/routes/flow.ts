@@ -19,7 +19,7 @@ export const FlowDetailRoute: AppRouteModule = {
   meta: {
     hideChildrenInMenu: true,
     icon: 'simple-icons:about-dot-me',
-    title: t('routes.flow.flows'),
+    title: t('routes.flow.detail'),
   },
 };
 
@@ -30,7 +30,18 @@ export const FlowEvaluateRoute: AppRouteModule = {
   meta: {
     hideChildrenInMenu: true,
     icon: 'simple-icons:about-dot-me',
-    title: t('routes.flow.flows'),
+    title: t('routes.flow.evaluate'),
+  },
+};
+
+export const FlowReportRoute: AppRouteModule = {
+  path: '/system/flow/report',
+  name: 'SystemFlowReport',
+  component: () => import('/@/views/system/flow/FlowReport.vue'),
+  meta: {
+    hideChildrenInMenu: true,
+    icon: 'simple-icons:about-dot-me',
+    title: t('routes.flow.report'),
   },
 };
 

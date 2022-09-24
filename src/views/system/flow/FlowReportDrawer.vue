@@ -1,25 +1,24 @@
 <template>
-  <BasicDrawer v-bind="$attrs" @register="registerDrawer" title="评价" :width="adaptiveWidth" @ok="handleSubmit" :showFooter="showFooter" destroyOnClose>
+  <BasicDrawer v-bind="$attrs" @register="registerDrawer" title="举报" :width="adaptiveWidth" @ok="handleSubmit" :showFooter="showFooter" destroyOnClose>
     <BasicForm @register="registerForm" />
   </BasicDrawer>
 </template>
 <script lang="ts" setup>
   import { ref } from 'vue';
   import { BasicForm, useForm } from '/@/components/Form/index';
-  import { evaluateFormSchema } from './flow.data';
+  import { reportFormSchema } from './flow.data';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
-  import { evaluateFlow } from './flow.api';
+  import { reportFlow } from './flow.api';
   import { useDrawerAdaptiveWidth } from '/@/hooks/jeecg/useAdaptiveWidth';
-  import { formatFormFieldValue } from './utils';
   // 声明Emits
   const emit = defineEmits(['success', 'register']);
   const { createMessage } = useMessage();
   const workOrderId = ref('');
   //表单配置
-  const [registerForm, { setProps, resetFields, setFieldsValue, validate }] = useForm({
+  const [registerForm, { setProps, resetFields, validate }] = useForm({
     labelWidth: 90,
-    schemas: evaluateFormSchema,
+    schemas: reportFormSchema,
     showActionButtonGroup: false,
   });
   const showFooter = ref(true);
@@ -30,9 +29,6 @@
     setDrawerProps({ confirmLoading: false, showFooter: showFooter.value });
     if (typeof data.record === 'object') {
       workOrderId.value = data.record.id;
-      setFieldsValue({
-        ...formatFormFieldValue(data.record),
-      });
     }
     // 隐藏底部时禁用整个表单
     if (!showFooter.value) {
@@ -47,7 +43,7 @@
       const values = await validate();
       delete values.title;
       setDrawerProps({ confirmLoading: true });
-      await evaluateFlow(values, workOrderId.value);
+      await reportFlow(values, workOrderId.value);
       createMessage.success('提交成功！');
       //关闭弹窗
       closeDrawer();

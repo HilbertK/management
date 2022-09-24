@@ -12,6 +12,7 @@ enum Api {
   handle = '/bpm/work/order/handle',
   reassign = '/bpm/work/order/reassign',
   evaluate = '/bpm/work/order/evaluate',
+  report = '/bpm/work/order/report',
   take = '/bpm/work/order/take',
   invalidate = '/bpm/work/order/invalidate',
   invalidateBatch = '/bpm/work/order/invalidateBatch',
@@ -120,6 +121,12 @@ export const reassignFlow = (params: any, workOrderId: string) => defHttp.post({
  * @param params
  */
 export const evaluateFlow = (params: any, workOrderId: string) => defHttp.post({ url: `${Api.evaluate}/${workOrderId}`, params });
+
+/**
+ * 提交举报
+ * @param params
+ */
+export const reportFlow = (params: any, workOrderId: string) => defHttp.post({ url: `${Api.report}/${workOrderId}`, params });
 
 /**
  * 获取全部分类

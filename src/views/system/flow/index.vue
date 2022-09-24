@@ -15,6 +15,7 @@
     <!--用户抽屉-->
     <FlowDrawer @register="registerDetailDrawer" @success="handleSuccess" />
     <FlowEvaluateDrawer @register="registerEvaluateDrawer" @success="handleSuccess" />
+    <FlowReportDrawer @register="registerReportDrawer" @success="handleSuccess" />
   </div>
 </template>
 
@@ -22,6 +23,7 @@
   import { BasicTable, TableAction, ActionItem } from '/@/components/Table';
   import FlowDrawer from './FlowDrawer.vue';
   import FlowEvaluateDrawer from './FlowEvaluateDrawer.vue';
+  import FlowReportDrawer from './FlowReportDrawer.vue';
   import { useDrawer } from '/@/components/Drawer';
   import { useListPage } from '/@/hooks/system/useListPage';
   import { useUserStore } from '/@/store/modules/user';
@@ -34,6 +36,7 @@
   //注册drawer
   const [registerDetailDrawer, { openDrawer: openDetailDrawer }] = useDrawer();
   const [registerEvaluateDrawer, { openDrawer: openEvaluateDrawer }] = useDrawer();
+  const [registerReportDrawer, { openDrawer: openReportDrawer }] = useDrawer();
   const { currentRoute } = useRouter();
   const { query } = unref(currentRoute);
   const isMyHandlePage = !!query.handle;
@@ -114,6 +117,15 @@
    */
   async function showEvaluation(record: Recordable) {
     openEvaluateDrawer(true, {
+      record,
+      showFooter: false,
+    });
+  }
+  /**
+   * 查看举报
+   */
+  async function showReport(record: Recordable) {
+    openReportDrawer(true, {
       record,
       showFooter: false,
     });
@@ -201,6 +213,11 @@
           confirm: handleInvalidate.bind(null, record),
         },
         ifShow: () => showCreateOp && !flowFinishedStatusList.includes(record.status),
+      },
+      {
+        label: '查看举报',
+        onClick: showReport.bind(null, record),
+        ifShow: () => record.reportDescription && record.status === FlowStatus.End,
       },
       {
         label: '接单',
