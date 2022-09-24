@@ -57,7 +57,15 @@
       isFinished.value = true;
       return;
     }
-    const data: any = await detail(query.id as string);
+    let data: any;
+    try {
+      data = await detail(query.id as string);
+    } catch (e) {
+      console.error(e);
+      flowError.value = '获取工单信息出错';
+      isFinished.value = true;
+      return;
+    }
     if (data != null && typeof data === 'object') {
       const userId = userStore.getUserInfo.username;
       const creatorId = data.createBy ?? '';

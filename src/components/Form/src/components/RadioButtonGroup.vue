@@ -56,7 +56,7 @@
   });
 </script>
 <style lang="less">
-  .ant-radio-button-wrapper-checked {
+  .ant-radio-button-wrapper-checked.ant-radio-button-wrapper-disabled {
     color: @primary-color !important;
   }
 </style>
