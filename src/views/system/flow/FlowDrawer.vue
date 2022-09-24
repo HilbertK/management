@@ -9,7 +9,7 @@
   import { formSchema } from './flow.data';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
-  import { updateFlow, saveFlow, reassignFlow } from './flow.api';
+  import { updateFlow, saveFlow, reassignFlow, detail } from './flow.api';
   import { FlowOpMode } from './constants';
   import { useDrawerAdaptiveWidth } from '/@/hooks/jeecg/useAdaptiveWidth';
   import { formatFormFieldValue, formatValues } from './utils';
@@ -31,20 +31,29 @@
     showFooter.value = data?.showFooter ?? true;
     setDrawerProps({ confirmLoading: false, showFooter: showFooter.value });
     mode.value = data.mode ?? FlowOpMode.NoPermission;
-    if (typeof data.record === 'object') {
-      workOrderId.value = data.record.id;
+    let detailData = data.record;
+    if (typeof detailData === 'object') {
+      workOrderId.value = detailData.id;
+      try {
+        detailData = await detail(workOrderId.value);
+      } catch (e) {
+        console.error(e);
+        createMessage.success('获取工单信息出错');
+        setProps({ disabled: true });
+        return;
+      }
       updateSchema([
         {
           field: 'handleBy',
           componentProps: {
             params: {
-              dictItemValue: data.record.problemType ?? '',
+              dictItemValue: detailData.problemType ?? '',
             },
           },
         },
       ]);
       setFieldsValue({
-        ...formatFormFieldValue(data.record, mode.value),
+        ...formatFormFieldValue(detailData, mode.value),
       });
     }
     // 隐藏底部时禁用整个表单

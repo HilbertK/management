@@ -7,6 +7,7 @@ export { useComponentRegister } from './src/hooks/useComponentRegister';
 export { useForm } from './src/hooks/useForm';
 
 export { default as ApiSelect } from './src/components/ApiSelect.vue';
+export { default as MApiSelect } from './src/components/MApiSelect.vue';
 export { default as RadioButtonGroup } from './src/components/RadioButtonGroup.vue';
 export { default as ApiTreeSelect } from './src/components/ApiTreeSelect.vue';
 export { default as ApiRadioGroup } from './src/components/ApiRadioGroup.vue';
@@ -29,6 +30,7 @@ export { default as JSearchSelect } from './src/jeecg/components/JSearchSelect.v
 export { default as JSelectUserByDept } from './src/jeecg/components/JSelectUserByDept.vue';
 export { default as JSelectUserByDictItem } from './src/jeecg/components/JSelectUserByDictItem.vue';
 export { default as JImageUpload } from './src/jeecg/components/JImageUpload.vue';
+export { default as MDatePicker } from './src/jeecg/components/MdatePicker.vue';
 // Jeecg自定义校验
 export { JCronValidator } from '/@/components/Form/src/jeecg/components/JEasyCron';
 

@@ -9,7 +9,7 @@
   import { evaluateFormSchema } from './flow.data';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
-  import { evaluateFlow } from './flow.api';
+  import { detail, evaluateFlow } from './flow.api';
   import { useDrawerAdaptiveWidth } from '/@/hooks/jeecg/useAdaptiveWidth';
   import { formatFormFieldValue } from './utils';
   // 声明Emits
@@ -28,10 +28,19 @@
     await resetFields();
     showFooter.value = data?.showFooter ?? true;
     setDrawerProps({ confirmLoading: false, showFooter: showFooter.value });
-    if (typeof data.record === 'object') {
-      workOrderId.value = data.record.id;
+    let detailData = data.record;
+    if (typeof detailData === 'object') {
+      workOrderId.value = detailData.id;
+      try {
+        detailData = await detail(workOrderId.value);
+      } catch (e) {
+        console.error(e);
+        createMessage.success('获取工单信息出错');
+        setProps({ disabled: true });
+        return;
+      }
       setFieldsValue({
-        ...formatFormFieldValue(data.record),
+        ...formatFormFieldValue(detailData),
       });
     }
     // 隐藏底部时禁用整个表单

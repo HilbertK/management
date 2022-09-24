@@ -91,6 +91,7 @@ export type ComponentType =
   | 'InputCountDown'
   | 'Select'
   | 'ApiSelect'
+  | 'MApiSelect'
   | 'TreeSelect'
   | 'ApiTreeSelect'
   | 'ApiRadioGroup'

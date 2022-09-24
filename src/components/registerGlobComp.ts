@@ -51,7 +51,7 @@ import {
   Cascader,
   Rate,
 } from 'ant-design-vue';
-import { DatetimePicker, Popup } from 'vant';
+import { DatetimePicker, Popup, Picker } from 'vant';
 
 const compList = [AntButton.Group, Icon, AIcon, JUploadButton];
 
@@ -69,6 +69,7 @@ export function registerGlobComp(app: App) {
     .use(DatePicker)
     .use(DatetimePicker)
     .use(Popup)
+    .use(Picker)
     .use(Radio)
     .use(Switch)
     .use(Card)

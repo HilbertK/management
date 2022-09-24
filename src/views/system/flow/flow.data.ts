@@ -119,7 +119,7 @@ export const formSchema: FormSchema[] = [
     label: '分类',
     field: 'problemType',
     required: ({ values }) => !isNotReassign(values),
-    component: 'ApiSelect',
+    component: platform.isMobile() ? 'MApiSelect' : 'ApiSelect',
     dynamicDisabled: ({ values }) => isNotReassign(values),
     componentProps: ({ formActionType }) => {
       return {
@@ -157,7 +157,7 @@ export const formSchema: FormSchema[] = [
     label: '处理备注',
     field: 'handleDescription',
     component: 'JAddInput',
-    ifShow: ({ values }) => !!values.id && values.flowOpMode === FlowOpMode.Reassign,
+    ifShow: ({ values }) => !!values.id && values.handleBy,
     dynamicDisabled: ({ values }) => isNotReassign(values),
     componentProps: () => {
       const userStore = useUserStore();

@@ -8,6 +8,7 @@ import { Input, Select, Radio, Checkbox, AutoComplete, Cascader, DatePicker, Inp
 import ApiRadioGroup from './components/ApiRadioGroup.vue';
 import RadioButtonGroup from './components/RadioButtonGroup.vue';
 import ApiSelect from './components/ApiSelect.vue';
+import MApiSelect from './components/MApiSelect.vue';
 import ApiTreeSelect from './components/ApiTreeSelect.vue';
 import { BasicUpload } from '/@/components/Upload';
 import { StrengthMeter } from '/@/components/StrengthMeter';
@@ -58,6 +59,7 @@ componentMap.set('AutoComplete', AutoComplete);
 
 componentMap.set('Select', Select);
 componentMap.set('ApiSelect', ApiSelect);
+componentMap.set('MApiSelect', MApiSelect);
 componentMap.set('TreeSelect', TreeSelect);
 componentMap.set('ApiTreeSelect', ApiTreeSelect);
 componentMap.set('ApiRadioGroup', ApiRadioGroup);
