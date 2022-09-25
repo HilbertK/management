@@ -30,7 +30,7 @@ export { default as JSearchSelect } from './src/jeecg/components/JSearchSelect.v
 export { default as JSelectUserByDept } from './src/jeecg/components/JSelectUserByDept.vue';
 export { default as JSelectUserByDictItem } from './src/jeecg/components/JSelectUserByDictItem.vue';
 export { default as JImageUpload } from './src/jeecg/components/JImageUpload.vue';
-export { default as MDatePicker } from './src/jeecg/components/MdatePicker.vue';
+export { default as MDatePicker } from './src/jeecg/components/MDatePicker.vue';
 // Jeecg自定义校验
 export { JCronValidator } from '/@/components/Form/src/jeecg/components/JEasyCron';
 
