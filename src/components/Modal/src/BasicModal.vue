@@ -270,6 +270,6 @@
     }
   }
   .ant-modal-mask {
-    background-color: #4E5A70;
+    background-color: #676767;
   }
 </style>
