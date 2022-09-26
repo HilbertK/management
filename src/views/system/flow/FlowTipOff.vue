@@ -9,9 +9,9 @@
   import { BasicForm, useForm } from '/@/components/Form/index';
   import { useRouter } from 'vue-router';
   import { PageWrapper } from '/@/components/Page';
-  import { reportFormSchema } from './flow.data';
+  import { tipOffFormSchema } from './flow.data';
   import { useUserStore } from '/@/store/modules/user';
-  import { reportFlow, detail } from './flow.api';
+  import { tipOffFlow, detail } from './flow.api';
   import { FlowStatus } from './constants';
   const isFinished = ref(false);
   const flowError = ref('');
@@ -30,7 +30,7 @@
         maxWidth: 'fit-content',
       },
     },
-    schemas: reportFormSchema,
+    schemas: tipOffFormSchema,
     showResetButton: false,
     submitButtonOptions: {
       text: '提交',
@@ -84,7 +84,7 @@
           loading: true,
         },
       });
-      await reportFlow(values, workNoId);
+      await tipOffFlow(values, workNoId);
       isFinished.value = true;
     } finally {
       setProps({

@@ -10,4 +10,5 @@ export interface IFlowItem {
   evaluation: string | null;
   createTime: string;
   expectHandleTime: string;
+  exceedHandle: boolean;
 }

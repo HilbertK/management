@@ -6,10 +6,10 @@
 <script lang="ts" setup>
   import { ref } from 'vue';
   import { BasicForm, useForm } from '/@/components/Form/index';
-  import { reportFormSchema } from './flow.data';
+  import { tipOffFormSchema } from './flow.data';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
-  import { reportFlow } from './flow.api';
+  import { tipOffFlow } from './flow.api';
   import { useDrawerAdaptiveWidth } from '/@/hooks/jeecg/useAdaptiveWidth';
   // 声明Emits
   const emit = defineEmits(['success', 'register']);
@@ -18,7 +18,7 @@
   //表单配置
   const [registerForm, { setProps, resetFields, validate }] = useForm({
     labelWidth: 90,
-    schemas: reportFormSchema,
+    schemas: tipOffFormSchema,
     showActionButtonGroup: false,
   });
   const showFooter = ref(true);
@@ -43,7 +43,7 @@
       const values = await validate();
       delete values.title;
       setDrawerProps({ confirmLoading: true });
-      await reportFlow(values, workOrderId.value);
+      await tipOffFlow(values, workOrderId.value);
       createMessage.success('提交成功！');
       //关闭弹窗
       closeDrawer();

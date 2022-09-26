@@ -7,7 +7,7 @@
       <div class="flex h-full">
         <div class="hidden min-h-full pl-4 mr-4 xl:flex xl:flex-col xl:w-6/12">
           <div class="my-auto">
-            <img :alt="title" src="../../../assets/svg/login-box-bg.png" style="width: 50%; height: auto" class="w-1/2 -mt-16 -enter-x" />
+            <img :alt="title" src="../../../assets/svg/login-box-bg.png" style="width: 61.8%; height: auto" class="w-1/2 -mt-16 -enter-x" />
           </div>
         </div>
         <div class="flex w-full h-full py-5 xl:h-auto xl:py-0 xl:my-0 xl:w-6/12">
@@ -130,7 +130,7 @@
       }
 
       img {
-        width: 32px;
+        width: 15%;
       }
     }
 

@@ -1,5 +1,5 @@
 import { FlowOpMode } from './constants';
-import { FlowDetailRoute, FlowReportRoute } from '/@/router/routes/flow';
+import { FlowDetailRoute, FlowTipOffRoute } from '/@/router/routes/flow';
 
 export const formatValues = (values: any, mode: FlowOpMode | null) => {
   const newDescription = JSON.stringify(
@@ -66,4 +66,4 @@ export const formatFormFieldValue = (data: any, mode?: FlowOpMode | null) =>
 
 export const getCreateFlowRouteByPrev = (prevId: string) => `${FlowDetailRoute.path}?prev=${prevId}`;
 
-export const getReportFlowRoute = (id: string) => `${FlowReportRoute.path}?id=${id}`;
+export const getTipOffFlowRoute = (id: string) => `${FlowTipOffRoute.path}?id=${id}`;

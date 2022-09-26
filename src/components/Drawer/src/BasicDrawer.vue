@@ -179,6 +179,9 @@
   @prefix-cls-detail: ~'@{namespace}-basic-drawer__detail';
 
   .@{prefix-cls} {
+    .ant-drawer-content-wrapper {
+      max-width: 100%;
+    }
     .ant-drawer-wrapper-body {
       overflow: hidden;
     }

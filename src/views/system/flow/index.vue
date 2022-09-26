@@ -15,7 +15,7 @@
     <!--用户抽屉-->
     <FlowDrawer @register="registerDetailDrawer" @success="handleSuccess" />
     <FlowEvaluateDrawer @register="registerEvaluateDrawer" @success="handleSuccess" />
-    <FlowReportDrawer @register="registerReportDrawer" @success="handleSuccess" />
+    <FlowTipOffDrawer @register="registerTipOffDrawer" @success="handleSuccess" />
   </div>
 </template>
 
@@ -23,7 +23,7 @@
   import { BasicTable, TableAction, ActionItem } from '/@/components/Table';
   import FlowDrawer from './FlowDrawer.vue';
   import FlowEvaluateDrawer from './FlowEvaluateDrawer.vue';
-  import FlowReportDrawer from './FlowReportDrawer.vue';
+  import FlowTipOffDrawer from './FlowTipOffDrawer.vue';
   import { useDrawer } from '/@/components/Drawer';
   import { useListPage } from '/@/hooks/system/useListPage';
   import { useUserStore } from '/@/store/modules/user';
@@ -36,7 +36,7 @@
   //注册drawer
   const [registerDetailDrawer, { openDrawer: openDetailDrawer }] = useDrawer();
   const [registerEvaluateDrawer, { openDrawer: openEvaluateDrawer }] = useDrawer();
-  const [registerReportDrawer, { openDrawer: openReportDrawer }] = useDrawer();
+  const [registerTipOffDrawer, { openDrawer: openTipOffDrawer }] = useDrawer();
   const { currentRoute } = useRouter();
   const { query } = unref(currentRoute);
   const isMyHandlePage = !!query.handle;
@@ -124,10 +124,10 @@
   /**
    * 查看举报
    */
-  async function showReport(record: Recordable) {
-    openReportDrawer(true, {
+  async function handleTipOff(record: Recordable) {
+    openTipOffDrawer(true, {
       record,
-      showFooter: false,
+      showFooter: true,
     });
   }
   /**
@@ -215,9 +215,9 @@
         ifShow: () => showCreateOp && !flowFinishedStatusList.includes(record.status),
       },
       {
-        label: '查看举报',
-        onClick: showReport.bind(null, record),
-        ifShow: () => record.reportDescription && record.status === FlowStatus.End,
+        label: '举报',
+        onClick: handleTipOff.bind(null, record),
+        ifShow: () => showCreateOp && record.status === FlowStatus.End && !record.solved,
       },
       {
         label: '接单',

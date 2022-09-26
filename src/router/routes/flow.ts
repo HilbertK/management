@@ -34,14 +34,14 @@ export const FlowEvaluateRoute: AppRouteModule = {
   },
 };
 
-export const FlowReportRoute: AppRouteModule = {
-  path: '/system/flow/report',
-  name: 'SystemFlowReport',
-  component: () => import('/@/views/system/flow/FlowReport.vue'),
+export const FlowTipOffRoute: AppRouteModule = {
+  path: '/system/flow/tipoff',
+  name: 'SystemFlowTipOff',
+  component: () => import('/@/views/system/flow/FlowTipOff.vue'),
   meta: {
     hideChildrenInMenu: true,
     icon: 'simple-icons:about-dot-me',
-    title: t('routes.flow.report'),
+    title: t('routes.flow.tipoff'),
   },
 };
 

@@ -269,4 +269,7 @@
       padding: 14px;
     }
   }
+  .ant-modal-mask {
+    background-color: #4E5A70;
+  }
 </style>

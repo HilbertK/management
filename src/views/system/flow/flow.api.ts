@@ -4,6 +4,8 @@ import { FlowStatus } from './constants';
 
 enum Api {
   list = '/bpm/work/order/pageAll',
+  tipOffList = '/bpm/tipOff/workOrder/pageAll',
+  createTipOffList = '/bpm/tipOff/workOrder/myCreate',
   createList = '/bpm/work/order/myCreate',
   handlingList = '/bpm/work/order/myHandling',
   detail = '/bpm/work/order/detail',
@@ -12,7 +14,7 @@ enum Api {
   handle = '/bpm/work/order/handle',
   reassign = '/bpm/work/order/reassign',
   evaluate = '/bpm/work/order/evaluate',
-  report = '/bpm/work/order/tipOff',
+  tipOff = '/bpm/work/order/tipOff',
   take = '/bpm/work/order/take',
   invalidate = '/bpm/work/order/invalidate',
   invalidateBatch = '/bpm/work/order/invalidateBatch',
@@ -126,7 +128,24 @@ export const evaluateFlow = (params: any, workOrderId: string) => defHttp.post({
  * 提交举报
  * @param params
  */
-export const reportFlow = (params: any, workOrderId: string) => defHttp.post({ url: `${Api.report}/${workOrderId}`, params });
+export const tipOffFlow = (params: any, workOrderId: string) => defHttp.post({ url: `${Api.tipOff}/${workOrderId}`, params });
+
+/**
+ * 获取举报详情
+ */
+export const tipOffDetail = (workOrderId: string) => defHttp.get({ url: `${Api.tipOff}/${workOrderId}` });
+
+/**
+ * 举报列表接口
+ * @param params
+ */
+export const tipOfflist = (params) => defHttp.get({ url: Api.tipOffList, params });
+
+/**
+ * 我的举报列表接口
+ * @param params
+ */
+export const createTipOfflist = (params) => defHttp.get({ url: Api.tipOffList, params });
 
 /**
  * 获取全部分类

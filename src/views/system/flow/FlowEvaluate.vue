@@ -1,9 +1,9 @@
 <template>
   <PageWrapper contentBackground contentClass="p-4">
     <a-result :status="flowError ? 'error' : 'success'" :title="flowError || '提交成功'" v-if="isFinished">
-      <template #extra v-if="!isSolved">
-        <a-button key="recreate" type="primary" @click="handleCreateFlow">重新发起工单</a-button>
-        <a-button key="report" @click="handleReport">举报</a-button>
+      <template #extra>
+        <a-button key="recreate" type="primary" @click="handleCreateFlow" v-if="!isSolved">重新发起工单</a-button>
+        <a-button key="tipoff" @click="handleTipOff">举报</a-button>
       </template>
     </a-result>
     <BasicForm @register="registerForm" v-else />
@@ -19,7 +19,7 @@
   import { useUserStore } from '/@/store/modules/user';
   import { evaluateFlow, detail } from './flow.api';
   import { FlowStatus } from './constants';
-  import { formatFormFieldValue, getCreateFlowRouteByPrev, getReportFlowRoute } from './utils';
+  import { formatFormFieldValue, getCreateFlowRouteByPrev, getTipOffFlowRoute } from './utils';
   const isFinished = ref(false);
   const flowError = ref('');
   const isSolved = ref(true);
@@ -114,11 +114,11 @@
 
   function handleCreateFlow() {
     const workNoId = (query.id ?? '') as string;
-    router.push(getCreateFlowRouteByPrev(workNoId));
+    router.replace({ path: getCreateFlowRouteByPrev(workNoId) });
   }
 
-  function handleReport() {
+  function handleTipOff() {
     const workNoId = (query.id ?? '') as string;
-    router.push(getReportFlowRoute(workNoId));
+    router.replace({ path: getTipOffFlowRoute(workNoId) });
   }
 </script>

@@ -21,18 +21,6 @@ export const columns: BasicColumn[] = [
     customRender: render.renderAvatar,
   },
   {
-    title: '性别',
-    dataIndex: 'sex',
-    width: 80,
-    sorter: true,
-    customRender: ({ text }) => SexDict[text],
-  },
-  {
-    title: '生日',
-    dataIndex: 'birthday',
-    width: 100,
-  },
-  {
     title: '手机号',
     dataIndex: 'phone',
     width: 100,

@@ -50,7 +50,7 @@ export const columns: BasicColumn[] = [
     title: '状态',
     dataIndex: 'status',
     width: 80,
-    customRender: ({ text }) => flowStatusDict[text] ?? '未知',
+    customRender: ({ text, record }) => `${flowStatusDict[text] ?? '未知'}${record.exceedHandle ? '（超时）' : ''}`,
   },
 ];
 
@@ -242,16 +242,48 @@ export const evaluateFormSchema: FormSchema[] = [
   },
 ];
 
-export const reportFormSchema: FormSchema[] = [
+export const tipOffColumns: BasicColumn[] = [
   {
-    label: '举报理由',
-    field: 'reportDescription',
+    title: '标题',
+    dataIndex: 'title',
+    width: 120,
+  },
+  {
+    title: '工单处理人',
+    dataIndex: 'accusedName',
+    width: 120,
+  },
+  {
+    title: '举报原因',
+    dataIndex: 'tipOffReason',
+    width: 120,
+  },
+  {
+    title: '举报人',
+    dataIndex: 'tipOffByName',
+    width: 120,
+  },
+];
+
+export const searchTipOffFormSchema: FormSchema[] = [
+  {
+    label: '标题',
+    field: 'title',
+    component: 'Input',
+    colProps: { span: 3, xl: { span: 5 } },
+  },
+];
+
+export const tipOffFormSchema: FormSchema[] = [
+  {
+    label: '举报原因',
+    field: 'tipOffReason',
     required: true,
     component: 'JTextArea',
   },
   {
     label: '附件',
-    field: 'reportAttachments',
+    field: 'tipOffAttachment',
     component: 'JImageUpload',
     componentProps: {
       fileMax: 9,
