@@ -50,7 +50,7 @@ export const columns: BasicColumn[] = [
     title: '状态',
     dataIndex: 'status',
     width: 80,
-    customRender: ({ text, record }) => `${flowStatusDict[text] ?? '未知'}${record.exceedHandle ? '（超时）' : ''}`,
+    customRender: ({ text, record }) => `${flowStatusDict[text] ?? '未知'}${record.exceedHandle ? '（处理超时）' : ''}`,
   },
 ];
 
@@ -204,6 +204,24 @@ export const formSchema: FormSchema[] = [
           maxDate: new Date(new Date().getFullYear() + 2, 0, 0),
         },
   },
+  {
+    label: '举报原因',
+    field: 'tipOffReason',
+    ifShow: ({ values }) => values.flowOpMode === FlowOpMode.NoPermission && !!values.tipOffReason,
+    dynamicDisabled: true,
+    required: true,
+    component: 'JTextArea',
+  },
+  {
+    label: '举报附件',
+    field: 'tipOffAttachment',
+    ifShow: ({ values }) => values.flowOpMode === FlowOpMode.NoPermission && !!values.tipOffReason,
+    dynamicDisabled: true,
+    component: 'JImageUpload',
+    componentProps: {
+      fileMax: 9,
+    },
+  },
 ];
 
 export const evaluateFormSchema: FormSchema[] = [
@@ -275,6 +293,12 @@ export const searchTipOffFormSchema: FormSchema[] = [
 ];
 
 export const tipOffFormSchema: FormSchema[] = [
+  {
+    label: '',
+    field: 'tipOffId',
+    component: 'Input',
+    show: false,
+  },
   {
     label: '举报原因',
     field: 'tipOffReason',

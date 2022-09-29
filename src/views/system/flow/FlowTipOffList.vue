@@ -19,6 +19,7 @@
   import { useListPage } from '/@/hooks/system/useListPage';
   import { tipOffColumns, searchTipOffFormSchema } from './flow.data';
   import { tipOfflist } from './flow.api';
+  import { FlowOpMode } from './constants';
 
   //注册drawer
   const [registerDetailDrawer, { openDrawer: openDetailDrawer }] = useDrawer();
@@ -28,6 +29,7 @@
     designScope: 'tipoff-flow-list',
     tableProps: {
       title: '举报工单列表',
+      rowKey: (record) => record.tipOffId,
       api: tipOfflist,
       columns: tipOffColumns,
       size: 'small',
@@ -38,7 +40,6 @@
       actionColumn: {
         width: 220,
       },
-      beforeFetch: (params) => Object.assign({ column: 'createTime', order: 'desc' }, params),
     },
   });
 
@@ -49,8 +50,12 @@
    */
   async function handleDetail(record: Recordable) {
     openDetailDrawer(true, {
-      record,
-      showFooter: true,
+      record: {
+        ...record,
+        id: record.relatedId,
+      },
+      mode: FlowOpMode.NoPermission,
+      showFooter: false,
     });
   }
   /**

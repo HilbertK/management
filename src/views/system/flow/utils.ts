@@ -64,6 +64,11 @@ export const formatFormFieldValue = (data: any, mode?: FlowOpMode | null) =>
     return value != null ? { ...prev, [key]: value } : prev;
   }, {});
 
+export const formatTipOffValue = (values: any) => ({
+  tipOffReason: values.tipOffReason,
+  tipOffAttachment: values.tipOffAttachment,
+});
+
 export const getCreateFlowRouteByPrev = (prevId: string) => `${FlowDetailRoute.path}?prev=${prevId}`;
 
 export const getTipOffFlowRoute = (id: string) => `${FlowTipOffRoute.path}?id=${id}`;

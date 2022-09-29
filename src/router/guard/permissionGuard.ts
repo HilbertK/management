@@ -10,6 +10,7 @@ import { PAGE_NOT_FOUND_ROUTE } from '/@/router/routes/basic';
 import { RootRoute } from '/@/router/routes';
 
 import { isOAuth2AppEnv } from '/@/views/sys/login/useLogin';
+import qs from 'qs';
 
 const LOGIN_PATH = PageEnum.BASE_LOGIN;
 //auth2登录路由
@@ -39,7 +40,7 @@ export function createPermissionGuard(router: Router) {
         try {
           await userStore.afterLoginAction();
           if (!isSessionTimeout) {
-            next((to.query?.redirect as string) || '/');
+            next(decodeURIComponent((to.query?.redirect as string) || '/'));
             return;
           }
         } catch {}
@@ -63,7 +64,6 @@ export function createPermissionGuard(router: Router) {
         return;
       }
 
-      //update-begin---author:wangshuai ---date:20220629  for：[issues/I5BG1I]vue3 Auth2未实现------------
       let path = LOGIN_PATH;
       if (whitePathList.includes(to.path as PageEnum)) {
         // 在免登录白名单，如果进入的页面是login页面并且当前是OAuth2app环境，就进入OAuth2登录页面
@@ -77,18 +77,15 @@ export function createPermissionGuard(router: Router) {
         // 如果当前是在OAuth2APP环境，就跳转到OAuth2登录页面，否则跳转到登录页面
         path = isOAuth2AppEnv() ? OAUTH2_LOGIN_PAGE_PATH : LOGIN_PATH;
       }
-      //update-end---author:wangshuai ---date:20220629  for：[issues/I5BG1I]vue3 Auth2未实现------------
       // redirect login page
       const redirectData: { path: string; replace: boolean; query?: Recordable<string> } = {
-        //update-begin---author:wangshuai ---date:20220629  for：[issues/I5BG1I]vue3 Auth2未实现------------
         path: path,
-        //update-end---author:wangshuai ---date:20220629  for：[issues/I5BG1I]vue3 Auth2未实现------------
         replace: true,
       };
       if (to.path) {
         redirectData.query = {
           ...redirectData.query,
-          redirect: to.path,
+          redirect: encodeURIComponent(to.fullPath),
         };
       }
       next(redirectData);
@@ -132,7 +129,8 @@ export function createPermissionGuard(router: Router) {
     } else {
       const redirectPath = (from.query.redirect || to.path) as string;
       const redirect = decodeURIComponent(redirectPath);
-      const nextData = to.path === redirect ? { ...to, replace: true } : { path: redirect };
+      const redirectData = redirect.split('?');
+      const nextData = to.path === redirect ? { ...to, replace: true } : { path: redirectData[0], query: qs.parse(redirectData[1] ?? '') as Recordable<string> };
       next(nextData);
     }
   });

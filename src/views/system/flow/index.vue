@@ -122,7 +122,7 @@
     });
   }
   /**
-   * 查看举报
+   * 举报
    */
   async function handleTipOff(record: Recordable) {
     openTipOffDrawer(true, {
@@ -217,7 +217,7 @@
       {
         label: '举报',
         onClick: handleTipOff.bind(null, record),
-        ifShow: () => showCreateOp && record.status === FlowStatus.End && !record.solved,
+        ifShow: () => showCreateOp && record.status === FlowStatus.End && record.solved === false,
       },
       {
         label: '接单',

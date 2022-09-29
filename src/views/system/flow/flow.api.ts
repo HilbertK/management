@@ -9,6 +9,7 @@ enum Api {
   createList = '/bpm/work/order/myCreate',
   handlingList = '/bpm/work/order/myHandling',
   detail = '/bpm/work/order/detail',
+  tipOffDetail = '/bpm/tipOff/get',
   save = '/bpm/work/order/create',
   edit = '/bpm/work/order/edit',
   handle = '/bpm/work/order/handle',
@@ -133,7 +134,7 @@ export const tipOffFlow = (params: any, workOrderId: string) => defHttp.post({ u
 /**
  * 获取举报详情
  */
-export const tipOffDetail = (workOrderId: string) => defHttp.get({ url: `${Api.tipOff}/${workOrderId}` });
+export const tipOffDetail = (workOrderId: string) => defHttp.get({ url: `${Api.tipOffDetail}/${workOrderId}` });
 
 /**
  * 举报列表接口

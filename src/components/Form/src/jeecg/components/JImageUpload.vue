@@ -135,7 +135,8 @@
           if (initTag.value == true) {
             initFileList(val);
           }
-        }
+        },
+        { immediate: true }
       );
 
       /**

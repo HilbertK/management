@@ -35,13 +35,24 @@ export const FlowEvaluateRoute: AppRouteModule = {
 };
 
 export const FlowTipOffRoute: AppRouteModule = {
-  path: '/system/flow/tipoff',
-  name: 'SystemFlowTipOff',
-  component: () => import('/@/views/system/flow/FlowTipOff.vue'),
+  path: '/system/flow/tipoff/detail',
+  name: 'SystemFlowTipOffDetail',
+  component: () => import('/@/views/system/flow/FlowTipOffDetail.vue'),
   meta: {
     hideChildrenInMenu: true,
     icon: 'simple-icons:about-dot-me',
     title: t('routes.flow.tipoff'),
+  },
+};
+
+export const FlowTipOffListRoute: AppRouteModule = {
+  path: '/system/flow/tipoff',
+  name: 'SystemFlowTipOffList',
+  component: () => import('/@/views/system/flow/FlowTipOffList.vue'),
+  meta: {
+    hideChildrenInMenu: true,
+    icon: 'simple-icons:about-dot-me',
+    title: t('routes.flow.tipoffList'),
   },
 };
 

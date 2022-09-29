@@ -1,7 +1,7 @@
 <template>
   <PageWrapper contentBackground contentClass="p-4">
     <a-result :status="flowError ? 'error' : 'success'" :title="flowError || '提交成功'" v-if="isFinished">
-      <template #extra>
+      <template #extra v-if="!flowError">
         <a-button key="recreate" type="primary" @click="handleCreateFlow" v-if="!isSolved">重新发起工单</a-button>
         <a-button key="tipoff" @click="handleTipOff">举报</a-button>
       </template>
@@ -94,6 +94,7 @@
     if (!workNoId) return;
     try {
       const values = await validate();
+      delete values.title;
       isSolved.value = values.solved;
       setProps({
         submitButtonOptions: {

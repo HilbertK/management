@@ -35,7 +35,11 @@
     if (typeof detailData === 'object') {
       workOrderId.value = detailData.id;
       try {
-        detailData = await detail(workOrderId.value);
+        const detailRes = await detail(workOrderId.value);
+        detailData = {
+          ...detailData,
+          ...detailRes,
+        };
       } catch (e) {
         console.error(e);
         createMessage.success('获取工单信息出错');
@@ -64,12 +68,14 @@
   //获取标题
   const getTitle = computed(() => {
     if (!mode.value) return '';
-    return {
-      [FlowOpMode.Add]: '新增工单',
-      [FlowOpMode.Edit]: '编辑工单',
-      [FlowOpMode.Reassign]: '转交工单',
-      [FlowOpMode.NoPermission]: '查看工单',
-    }[mode.value];
+    return (
+      {
+        [FlowOpMode.Add]: '新增工单',
+        [FlowOpMode.Edit]: '编辑工单',
+        [FlowOpMode.Reassign]: '转交工单',
+        [FlowOpMode.NoPermission]: '查看工单',
+      }[mode.value] ?? '查看工单'
+    );
   });
   const { adaptiveWidth } = useDrawerAdaptiveWidth();
 

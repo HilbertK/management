@@ -11,6 +11,7 @@
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
   import { tipOffFlow } from './flow.api';
   import { useDrawerAdaptiveWidth } from '/@/hooks/jeecg/useAdaptiveWidth';
+  import { formatTipOffValue } from './utils';
   // 声明Emits
   const emit = defineEmits(['success', 'register']);
   const { createMessage } = useMessage();
@@ -40,8 +41,7 @@
   //提交事件
   async function handleSubmit() {
     try {
-      const values = await validate();
-      delete values.title;
+      const values = formatTipOffValue(await validate());
       setDrawerProps({ confirmLoading: true });
       await tipOffFlow(values, workOrderId.value);
       createMessage.success('提交成功！');

@@ -13,6 +13,7 @@
   import { useUserStore } from '/@/store/modules/user';
   import { tipOffFlow, detail } from './flow.api';
   import { FlowStatus } from './constants';
+  import { formatTipOffValue } from './utils';
   const isFinished = ref(false);
   const flowError = ref('');
   //表单配置
@@ -78,7 +79,7 @@
     const workNoId = (query.id ?? '') as string;
     if (!workNoId) return;
     try {
-      const values = await validate();
+      const values = formatTipOffValue(await validate());
       setProps({
         submitButtonOptions: {
           loading: true,
