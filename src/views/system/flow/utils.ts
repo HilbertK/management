@@ -1,6 +1,8 @@
 import { FlowOpMode } from './constants';
 import { FlowDetailRoute, FlowTipOffRoute } from '/@/router/routes/flow';
 
+const ignoreFieldKeys = ['id', 'createBy', 'flowOpMode', 'problemTypeOptions'];
+
 export const formatValues = (values: any, mode: FlowOpMode | null) => {
   const newDescription = JSON.stringify(
     JSON.parse(values.handleDescription ?? '[]')
@@ -8,7 +10,7 @@ export const formatValues = (values: any, mode: FlowOpMode | null) => {
       .map(({ label, value }) => ({ label, value }))
   );
   const submitResult = Object.keys(values)
-    .filter((key) => key !== 'id' && key !== 'createBy' && key !== 'flowOpMode' && values[key] != null)
+    .filter((key) => !ignoreFieldKeys.includes(key) && values[key] != null)
     .reduce((prev, curr) => {
       const newRes = {
         ...prev,

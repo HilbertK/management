@@ -118,6 +118,7 @@ export const formSchema: FormSchema[] = [
   {
     label: '分类',
     field: 'problemType',
+    helpMessage: ({ values }) => values.problemTypeOptions?.find((item) => item.value === values.problemType)?.description,
     required: ({ values }) => !isNotReassign(values),
     component: platform.isMobile() ? 'MApiSelect' : 'ApiSelect',
     dynamicDisabled: ({ values }) => isNotReassign(values),
@@ -144,6 +145,12 @@ export const formSchema: FormSchema[] = [
             problemTypeLabel: options?.label ?? '',
           });
         },
+        onOptionsChange: (options) => {
+          const { setFieldsValue } = formActionType;
+          setFieldsValue({
+            problemTypeOptions: options,
+          });
+        },
       };
     },
   },
@@ -151,6 +158,13 @@ export const formSchema: FormSchema[] = [
     label: '',
     field: 'problemTypeLabel',
     component: 'Input',
+    show: false,
+  },
+  {
+    label: '',
+    field: 'problemTypeOptions',
+    component: 'Input',
+    render: () => '',
     show: false,
   },
   {

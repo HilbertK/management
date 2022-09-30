@@ -23,24 +23,6 @@ export const columns: BasicColumn[] = [
   },
 ];
 
-export const recycleBincolumns: BasicColumn[] = [
-  {
-    title: '分类名称',
-    dataIndex: 'dictName',
-    width: 120,
-  },
-  {
-    title: '分类编号',
-    dataIndex: 'dictCode',
-    width: 120,
-  },
-  {
-    title: '描述',
-    dataIndex: 'description',
-    width: 120,
-  },
-];
-
 export const searchFormSchema: FormSchema[] = [
   {
     label: '分类名称',
@@ -82,6 +64,9 @@ export const formSchema: FormSchema[] = [
     label: '描述',
     field: 'description',
     component: 'Input',
+    componentProps: {
+      maxlength: 100,
+    },
   },
 ];
 
@@ -165,6 +150,9 @@ export const itemFormSchema: FormSchema[] = [
     label: '描述',
     field: 'description',
     component: 'Input',
+    componentProps: {
+      maxlength: 100,
+    },
   },
 ];
 
