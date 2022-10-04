@@ -1,10 +1,10 @@
 <template>
-  <BasicDrawer v-bind="$attrs" @register="registerDrawer" title="评价" :width="adaptiveWidth" @ok="handleSubmit" :showFooter="showFooter" destroyOnClose>
+  <BasicDrawer v-bind="$attrs" @register="registerDrawer" :title="getTitle" :width="adaptiveWidth" @ok="handleSubmit" :showFooter="showFooter" destroyOnClose>
     <BasicForm @register="registerForm" />
   </BasicDrawer>
 </template>
 <script lang="ts" setup>
-  import { ref } from 'vue';
+  import { computed, ref } from 'vue';
   import { BasicForm, useForm } from '/@/components/Form/index';
   import { evaluateFormSchema } from './flow.data';
   import { useMessage } from '/@/hooks/web/useMessage';
@@ -16,6 +16,7 @@
   const emit = defineEmits(['success', 'register']);
   const { createMessage } = useMessage();
   const workOrderId = ref('');
+  const workOrderTitle = ref('');
   //表单配置
   const [registerForm, { setProps, resetFields, setFieldsValue, validate }] = useForm({
     labelWidth: 90,
@@ -31,6 +32,7 @@
     let detailData = data.record;
     if (typeof detailData === 'object') {
       workOrderId.value = detailData.id;
+      workOrderTitle.value = detailData.title;
       try {
         detailData = await detail(workOrderId.value);
       } catch (e) {
@@ -49,6 +51,10 @@
     }
   });
   const { adaptiveWidth } = useDrawerAdaptiveWidth();
+  const getTitle = computed(() => {
+    if (!workOrderTitle.value) return '评价';
+    return `评价（${workOrderTitle.value}）`;
+  });
 
   //提交事件
   async function handleSubmit() {

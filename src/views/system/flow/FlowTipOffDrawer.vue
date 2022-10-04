@@ -1,10 +1,10 @@
 <template>
-  <BasicDrawer v-bind="$attrs" @register="registerDrawer" title="举报" :width="adaptiveWidth" @ok="handleSubmit" :showFooter="showFooter" destroyOnClose>
+  <BasicDrawer v-bind="$attrs" @register="registerDrawer" :title="getTitle" :width="adaptiveWidth" @ok="handleSubmit" :showFooter="showFooter" destroyOnClose>
     <BasicForm @register="registerForm" />
   </BasicDrawer>
 </template>
 <script lang="ts" setup>
-  import { ref } from 'vue';
+  import { ref, computed } from 'vue';
   import { BasicForm, useForm } from '/@/components/Form/index';
   import { tipOffFormSchema } from './flow.data';
   import { useMessage } from '/@/hooks/web/useMessage';
@@ -16,6 +16,7 @@
   const emit = defineEmits(['success', 'register']);
   const { createMessage } = useMessage();
   const workOrderId = ref('');
+  const workOrderTitle = ref('');
   //表单配置
   const [registerForm, { setProps, resetFields, validate }] = useForm({
     labelWidth: 90,
@@ -30,6 +31,7 @@
     setDrawerProps({ confirmLoading: false, showFooter: showFooter.value });
     if (typeof data.record === 'object') {
       workOrderId.value = data.record.id;
+      workOrderTitle.value = data.record.title;
     }
     // 隐藏底部时禁用整个表单
     if (!showFooter.value) {
@@ -37,6 +39,10 @@
     }
   });
   const { adaptiveWidth } = useDrawerAdaptiveWidth();
+  const getTitle = computed(() => {
+    if (!workOrderTitle.value) return '举报';
+    return `举报（${workOrderTitle.value}）`;
+  });
 
   //提交事件
   async function handleSubmit() {

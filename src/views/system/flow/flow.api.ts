@@ -1,6 +1,5 @@
 import { defHttp } from '/@/utils/http/axios';
 import { Modal } from 'ant-design-vue';
-import { FlowStatus } from './constants';
 
 enum Api {
   list = '/bpm/work/order/pageAll',
@@ -8,6 +7,7 @@ enum Api {
   createTipOffList = '/bpm/tipOff/workOrder/myCreate',
   createList = '/bpm/work/order/myCreate',
   handlingList = '/bpm/work/order/myHandling',
+  takeList = '/bpm/work/order/waitingTaking',
   detail = '/bpm/work/order/detail',
   tipOffDetail = '/bpm/tipOff/get',
   save = '/bpm/work/order/create',
@@ -51,7 +51,7 @@ export const handlingList = (params) => defHttp.get({ url: Api.handlingList, par
  * 待接单列表接口
  * @param params
  */
-export const takeList = (params: any, problemType: string) => defHttp.get({ url: Api.list, params: { ...params, status: FlowStatus.Taking, problemType } });
+export const takeList = (params: any) => defHttp.get({ url: Api.takeList, params });
 /**
  * 详情接口
  * @param params

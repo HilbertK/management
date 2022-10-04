@@ -114,12 +114,12 @@
   }
 
   function handleCreateFlow() {
-    const workNoId = (query.id ?? '') as string;
-    router.replace({ path: getCreateFlowRouteByPrev(workNoId) });
+    const prev = query.id ?? '';
+    router.replace({ path: getCreateFlowRouteByPrev(), query: { prev } });
   }
 
   function handleTipOff() {
-    const workNoId = (query.id ?? '') as string;
-    router.replace({ path: getTipOffFlowRoute(workNoId) });
+    const id = query.id ?? '';
+    router.replace({ path: getTipOffFlowRoute(), query: { id } });
   }
 </script>

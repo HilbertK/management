@@ -71,6 +71,6 @@ export const formatTipOffValue = (values: any) => ({
   tipOffAttachment: values.tipOffAttachment,
 });
 
-export const getCreateFlowRouteByPrev = (prevId: string) => `${FlowDetailRoute.path}?prev=${prevId}`;
+export const getCreateFlowRouteByPrev = () => `${FlowDetailRoute.path}`;
 
-export const getTipOffFlowRoute = (id: string) => `${FlowTipOffRoute.path}?id=${id}`;
+export const getTipOffFlowRoute = () => `${FlowTipOffRoute.path}`;
