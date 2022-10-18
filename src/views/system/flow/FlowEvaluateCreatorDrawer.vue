@@ -6,7 +6,7 @@
 <script lang="ts" setup>
   import { computed, ref } from 'vue';
   import { BasicForm, useForm } from '/@/components/Form/index';
-  import { evaluateFormSchema } from './flow.data';
+  import { evaluateCreatorFormSchema } from './flow.data';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
   import { detail, evaluateCreator } from './flow.api';
@@ -20,7 +20,7 @@
   //表单配置
   const [registerForm, { setProps, resetFields, setFieldsValue, validate }] = useForm({
     labelWidth: 90,
-    schemas: evaluateFormSchema,
+    schemas: evaluateCreatorFormSchema,
     showActionButtonGroup: false,
   });
   const showFooter = ref(true);

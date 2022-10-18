@@ -15,6 +15,7 @@
     <!--用户抽屉-->
     <FlowDrawer @register="registerDetailDrawer" @success="handleSuccess" />
     <FlowEvaluateDrawer @register="registerEvaluateDrawer" @success="handleSuccess" />
+    <FlowEvaluateCreatorDrawer @register="registerEvaluateCreatorDrawer" @success="handleSuccess" />
     <FlowTipOffDrawer @register="registerTipOffDrawer" @success="handleSuccess" />
   </div>
 </template>
@@ -23,6 +24,7 @@
   import { BasicTable, TableAction, ActionItem } from '/@/components/Table';
   import FlowDrawer from './FlowDrawer.vue';
   import FlowEvaluateDrawer from './FlowEvaluateDrawer.vue';
+  import FlowEvaluateCreatorDrawer from './FlowEvaluateCreatorDrawer.vue';
   import FlowTipOffDrawer from './FlowTipOffDrawer.vue';
   import { useDrawer } from '/@/components/Drawer';
   import { useListPage } from '/@/hooks/system/useListPage';
@@ -36,6 +38,7 @@
   //注册drawer
   const [registerDetailDrawer, { openDrawer: openDetailDrawer }] = useDrawer();
   const [registerEvaluateDrawer, { openDrawer: openEvaluateDrawer }] = useDrawer();
+  const [registerEvaluateCreatorDrawer, { openDrawer: openEvaluateCreatorDrawer }] = useDrawer();
   const [registerTipOffDrawer, { openDrawer: openTipOffDrawer }] = useDrawer();
   const { currentRoute } = useRouter();
   const { query } = unref(currentRoute);
@@ -122,6 +125,24 @@
     });
   }
   /**
+   * 评价发起人
+   */
+  async function handleEvaluateCreator(record: Recordable) {
+    openEvaluateCreatorDrawer(true, {
+      record,
+      showFooter: true,
+    });
+  }
+  /**
+   * 查看对发起人评价
+   */
+  async function showCreatorEvaluation(record: Recordable) {
+    openEvaluateCreatorDrawer(true, {
+      record,
+      showFooter: false,
+    });
+  }
+  /**
    * 举报
    */
   async function handleTipOff(record: Recordable) {
@@ -184,15 +205,29 @@
         onClick: handleEdit.bind(null, record),
         ifShow: () => showCreateOp && !flowFinishedStatusList.includes(record.status),
       },
+      // 评价处理人
       {
         label: '评价',
         onClick: handleEvaluate.bind(null, record),
         ifShow: () => showCreateOp && record.status === FlowStatus.Evaluate,
       },
+      // 查看处理人评价
       {
         label: '查看评价',
         onClick: showEvaluation.bind(null, record),
         ifShow: () => !isMyHandlePage && userName !== record.handleBy && record.status === FlowStatus.End,
+      },
+      // 评价发起人
+      {
+        label: '评价',
+        onClick: handleEvaluateCreator.bind(null, record),
+        ifShow: () => showHandleOp && !record.scoreForCreator && (record.status === FlowStatus.Evaluate || record.status === FlowStatus.End),
+      },
+      // 查看对发起人评价
+      {
+        label: '查看评价',
+        onClick: showCreatorEvaluation.bind(null, record),
+        ifShow: () => !isMyCreatePage && userName !== record.createBy && record.scoreForCreator && (record.status === FlowStatus.Evaluate || record.status === FlowStatus.End),
       },
       {
         label: '解决',

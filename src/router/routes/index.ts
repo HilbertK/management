@@ -4,7 +4,7 @@ import { PAGE_NOT_FOUND_ROUTE, REDIRECT_ROUTE } from '/@/router/routes/basic';
 import { PageEnum } from '/@/enums/pageEnum';
 import { t } from '/@/hooks/web/useI18n';
 import { RoleRoute, UserRoute } from './userCenter';
-import { FlowRoute, DictRoute, FlowDetailRoute, FlowEvaluateRoute, FlowTipOffRoute, FlowTipOffListRoute } from './flow';
+import { FlowRoute, DictRoute, FlowDetailRoute, FlowEvaluateRoute, FlowEvaluateCreatorRoute, FlowTipOffRoute, FlowTipOffListRoute } from './flow';
 
 export const RootRoute: AppRouteRecordRaw = {
   path: '/',
@@ -61,6 +61,7 @@ export const basicRoutes = [
   FlowRoute,
   FlowDetailRoute,
   FlowEvaluateRoute,
+  FlowEvaluateCreatorRoute,
   FlowTipOffRoute,
   FlowTipOffListRoute,
   DictRoute,

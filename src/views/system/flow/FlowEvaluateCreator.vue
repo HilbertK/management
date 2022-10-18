@@ -1,11 +1,6 @@
 <template>
   <PageWrapper contentBackground contentClass="p-4">
-    <a-result :status="flowError ? 'error' : 'success'" :title="flowError || '提交成功'" v-if="isFinished">
-      <template #extra v-if="!flowError">
-        <a-button key="recreate" type="primary" @click="handleCreateFlow" v-if="!isSolved">重新发起工单</a-button>
-        <a-button key="tipoff" @click="handleTipOff">举报</a-button>
-      </template>
-    </a-result>
+    <a-result :status="flowError ? 'error' : 'success'" :title="flowError || '提交成功'" v-if="isFinished" />
     <BasicForm @register="registerForm" v-else />
   </PageWrapper>
 </template>
@@ -14,15 +9,13 @@
   import { BasicForm, useForm } from '/@/components/Form/index';
   import { useRouter } from 'vue-router';
   import { PageWrapper } from '/@/components/Page';
-  import { router } from '/@/router';
-  import { evaluateFormSchema } from './flow.data';
+  import { evaluateCreatorFormSchema } from './flow.data';
   import { useUserStore } from '/@/store/modules/user';
-  import { evaluateFlow, detail } from './flow.api';
+  import { evaluateCreator, detail } from './flow.api';
   import { FlowStatus } from './constants';
-  import { formatEvaluateValues, formatFormFieldValue, getCreateFlowRouteByPrev, getTipOffFlowRoute } from './utils';
+  import { formatEvaluateValues, formatFormFieldValue } from './utils';
   const isFinished = ref(false);
   const flowError = ref('');
-  const isSolved = ref(true);
   //表单配置
   const [registerForm, { setProps, resetFields, setFieldsValue, validate }] = useForm({
     labelWidth: 90,
@@ -38,7 +31,7 @@
         maxWidth: 'fit-content',
       },
     },
-    schemas: evaluateFormSchema,
+    schemas: evaluateCreatorFormSchema,
     showResetButton: false,
     submitButtonOptions: {
       text: '提交',
@@ -68,8 +61,8 @@
     }
     if (data != null && typeof data === 'object') {
       const userId = userStore.getUserInfo.username;
-      const creatorId = data.createBy ?? '';
-      if (creatorId !== userId) {
+      const handlerId = data.handleBy ?? '';
+      if (handlerId !== userId) {
         flowError.value = '无法评价';
         isFinished.value = true;
         return;
@@ -94,14 +87,13 @@
     if (!workNoId) return;
     try {
       const values = formatEvaluateValues(await validate());
-      isSolved.value = values.solved;
       setProps({
         submitButtonOptions: {
           loading: true,
         },
       });
       //提交表单
-      await evaluateFlow(values, workNoId);
+      await evaluateCreator(values, workNoId);
       isFinished.value = true;
     } finally {
       setProps({
@@ -110,15 +102,5 @@
         },
       });
     }
-  }
-
-  function handleCreateFlow() {
-    const prev = query.id ?? '';
-    router.replace({ path: getCreateFlowRouteByPrev(), query: { prev } });
-  }
-
-  function handleTipOff() {
-    const id = query.id ?? '';
-    router.replace({ path: getTipOffFlowRoute(), query: { id } });
   }
 </script>

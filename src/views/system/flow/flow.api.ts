@@ -15,6 +15,7 @@ enum Api {
   handle = '/bpm/work/order/handle',
   reassign = '/bpm/work/order/reassign',
   evaluate = '/bpm/work/order/evaluate',
+  evaluateCreator = '/bpm/work/order/evaluateCreator',
   tipOff = '/bpm/work/order/tipOff',
   take = '/bpm/work/order/take',
   invalidate = '/bpm/work/order/invalidate',
@@ -124,6 +125,11 @@ export const reassignFlow = (params: any, workOrderId: string) => defHttp.post({
  * @param params
  */
 export const evaluateFlow = (params: any, workOrderId: string) => defHttp.post({ url: `${Api.evaluate}/${workOrderId}`, params });
+/**
+ * 对发起人评价
+ * @param params
+ */
+export const evaluateCreator = (params: any, workOrderId: string) => defHttp.post({ url: `${Api.evaluateCreator}/${workOrderId}`, params });
 
 /**
  * 提交举报

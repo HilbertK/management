@@ -237,6 +237,8 @@ export const formSchema: FormSchema[] = [
     },
   },
 ];
+// 律师评价行政：服务态度、响应速度、专业程度、综合评价
+// 行政评价律师：个人素质、理解能力、沟通效率、综合评价
 
 export const evaluateFormSchema: FormSchema[] = [
   {
@@ -258,8 +260,35 @@ export const evaluateFormSchema: FormSchema[] = [
     },
   },
   {
-    label: '评分',
-    field: 'score',
+    label: '综合评分',
+    field: 'score0',
+    required: true,
+    component: 'Rate',
+    componentProps: {
+      allowHalf: true,
+    },
+  },
+  {
+    label: '服务态度',
+    field: 'score1',
+    required: true,
+    component: 'Rate',
+    componentProps: {
+      allowHalf: true,
+    },
+  },
+  {
+    label: '响应速度',
+    field: 'score2',
+    required: true,
+    component: 'Rate',
+    componentProps: {
+      allowHalf: true,
+    },
+  },
+  {
+    label: '专业程度',
+    field: 'score3',
     required: true,
     component: 'Rate',
     componentProps: {
@@ -269,6 +298,57 @@ export const evaluateFormSchema: FormSchema[] = [
   {
     label: '评价',
     field: 'remark',
+    required: false,
+    component: 'JTextArea',
+  },
+];
+
+export const evaluateCreatorFormSchema: FormSchema[] = [
+  {
+    label: '标题',
+    field: 'title',
+    dynamicDisabled: true,
+    component: 'Input',
+  },
+  {
+    label: '综合评分',
+    field: 'scoreForCreator0',
+    required: true,
+    component: 'Rate',
+    componentProps: {
+      allowHalf: true,
+    },
+  },
+  {
+    label: '个人素质',
+    field: 'scoreForCreator1',
+    required: true,
+    component: 'Rate',
+    componentProps: {
+      allowHalf: true,
+    },
+  },
+  {
+    label: '理解能力',
+    field: 'scoreForCreator2',
+    required: true,
+    component: 'Rate',
+    componentProps: {
+      allowHalf: true,
+    },
+  },
+  {
+    label: '沟通效率',
+    field: 'scoreForCreator3',
+    required: true,
+    component: 'Rate',
+    componentProps: {
+      allowHalf: true,
+    },
+  },
+  {
+    label: '评价',
+    field: 'remarkForCreator',
     required: false,
     component: 'JTextArea',
   },

@@ -60,9 +60,62 @@ export const formatValues = (values: any, mode: FlowOpMode | null) => {
   return submitResult;
 };
 
+export const formatEvaluateValues = (values: any) => {
+  const scoreForCreatorArr: string[] = [];
+  const scoreArr: string[] = [];
+  const submitResult: any = Object.keys(values)
+    .filter((key) => !['title'].includes(key) && values[key] != null)
+    .reduce((prev, curr) => {
+      const newRes = {
+        ...prev,
+        [curr]: values[curr],
+      };
+      if (curr.includes('scoreForCreator')) {
+        scoreForCreatorArr.push(values[curr]);
+        return prev;
+      } else if (curr.includes('score')) {
+        scoreArr.push(values[curr]);
+        return prev;
+      }
+      return newRes;
+    }, {});
+  if (scoreForCreatorArr.length) {
+    return {
+      ...submitResult,
+      scoreForCreator: scoreForCreatorArr,
+    };
+  }
+  if (scoreArr.length) {
+    return {
+      ...submitResult,
+      score: scoreForCreatorArr,
+    };
+  }
+  return submitResult;
+};
+
 export const formatFormFieldValue = (data: any, mode?: FlowOpMode | null) =>
   Object.entries({ ...(data ?? {}), flowOpMode: mode }).reduce((prev, curr) => {
     const [key, value] = curr;
+    return value != null ? { ...prev, [key]: value } : prev;
+  }, {});
+
+export const formatEvaluateFormFieldValue = (data: any) =>
+  Object.entries(data ?? {}).reduce((prev, curr) => {
+    const [key, value] = curr;
+    if (key === 'score' || key === 'scoreForCreator') {
+      const scoreDict = ((value as string[]) ?? []).reduce(
+        (pDict, cItem, cIndex) => ({
+          ...pDict,
+          [`${key}${cIndex}`]: cItem,
+        }),
+        {}
+      );
+      return {
+        ...prev,
+        ...scoreDict,
+      };
+    }
     return value != null ? { ...prev, [key]: value } : prev;
   }, {});
 

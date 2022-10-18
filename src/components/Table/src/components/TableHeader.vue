@@ -33,9 +33,6 @@
               <a @click="setSelectedRowKeys([])">清空</a>
               <slot name="alertAfter" />
             </template>
-            <template v-else>
-              <span>未选中任何数据</span>
-            </template>
           </template>
         </a-alert>
       </slot>

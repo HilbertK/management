@@ -34,6 +34,17 @@ export const FlowEvaluateRoute: AppRouteModule = {
   },
 };
 
+export const FlowEvaluateCreatorRoute: AppRouteModule = {
+  path: '/system/flow/evaluateCreator',
+  name: 'SystemFlowEvaluateCreator',
+  component: () => import('/@/views/system/flow/FlowEvaluateCreator.vue'),
+  meta: {
+    hideChildrenInMenu: true,
+    icon: 'simple-icons:about-dot-me',
+    title: t('routes.flow.evaluate'),
+  },
+};
+
 export const FlowTipOffRoute: AppRouteModule = {
   path: '/system/flow/tipoff/detail',
   name: 'SystemFlowTipOffDetail',

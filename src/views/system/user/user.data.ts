@@ -1,6 +1,6 @@
 import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
-import { getAllRolesList, SexDict } from './user.api';
+import { getAllRolesList, getOfficeList, SexDict } from './user.api';
 import { rules } from '/@/utils/helper/validator';
 import { render } from '/@/utils/common/renderUtils';
 export const columns: BasicColumn[] = [
@@ -15,10 +15,9 @@ export const columns: BasicColumn[] = [
     width: 100,
   },
   {
-    title: '头像',
-    dataIndex: 'avatar',
+    title: '工号',
+    dataIndex: 'workNo',
     width: 120,
-    customRender: render.renderAvatar,
   },
   {
     title: '手机号',
@@ -80,6 +79,17 @@ export const searchFormSchema: FormSchema[] = [
     label: '团队',
     field: 'teamName',
     component: 'Input',
+    colProps: { span: 3, xl: { span: 5 } },
+  },
+  {
+    label: '办公室',
+    field: 'office',
+    component: 'ApiSelect',
+    componentProps: {
+      api: getOfficeList,
+      labelField: 'itemText',
+      valueField: 'itemValue',
+    },
     colProps: { span: 3, xl: { span: 5 } },
   },
   {
@@ -163,6 +173,16 @@ export const formSchema: FormSchema[] = [
       api: getAllRolesList,
       labelField: 'roleName',
       valueField: 'id',
+    },
+  },
+  {
+    label: '办公室',
+    field: 'office',
+    component: 'ApiSelect',
+    componentProps: {
+      api: getOfficeList,
+      labelField: 'itemText',
+      valueField: 'itemValue',
     },
   },
   {

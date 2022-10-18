@@ -24,6 +24,7 @@ enum Api {
   frozenBatch = '/jeecg-system/sys/user/frozenBatch',
   getUserAgent = '/jeecg-system/sys/sysUserAgent/queryByUserName',
   syncUser = '/jeecg-system/sync/userAndDept',
+  officeList = '/jeecg-system/sys/dictItem/officeList',
 }
 
 export enum SexEnum {
@@ -99,6 +100,8 @@ export const duplicateCheck = (params) => defHttp.get({ url: Api.duplicateCheck,
  * @param params
  */
 export const getAllRolesList = (params) => defHttp.get({ url: Api.allRolesList, params });
+
+export const getOfficeList = (params) => defHttp.get({ url: Api.officeList, params });
 /**
  * 获取全部租户
  */
