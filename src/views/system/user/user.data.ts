@@ -17,7 +17,7 @@ export const columns: BasicColumn[] = [
   {
     title: '工号',
     dataIndex: 'workNo',
-    width: 120,
+    width: 100,
   },
   {
     title: '手机号',
@@ -26,8 +26,13 @@ export const columns: BasicColumn[] = [
   },
   {
     title: '团队',
-    width: 150,
+    width: 100,
     dataIndex: 'teamName',
+  },
+  {
+    title: '办公室',
+    width: 100,
+    dataIndex: 'office',
   },
   {
     title: '状态',

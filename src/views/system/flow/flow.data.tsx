@@ -62,12 +62,21 @@ export const searchFormSchema: FormSchema[] = [
     colProps: { span: 3, xl: { span: 5 } },
   },
   {
+    label: '分类',
+    field: 'problemType',
+    component: platform.isMobile() ? 'MApiSelect' : 'ApiSelect',
+    colProps: { span: 3, xl: { span: 5 } },
+    componentProps: {
+      api: getAllDictList,
+      labelField: 'itemText',
+      valueField: 'itemValue',
+    },
+  },
+  {
     label: '状态',
     field: 'status',
     component: 'Select',
-    colProps: {
-      span: 8,
-    },
+    colProps: { span: 3, xl: { span: 5 } },
     ifShow: () => {
       const { currentRoute } = useRouter();
       return !currentRoute.value.query.take;
@@ -78,6 +87,26 @@ export const searchFormSchema: FormSchema[] = [
         value: key,
         key,
       })),
+    },
+  },
+  {
+    label: '解决结果',
+    field: 'solved',
+    component: 'Select',
+    colProps: { span: 3, xl: { span: 5 } },
+    componentProps: {
+      options: [
+        {
+          label: '解决',
+          value: true,
+          key: 'solved',
+        },
+        {
+          label: '未解决',
+          value: false,
+          key: 'unsolved',
+        },
+      ],
     },
   },
 ];
@@ -260,11 +289,15 @@ export const evaluateFormSchema: FormSchema[] = [
     },
   },
   {
-    label: '综合评分',
+    label: <span style="font-size: 16px;font-weight: bold;">综合评分</span>,
+    dynamicRules: () => [{ required: true, message: '评分未填写' }],
     field: 'score0',
     required: true,
     component: 'Rate',
     componentProps: {
+      style: {
+        fontSize: '26px',
+      },
       allowHalf: true,
     },
   },
@@ -311,11 +344,15 @@ export const evaluateCreatorFormSchema: FormSchema[] = [
     component: 'Input',
   },
   {
-    label: '综合评分',
+    label: <span style="font-size: 16px;font-weight: bold;">综合评分</span>,
+    dynamicRules: () => [{ required: true, message: '评分未填写' }],
     field: 'scoreForCreator0',
     required: true,
     component: 'Rate',
     componentProps: {
+      style: {
+        fontSize: '26px',
+      },
       allowHalf: true,
     },
   },
