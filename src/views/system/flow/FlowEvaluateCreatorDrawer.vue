@@ -37,7 +37,7 @@
         detailData = await detail(workOrderId.value);
       } catch (e) {
         console.error(e);
-        createMessage.success('获取工单信息出错');
+        createMessage.error('获取工单信息出错');
         setProps({ disabled: true });
         return;
       }

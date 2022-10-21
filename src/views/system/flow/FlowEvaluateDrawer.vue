@@ -9,7 +9,7 @@
   import { evaluateFormSchema } from './flow.data';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
-  import { detail, evaluateCreator } from './flow.api';
+  import { detail, evaluateFlow } from './flow.api';
   import { useDrawerAdaptiveWidth } from '/@/hooks/jeecg/useAdaptiveWidth';
   import { formatEvaluateValues, formatEvaluateFormFieldValue } from './utils';
   // 声明Emits
@@ -37,7 +37,7 @@
         detailData = await detail(workOrderId.value);
       } catch (e) {
         console.error(e);
-        createMessage.success('获取工单信息出错');
+        createMessage.error('获取工单信息出错');
         setProps({ disabled: true });
         return;
       }
@@ -61,7 +61,7 @@
     try {
       const values = formatEvaluateValues(await validate());
       setDrawerProps({ confirmLoading: true });
-      await evaluateCreator(values, workOrderId.value);
+      await evaluateFlow(values, workOrderId.value);
       createMessage.success('提交成功！');
       //关闭弹窗
       closeDrawer();

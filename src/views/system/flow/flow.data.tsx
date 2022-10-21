@@ -36,7 +36,7 @@ export const columns: BasicColumn[] = [
     width: 120,
   },
   {
-    title: '创建人',
+    title: '发起人',
     dataIndex: 'createByName',
     width: 120,
   },
@@ -195,6 +195,16 @@ export const formSchema: FormSchema[] = [
     component: 'Input',
     render: () => '',
     show: false,
+  },
+  {
+    label: '附件',
+    field: 'attachments',
+    component: 'JImageUpload',
+    dynamicDisabled: ({ values }) => isNotEdit(values),
+    componentProps: {
+      fileMax: 9,
+      fileSize: 3,
+    },
   },
   {
     label: '处理备注',
@@ -442,6 +452,7 @@ export const tipOffFormSchema: FormSchema[] = [
     component: 'JImageUpload',
     componentProps: {
       fileMax: 9,
+      fileSize: 3,
     },
   },
 ];

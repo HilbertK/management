@@ -251,13 +251,13 @@
         ifShow: () => !isMyHandlePage && userName !== record.handleBy && record.status === FlowStatus.End,
       },
       {
-        label: '评价创建人',
+        label: '评价发起人',
         onClick: handleEvaluateCreator.bind(null, record),
         ifShow: () => showHandleOp && !record.scoreForCreator && (record.status === FlowStatus.Evaluate || record.status === FlowStatus.End),
       },
       // 查看对发起人评价
       {
-        label: isMyHandlePage ? '我的评价' : '查看（评价创建人）',
+        label: isMyHandlePage ? '我的评价' : '查看（评价发起人）',
         onClick: showCreatorEvaluation.bind(null, record),
         ifShow: () => !isMyCreatePage && userName !== record.createBy && record.scoreForCreator && (record.status === FlowStatus.Evaluate || record.status === FlowStatus.End),
       },
