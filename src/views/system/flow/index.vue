@@ -253,13 +253,13 @@
       {
         label: '评价发起人',
         onClick: handleEvaluateCreator.bind(null, record),
-        ifShow: () => showHandleOp && !record.scoreForCreator && (record.status === FlowStatus.Evaluate || record.status === FlowStatus.End),
+        ifShow: () => showHandleOp && record.finalScoreForCreator != null && (record.status === FlowStatus.Evaluate || record.status === FlowStatus.End),
       },
       // 查看对发起人评价
       {
         label: isMyHandlePage ? '我的评价' : '查看（评价发起人）',
         onClick: showCreatorEvaluation.bind(null, record),
-        ifShow: () => !isMyCreatePage && userName !== record.createBy && record.scoreForCreator && (record.status === FlowStatus.Evaluate || record.status === FlowStatus.End),
+        ifShow: () => !isMyCreatePage && userName !== record.createBy && record.finalScoreForCreator != null && (record.status === FlowStatus.Evaluate || record.status === FlowStatus.End),
       },
       {
         label: '撤销',
@@ -272,7 +272,7 @@
       {
         label: '举报',
         onClick: handleTipOff.bind(null, record),
-        ifShow: () => showCreateOp && record.status === FlowStatus.End && record.solved === false,
+        ifShow: () => showCreateOp && record.status === FlowStatus.End && !record.tipOff && record.solved === false,
       },
     ];
   }

@@ -69,7 +69,7 @@
       setFieldsValue({
         ...formatEvaluateFormFieldValue(data),
       });
-      if (data.scoreForCreator) {
+      if (data.scoreForCreator != null) {
         setProps({ disabled: true, showSubmitButton: false });
       }
     } else {
