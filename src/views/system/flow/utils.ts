@@ -88,7 +88,7 @@ export const formatEvaluateValues = (values: any) => {
   if (scoreArr.length) {
     return {
       ...submitResult,
-      score: scoreForCreatorArr,
+      score: scoreArr,
     };
   }
   return submitResult;

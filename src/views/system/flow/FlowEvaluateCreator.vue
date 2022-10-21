@@ -12,7 +12,6 @@
   import { evaluateCreatorFormSchema } from './flow.data';
   import { useUserStore } from '/@/store/modules/user';
   import { evaluateCreator, detail } from './flow.api';
-  import { FlowStatus } from './constants';
   import { formatEvaluateValues, formatEvaluateFormFieldValue } from './utils';
   const isFinished = ref(false);
   const flowError = ref('');
