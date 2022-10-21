@@ -11,7 +11,7 @@
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
   import { detail, evaluateCreator } from './flow.api';
   import { useDrawerAdaptiveWidth } from '/@/hooks/jeecg/useAdaptiveWidth';
-  import { formatEvaluateValues, formatFormFieldValue } from './utils';
+  import { formatEvaluateValues, formatEvaluateFormFieldValue } from './utils';
   // 声明Emits
   const emit = defineEmits(['success', 'register']);
   const { createMessage } = useMessage();
@@ -42,7 +42,7 @@
         return;
       }
       setFieldsValue({
-        ...formatFormFieldValue(detailData),
+        ...formatEvaluateFormFieldValue(detailData),
       });
     }
     // 隐藏底部时禁用整个表单

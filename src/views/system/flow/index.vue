@@ -9,7 +9,7 @@
       </template>
       <!--操作栏-->
       <template #action="{ record }">
-        <TableAction :actions="getTableAction(record)" />
+        <TableAction :actions="getTableAction(record)" :dropDownActions="getDropDownAction(record)" />
       </template>
     </BasicTable>
     <!--用户抽屉-->
@@ -56,7 +56,10 @@
       size: 'small',
       formConfig: {
         labelWidth: 200,
+        autoAdvancedCol: 5,
+        autoAdvancedLine: 3,
         schemas: searchFormSchema,
+        actionColOptions: { span: 3, xl: { span: 3 } },
       },
       actionColumn: {
         width: 220,
@@ -205,30 +208,6 @@
         onClick: handleEdit.bind(null, record),
         ifShow: () => showCreateOp && !flowFinishedStatusList.includes(record.status),
       },
-      // 评价处理人
-      {
-        label: '评价',
-        onClick: handleEvaluate.bind(null, record),
-        ifShow: () => showCreateOp && record.status === FlowStatus.Evaluate,
-      },
-      // 查看处理人评价
-      {
-        label: isMyCreatePage ? '我的评价' : '评价处理人',
-        onClick: showEvaluation.bind(null, record),
-        ifShow: () => !isMyHandlePage && userName !== record.handleBy && record.status === FlowStatus.End,
-      },
-      // 评价发起人
-      {
-        label: '评价',
-        onClick: handleEvaluateCreator.bind(null, record),
-        ifShow: () => showHandleOp && !record.scoreForCreator && (record.status === FlowStatus.Evaluate || record.status === FlowStatus.End),
-      },
-      // 查看对发起人评价
-      {
-        label: isMyHandlePage ? '我的评价' : '评价创建人',
-        onClick: showCreatorEvaluation.bind(null, record),
-        ifShow: () => !isMyCreatePage && userName !== record.createBy && record.scoreForCreator && (record.status === FlowStatus.Evaluate || record.status === FlowStatus.End),
-      },
       {
         label: '解决',
         popConfirm: {
@@ -240,6 +219,47 @@
       {
         label: '详情',
         onClick: handleDetail.bind(null, record),
+      },
+    ];
+  }
+  /**
+   * 下拉操作栏
+   */
+  function getDropDownAction(record): ActionItem[] {
+    const userStore = useUserStore();
+    const userName = userStore.userInfo?.username;
+    const showHandleOp = isMyHandlePage && userName === record.handleBy;
+    const showCreateOp = isMyCreatePage && userName === record.createBy;
+    return [
+      {
+        label: '接单',
+        popConfirm: {
+          title: '确认要接单吗？',
+          confirm: handleTake.bind(null, record),
+        },
+        ifShow: () => isToTakePage,
+      },
+      {
+        label: '评价处理人',
+        onClick: handleEvaluate.bind(null, record),
+        ifShow: () => showCreateOp && record.status === FlowStatus.Evaluate,
+      },
+      // 查看处理人评价
+      {
+        label: isMyCreatePage ? '我的评价' : '查看（评价处理人）',
+        onClick: showEvaluation.bind(null, record),
+        ifShow: () => !isMyHandlePage && userName !== record.handleBy && record.status === FlowStatus.End,
+      },
+      {
+        label: '评价创建人',
+        onClick: handleEvaluateCreator.bind(null, record),
+        ifShow: () => showHandleOp && !record.scoreForCreator && (record.status === FlowStatus.Evaluate || record.status === FlowStatus.End),
+      },
+      // 查看对发起人评价
+      {
+        label: isMyHandlePage ? '我的评价' : '查看（评价创建人）',
+        onClick: showCreatorEvaluation.bind(null, record),
+        ifShow: () => !isMyCreatePage && userName !== record.createBy && record.scoreForCreator && (record.status === FlowStatus.Evaluate || record.status === FlowStatus.End),
       },
       {
         label: '撤销',
@@ -253,14 +273,6 @@
         label: '举报',
         onClick: handleTipOff.bind(null, record),
         ifShow: () => showCreateOp && record.status === FlowStatus.End && record.solved === false,
-      },
-      {
-        label: '接单',
-        popConfirm: {
-          title: '确认要接单吗？',
-          confirm: handleTake.bind(null, record),
-        },
-        ifShow: () => isToTakePage,
       },
     ];
   }

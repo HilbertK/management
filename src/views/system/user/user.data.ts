@@ -69,22 +69,22 @@ export const recycleColumns: BasicColumn[] = [
 
 export const searchFormSchema: FormSchema[] = [
   {
-    label: '用户姓名',
+    label: '姓名',
     field: 'realname',
     component: 'Input',
-    colProps: { span: 3, xl: { span: 5 } },
+    colProps: { span: 3, xl: { span: 4 } },
   },
   {
-    label: '手机号码',
+    label: '手机号',
     field: 'phone',
     component: 'Input',
-    colProps: { span: 3, xl: { span: 5 } },
+    colProps: { span: 3, xl: { span: 4 } },
   },
   {
     label: '团队',
     field: 'teamName',
     component: 'Input',
-    colProps: { span: 3, xl: { span: 5 } },
+    colProps: { span: 3, xl: { span: 4 } },
   },
   {
     label: '办公室',
@@ -95,10 +95,10 @@ export const searchFormSchema: FormSchema[] = [
       labelField: 'itemText',
       valueField: 'itemValue',
     },
-    colProps: { span: 3, xl: { span: 5 } },
+    colProps: { span: 3, xl: { span: 4 } },
   },
   {
-    label: '用户状态',
+    label: '状态',
     field: 'status',
     component: 'JDictSelectTag',
     componentProps: {
@@ -106,7 +106,7 @@ export const searchFormSchema: FormSchema[] = [
       placeholder: '请选择状态',
       stringToNumber: true,
     },
-    colProps: { span: 3, xl: { span: 5 } },
+    colProps: { span: 3, xl: { span: 4 } },
   },
 ];
 

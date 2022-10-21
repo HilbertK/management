@@ -13,7 +13,7 @@
   import { useUserStore } from '/@/store/modules/user';
   import { evaluateCreator, detail } from './flow.api';
   import { FlowStatus } from './constants';
-  import { formatEvaluateValues, formatFormFieldValue } from './utils';
+  import { formatEvaluateValues, formatEvaluateFormFieldValue } from './utils';
   const isFinished = ref(false);
   const flowError = ref('');
   //表单配置
@@ -68,9 +68,9 @@
         return;
       }
       setFieldsValue({
-        ...formatFormFieldValue(data),
+        ...formatEvaluateFormFieldValue(data),
       });
-      if (data.status !== FlowStatus.Evaluate) {
+      if (data.scoreForCreator) {
         setProps({ disabled: true, showSubmitButton: false });
       }
     } else {

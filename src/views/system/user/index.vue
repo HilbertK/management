@@ -87,7 +87,10 @@
       size: 'small',
       formConfig: {
         labelWidth: 200,
+        autoAdvancedCol: 5,
+        autoAdvancedLine: 3,
         schemas: searchFormSchema,
+        actionColOptions: { span: 3, xl: { span: 3 } },
       },
       actionColumn: {
         width: 220,
@@ -215,12 +218,23 @@
         // ifShow: () => hasPermission('system:user:edit'),
       },
       {
+        label: '详情',
+        onClick: handleDetail.bind(null, record),
+      },
+      {
         label: '删除',
         popConfirm: {
           title: '是否确认删除',
           confirm: handleDelete.bind(null, record),
         },
       },
+    ];
+  }
+  /**
+   * 下拉操作栏
+   */
+  function getDropDownAction(record): ActionItem[] {
+    return [
       {
         label: '冻结',
         ifShow: record.status == 1,
@@ -236,17 +250,6 @@
           title: '确定解冻吗?',
           confirm: handleFrozen.bind(null, record, 1),
         },
-      },
-    ];
-  }
-  /**
-   * 下拉操作栏
-   */
-  function getDropDownAction(record): ActionItem[] {
-    return [
-      {
-        label: '详情',
-        onClick: handleDetail.bind(null, record),
       },
       {
         label: '密码',

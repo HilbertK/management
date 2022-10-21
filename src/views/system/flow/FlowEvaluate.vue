@@ -19,7 +19,7 @@
   import { useUserStore } from '/@/store/modules/user';
   import { evaluateFlow, detail } from './flow.api';
   import { FlowStatus } from './constants';
-  import { formatEvaluateValues, formatFormFieldValue, getCreateFlowRouteByPrev, getTipOffFlowRoute } from './utils';
+  import { formatEvaluateValues, formatEvaluateFormFieldValue, getCreateFlowRouteByPrev, getTipOffFlowRoute } from './utils';
   const isFinished = ref(false);
   const flowError = ref('');
   const isSolved = ref(true);
@@ -75,7 +75,7 @@
         return;
       }
       setFieldsValue({
-        ...formatFormFieldValue(data),
+        ...formatEvaluateFormFieldValue(data),
       });
       if (data.status !== FlowStatus.Evaluate) {
         setProps({ disabled: true, showSubmitButton: false });

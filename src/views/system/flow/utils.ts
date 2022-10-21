@@ -70,10 +70,10 @@ export const formatEvaluateValues = (values: any) => {
         ...prev,
         [curr]: values[curr],
       };
-      if (curr.includes('scoreForCreator')) {
+      if (/^(scoreForCreator)[0-9]+$/.test(curr)) {
         scoreForCreatorArr.push(values[curr]);
         return prev;
-      } else if (curr.includes('score')) {
+      } else if (/^(score)[0-9]+$/.test(curr)) {
         scoreArr.push(values[curr]);
         return prev;
       }
@@ -104,7 +104,7 @@ export const formatEvaluateFormFieldValue = (data: any) =>
   Object.entries(data ?? {}).reduce((prev, curr) => {
     const [key, value] = curr;
     if (key === 'score' || key === 'scoreForCreator') {
-      const scoreDict = ((value as string[]) ?? []).reduce(
+      const scoreDict = [].concat((value ?? []) as any).reduce(
         (pDict, cItem, cIndex) => ({
           ...pDict,
           [`${key}${cIndex}`]: cItem,

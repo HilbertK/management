@@ -59,13 +59,13 @@ export const searchFormSchema: FormSchema[] = [
     label: '标题',
     field: 'title',
     component: 'Input',
-    colProps: { span: 3, xl: { span: 5 } },
+    colProps: { span: 3, xl: { span: 4 } },
   },
   {
     label: '分类',
     field: 'problemType',
     component: platform.isMobile() ? 'MApiSelect' : 'ApiSelect',
-    colProps: { span: 3, xl: { span: 5 } },
+    colProps: { span: 3, xl: { span: 4 } },
     componentProps: {
       api: getAllDictList,
       labelField: 'itemText',
@@ -76,7 +76,7 @@ export const searchFormSchema: FormSchema[] = [
     label: '状态',
     field: 'status',
     component: 'Select',
-    colProps: { span: 3, xl: { span: 5 } },
+    colProps: { span: 3, xl: { span: 4 } },
     ifShow: () => {
       const { currentRoute } = useRouter();
       return !currentRoute.value.query.take;
@@ -93,7 +93,7 @@ export const searchFormSchema: FormSchema[] = [
     label: '解决结果',
     field: 'solved',
     component: 'Select',
-    colProps: { span: 3, xl: { span: 5 } },
+    colProps: { span: 4, xl: { span: 5 } },
     componentProps: {
       options: [
         {
