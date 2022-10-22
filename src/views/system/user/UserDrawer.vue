@@ -66,6 +66,10 @@
         field: 'teamName',
         ifShow: unref(isUpdate),
       },
+      {
+        field: 'office',
+        ifShow: unref(isUpdate),
+      },
     ]);
     // 无论新增还是编辑，都可以设置表单值
     if (typeof data.record === 'object') {

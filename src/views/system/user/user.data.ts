@@ -25,7 +25,7 @@ export const columns: BasicColumn[] = [
     width: 100,
   },
   {
-    title: '团队',
+    title: '部门/团队',
     width: 100,
     dataIndex: 'teamName',
   },
@@ -33,6 +33,11 @@ export const columns: BasicColumn[] = [
     title: '办公室',
     width: 100,
     dataIndex: 'office',
+  },
+  {
+    title: '类型',
+    width: 100,
+    dataIndex: 'userType',
   },
   {
     title: '状态',
@@ -81,7 +86,7 @@ export const searchFormSchema: FormSchema[] = [
     colProps: { span: 3, xl: { span: 4 } },
   },
   {
-    label: '团队',
+    label: '部门/团队',
     field: 'teamName',
     component: 'Input',
     colProps: { span: 3, xl: { span: 4 } },
@@ -181,6 +186,13 @@ export const formSchema: FormSchema[] = [
     },
   },
   {
+    label: '部门/团队',
+    field: 'teamName',
+    required: false,
+    component: 'Input',
+    dynamicDisabled: true,
+  },
+  {
     label: '办公室',
     field: 'office',
     component: 'ApiSelect',
@@ -189,11 +201,12 @@ export const formSchema: FormSchema[] = [
       labelField: 'itemText',
       valueField: 'itemValue',
     },
+    dynamicDisabled: true,
   },
   {
-    label: '团队',
-    field: 'teamName',
-    required: false,
+    label: '类型',
+    field: 'userType',
+    helpMessage: '律师为LY，行政为AD，部门账号为DEPT',
     component: 'Input',
     dynamicDisabled: true,
   },

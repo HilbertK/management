@@ -221,13 +221,6 @@
         label: '详情',
         onClick: handleDetail.bind(null, record),
       },
-      {
-        label: '删除',
-        popConfirm: {
-          title: '是否确认删除',
-          confirm: handleDelete.bind(null, record),
-        },
-      },
     ];
   }
   /**
@@ -254,6 +247,13 @@
       {
         label: '密码',
         onClick: handleChangePassword.bind(null, record.username),
+      },
+      {
+        label: '删除',
+        popConfirm: {
+          title: '是否确认删除',
+          confirm: handleDelete.bind(null, record),
+        },
       },
       // {
       //   label: '代理人',

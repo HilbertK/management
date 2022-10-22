@@ -305,8 +305,8 @@
     .@{prefix-cls} {
       //表格选择工具栏样式
       .alert {
-        background-color: #323232;
-        border-color: #424242;
+        background-color: #fff;
+        border-color: #fff;
       }
     }
   }
@@ -398,9 +398,10 @@
     }
     //表格选择工具栏样式
     .alert {
-      height: 38px;
-      background-color: #f3f3f3;
-      border-color: #e3e3e3;
+      height: 20px;
+      background-color: #fff;
+      border-color: #fff;
+      padding: 2px 15px;
     }
     &--inset {
       .ant-table-wrapper {

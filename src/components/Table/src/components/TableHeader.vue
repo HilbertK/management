@@ -25,7 +25,7 @@
     <!--添加tableTop插槽-->
     <div style="margin: -4px 0 -2px; padding-top: 5px">
       <slot name="tableTop">
-        <a-alert type="info" show-icon class="alert" v-if="openRowSelection != null">
+        <a-alert type="info" :show-icon="selectRowKeys.length > 0" class="alert" v-if="openRowSelection != null">
           <template #message>
             <template v-if="selectRowKeys.length > 0">
               <span>已选中 {{ selectRowKeys.length }} 条记录</span>
