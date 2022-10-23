@@ -59,7 +59,7 @@
         autoAdvancedCol: 5,
         autoAdvancedLine: 3,
         schemas: searchFormSchema,
-        actionColOptions: { span: 3, xl: { span: 3 } },
+        actionColOptions: { span: 3, xl: { span: 4 } },
       },
       actionColumn: {
         width: 220,

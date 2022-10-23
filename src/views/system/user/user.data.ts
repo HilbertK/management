@@ -3,6 +3,7 @@ import { FormSchema } from '/@/components/Table';
 import { getAllRolesList, getOfficeList, SexDict } from './user.api';
 import { rules } from '/@/utils/helper/validator';
 import { render } from '/@/utils/common/renderUtils';
+import { userTypeDict } from './constants';
 export const columns: BasicColumn[] = [
   {
     title: '用户账号',
@@ -38,6 +39,7 @@ export const columns: BasicColumn[] = [
     title: '类型',
     width: 100,
     dataIndex: 'userType',
+    customRender: ({ text }) => `${userTypeDict[text] ?? ''}`,
   },
   {
     title: '状态',
@@ -77,19 +79,13 @@ export const searchFormSchema: FormSchema[] = [
     label: '姓名',
     field: 'realname',
     component: 'Input',
-    colProps: { span: 3, xl: { span: 4 } },
-  },
-  {
-    label: '手机号',
-    field: 'phone',
-    component: 'Input',
-    colProps: { span: 3, xl: { span: 4 } },
+    colProps: { span: 4, xl: { span: 5 } },
   },
   {
     label: '部门/团队',
     field: 'teamName',
     component: 'Input',
-    colProps: { span: 3, xl: { span: 4 } },
+    colProps: { span: 4, xl: { span: 5 } },
   },
   {
     label: '办公室',
@@ -100,7 +96,22 @@ export const searchFormSchema: FormSchema[] = [
       labelField: 'itemText',
       valueField: 'itemValue',
     },
-    colProps: { span: 3, xl: { span: 4 } },
+    colProps: { span: 4, xl: { span: 5 } },
+  },
+  {
+    label: '类型',
+    field: 'userType',
+    component: 'Select',
+    componentProps: {
+      options: Object.entries(userTypeDict).map(([key, value]) => ({ value: key, label: value })),
+    },
+    colProps: { span: 4, xl: { span: 6 } },
+  },
+  {
+    label: '手机号',
+    field: 'phone',
+    component: 'Input',
+    colProps: { span: 4, xl: { span: 5 } },
   },
   {
     label: '状态',
@@ -111,7 +122,7 @@ export const searchFormSchema: FormSchema[] = [
       placeholder: '请选择状态',
       stringToNumber: true,
     },
-    colProps: { span: 3, xl: { span: 4 } },
+    colProps: { span: 4, xl: { span: 5 } },
   },
 ];
 
@@ -206,8 +217,10 @@ export const formSchema: FormSchema[] = [
   {
     label: '类型',
     field: 'userType',
-    helpMessage: '律师为LY，行政为AD，部门账号为DEPT',
-    component: 'Input',
+    component: 'Select',
+    componentProps: {
+      options: Object.entries(userTypeDict).map(([key, value]) => ({ value: key, label: value })),
+    },
     dynamicDisabled: true,
   },
   // {

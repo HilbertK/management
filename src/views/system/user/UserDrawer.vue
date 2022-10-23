@@ -67,6 +67,10 @@
         ifShow: unref(isUpdate),
       },
       {
+        field: 'userType',
+        ifShow: unref(isUpdate),
+      },
+      {
         field: 'office',
         ifShow: unref(isUpdate),
       },
