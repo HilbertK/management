@@ -85,7 +85,7 @@ export const searchFormSchema: FormSchema[] = [
     label: '部门/团队',
     field: 'teamName',
     component: 'Input',
-    colProps: { span: 4, xl: { span: 5 } },
+    colProps: { span: 5, xl: { span: 6 } },
   },
   {
     label: '办公室',
@@ -105,7 +105,7 @@ export const searchFormSchema: FormSchema[] = [
     componentProps: {
       options: Object.entries(userTypeDict).map(([key, value]) => ({ value: key, label: value })),
     },
-    colProps: { span: 4, xl: { span: 6 } },
+    colProps: { span: 4, xl: { span: 5 } },
   },
   {
     label: '手机号',
@@ -122,7 +122,7 @@ export const searchFormSchema: FormSchema[] = [
       placeholder: '请选择状态',
       stringToNumber: true,
     },
-    colProps: { span: 4, xl: { span: 5 } },
+    colProps: { span: 5, xl: { span: 6 } },
   },
 ];
 

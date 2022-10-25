@@ -86,11 +86,11 @@
       columns: columns,
       size: 'small',
       formConfig: {
-        labelWidth: 200,
+        labelWidth: 50,
         autoAdvancedCol: 4,
         autoAdvancedLine: 3,
         schemas: searchFormSchema,
-        actionColOptions: { span: 3, xl: { span: 4 } },
+        actionColOptions: { span: 4, xl: { span: 5 } },
       },
       actionColumn: {
         width: 220,
