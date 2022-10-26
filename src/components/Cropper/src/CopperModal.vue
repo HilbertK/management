@@ -1,9 +1,18 @@
 <template>
-  <BasicModal v-bind="$attrs" @register="register" :title="t('component.cropper.modalTitle')" width="800px" :canFullscreen="false" @ok="handleOk" :okText="t('component.cropper.okText')">
+  <BasicModal
+    v-bind="$attrs"
+    @register="register"
+    :title="t('component.cropper.modalTitle')"
+    :okButtonProps="{ disabled: !src }"
+    width="800px"
+    :canFullscreen="false"
+    @ok="handleOk"
+    :okText="t('component.cropper.okText')"
+  >
     <div :class="prefixCls">
       <div :class="`${prefixCls}-left`">
         <div :class="`${prefixCls}-cropper`">
-          <CropperImage v-if="src" :src="src" height="300px" :circled="circled" @cropend="handleCropend" @ready="handleReady" />
+          <CropperImage v-if="src" :src="src" height="300px" :circled="circled" @cropend="handleCropend" @ready="handleReady" :options="options" />
         </div>
 
         <div :class="`${prefixCls}-toolbar`">
@@ -38,15 +47,15 @@
         </div>
       </div>
       <div :class="`${prefixCls}-right`">
-        <div :class="`${prefixCls}-preview`">
-          <img :src="previewSource" v-if="previewSource" :alt="t('component.cropper.preview')" />
+        <div :class="`${prefixCls}-preview`" v-if="previewSource">
+          <img :src="previewSource" :alt="t('component.cropper.preview')" :style="circled ? { borderRadius: '50%' } : {}" />
         </div>
         <template v-if="previewSource">
           <div :class="`${prefixCls}-group`">
-            <Avatar :src="previewSource" size="large" />
-            <Avatar :src="previewSource" :size="48" />
-            <Avatar :src="previewSource" :size="64" />
-            <Avatar :src="previewSource" :size="80" />
+            <img :src="previewSource" :class="`${prefixCls}-preview-img-1`" :style="circled ? { borderRadius: '50%' } : {}" />
+            <img :src="previewSource" :class="`${prefixCls}-preview-img-2`" :style="circled ? { borderRadius: '50%' } : {}" />
+            <img :src="previewSource" :class="`${prefixCls}-preview-img-3`" :style="circled ? { borderRadius: '50%' } : {}" />
+            <img :src="previewSource" :class="`${prefixCls}-preview-img-4`" :style="circled ? { borderRadius: '50%' } : {}" />
           </div>
         </template>
       </div>
@@ -55,28 +64,40 @@
 </template>
 <script lang="ts">
   import type { CropendResult, Cropper } from './typing';
-
+  import { useMessage } from '/@/hooks/web/useMessage';
   import { defineComponent, ref } from 'vue';
   import CropperImage from './Cropper.vue';
-  import { Space, Upload, Avatar, Tooltip } from 'ant-design-vue';
+  import { Space, Upload, Tooltip } from 'ant-design-vue';
   import { useDesign } from '/@/hooks/web/useDesign';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { dataURLtoBlob } from '/@/utils/file/base64Conver';
   import { isFunction } from '/@/utils/is';
   import { useI18n } from '/@/hooks/web/useI18n';
 
-  type apiFunParams = { file: Blob; name: string; filename: string };
+  type apiFunParams = { file: Blob; name: string; filename: string; data?: Recordable };
 
   const props = {
     circled: { type: Boolean, default: true },
     uploadApi: {
       type: Function as PropType<(params: apiFunParams) => Promise<any>>,
     },
+    bizPath: {
+      type: String,
+      required: false,
+      default: 'temp',
+    },
+    options: { type: Object as PropType<Cropper.Options>, default: () => ({}) },
+    fileSize: {
+      type: Number,
+      required: false,
+      default: 1,
+    },
   };
 
+  const { createMessage } = useMessage();
   export default defineComponent({
     name: 'CropperModal',
-    components: { BasicModal, Space, CropperImage, Upload, Avatar, Tooltip },
+    components: { BasicModal, Space, CropperImage, Upload, Tooltip },
     props,
     emits: ['uploadSuccess', 'register'],
     setup(props, { emit }) {
@@ -93,6 +114,12 @@
 
       // Block upload
       function handleBeforeUpload(file: File) {
+        const fileSize = props.fileSize ?? 1;
+        const isLt2M = file.size / 1024 / 1024 < fileSize;
+        if (!isLt2M) {
+          createMessage.info(`上传大小不能超过${fileSize}MB`);
+          return false;
+        }
         const reader = new FileReader();
         reader.readAsDataURL(file);
         src.value = '';
@@ -128,7 +155,7 @@
           const blob = dataURLtoBlob(previewSource.value);
           try {
             setModalProps({ confirmLoading: true });
-            const result = await uploadApi({ name: 'file', file: blob, filename });
+            const result = await uploadApi({ name: 'file', file: blob, data: { biz: props.bizPath }, filename });
             emit('uploadSuccess', {
               source: previewSource.value,
               data: result.data || result.message,
@@ -192,12 +219,11 @@
     }
 
     &-preview {
-      width: 220px;
+      width: fit-content;
       height: 220px;
       margin: 0 auto;
       overflow: hidden;
       border: 1px solid @border-color-base;
-      border-radius: 50%;
 
       img {
         width: 100%;
@@ -212,6 +238,22 @@
       border-top: 1px solid @border-color-base;
       justify-content: space-around;
       align-items: center;
+    }
+    &-preview-img-1 {
+      width: auto;
+      height: 40px;
+    }
+    &-preview-img-2 {
+      width: auto;
+      height: 48px;
+    }
+    &-preview-img-3 {
+      width: auto;
+      height: 64px;
+    }
+    &-preview-img-4 {
+      width: auto;
+      height: 80px;
     }
   }
 </style>

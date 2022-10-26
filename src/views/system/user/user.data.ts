@@ -167,6 +167,20 @@ export const formSchema: FormSchema[] = [
     component: 'Input',
   },
   {
+    label: '邮箱',
+    field: 'email',
+    component: 'Input',
+    rules: rules.rule('email', false),
+  },
+  {
+    label: '手机号码',
+    field: 'phone',
+    component: 'Input',
+    dynamicRules: ({ model, schema }) => {
+      return [{ ...rules.duplicateCheckRule('sys_user', 'phone', model, schema, false)[0] }, { pattern: /^1[3|4|5|7|8|9][0-9]\d{8}$/, message: '手机号码格式有误' }];
+    },
+  },
+  {
     label: '工号',
     field: 'workNo',
     required: false,
@@ -223,47 +237,25 @@ export const formSchema: FormSchema[] = [
     },
     dynamicDisabled: true,
   },
-  // {
-  //   label: '所属部门',
-  //   field: 'selecteddeparts',
-  //   component: 'JSelectDept',
-  //   dynamicDisabled: true,
-  //   componentProps: ({ formActionType, formModel }) => {
-  //     return {
-  //       sync: false,
-  //       checkStrictly: true,
-  //       defaultExpandLevel: 2,
-  //       multiple: false,
-  //       onSelect: (options, values) => {
-  //         const { updateSchema } = formActionType;
-  //         //所属部门修改后更新负责部门下拉框数据
-  //         updateSchema([
-  //           {
-  //             field: 'departIds',
-  //             componentProps: { options },
-  //           },
-  //         ]);
-  //         //所属部门修改后更新负责部门数据
-  //         formModel.departIds && (formModel.departIds = formModel.departIds.filter((item) => values.value.indexOf(item) > -1));
-  //       },
-  //     };
-  //   },
-  // },
-  // {
-  //   label: '负责部门',
-  //   field: 'departIds',
-  //   component: 'Select',
-  //   componentProps: {
-  //     mode: 'multiple',
-  //   },
-  //   ifShow: ({ values }) => values.userIdentity == 2,
-  // },
   {
     label: '头像',
     field: 'avatar',
-    component: 'JImageUpload',
+    component: 'JImageCropUpload',
     componentProps: {
-      fileMax: 1,
+      bizPath: 'avatar',
+      width: '100px',
+      height: '100px',
+    },
+  },
+  {
+    label: '形象照',
+    field: 'appearance',
+    component: 'JImageCropUpload',
+    componentProps: {
+      bizPath: 'appearance',
+      width: '200px',
+      height: '300px',
+      fileSize: 5,
     },
   },
   {
@@ -279,20 +271,6 @@ export const formSchema: FormSchema[] = [
       dictCode: 'sex',
       placeholder: '请选择性别',
       stringToNumber: true,
-    },
-  },
-  {
-    label: '邮箱',
-    field: 'email',
-    component: 'Input',
-    rules: rules.rule('email', false),
-  },
-  {
-    label: '手机号码',
-    field: 'phone',
-    component: 'Input',
-    dynamicRules: ({ model, schema }) => {
-      return [{ ...rules.duplicateCheckRule('sys_user', 'phone', model, schema, false)[0] }, { pattern: /^1[3|4|5|7|8|9][0-9]\d{8}$/, message: '手机号码格式有误' }];
     },
   },
 ];
