@@ -4,8 +4,8 @@
     <BasicTable @register="registerTable">
       <!--插槽:table标题-->
       <template #tableTitle>
-        <a-button type="primary" preIcon="ant-design:plus-outlined" @click="handleCreate" v-if="isMyCreatePage"> 新增</a-button>
-        <a-button type="primary" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
+        <a-button type="primary" preIcon="ant-design:plus-outlined" @click="handleCreate" v-if="isMyCreatePage">发起工单</a-button>
+        <a-button type="primary" preIcon="ant-design:export-outlined" @click="onExportXls">导出</a-button>
       </template>
       <!--操作栏-->
       <template #action="{ record }">
@@ -30,7 +30,7 @@
   import { useListPage } from '/@/hooks/system/useListPage';
   import { useUserStore } from '/@/store/modules/user';
   import { useRouter } from 'vue-router';
-  import { columns, searchFormSchema } from './flow.data';
+  import { getColumns, searchFormSchema } from './flow.data';
   import { list, createlist, handlingList, takeList, getImportUrl, getExportUrl, invalidateFlow, solveFlow, takeFlow } from './flow.api';
   import { flowFinishedStatusList, FlowOpMode, FlowStatus } from './constants';
   import { unref } from 'vue';
@@ -52,7 +52,7 @@
     tableProps: {
       title: '工单列表',
       api: isMyCreatePage ? createlist : isMyHandlePage ? handlingList : isToTakePage ? takeList : list,
-      columns: columns,
+      columns: getColumns(!query.handle),
       size: 'small',
       formConfig: {
         labelWidth: 200,

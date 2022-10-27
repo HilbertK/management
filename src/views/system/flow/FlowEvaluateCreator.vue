@@ -36,6 +36,7 @@
       text: '提交',
       preIcon: '',
     },
+    showSubmitButton: false,
     submitFunc: handleSubmit,
   });
   const { currentRoute } = useRouter();
@@ -69,9 +70,8 @@
       setFieldsValue({
         ...formatEvaluateFormFieldValue(data),
       });
-      if (data.scoreForCreator != null) {
-        setProps({ disabled: true, showSubmitButton: false });
-      }
+      const disabled = data.scoreForCreator != null;
+      setProps({ disabled, showSubmitButton: !disabled });
     } else {
       flowError.value = '工单不存在';
       isFinished.value = true;

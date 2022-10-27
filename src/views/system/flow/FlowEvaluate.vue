@@ -45,6 +45,7 @@
       preIcon: '',
     },
     submitFunc: handleSubmit,
+    showSubmitButton: false,
   });
   const { currentRoute } = useRouter();
   const { query } = unref(currentRoute);
@@ -77,9 +78,8 @@
       setFieldsValue({
         ...formatEvaluateFormFieldValue(data),
       });
-      if (data.status !== FlowStatus.Evaluate) {
-        setProps({ disabled: true, showSubmitButton: false });
-      }
+      const disabled = data.status !== FlowStatus.Evaluate;
+      setProps({ disabled, showSubmitButton: !disabled });
     } else {
       flowError.value = '工单不存在';
       isFinished.value = true;

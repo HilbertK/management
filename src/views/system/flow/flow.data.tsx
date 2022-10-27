@@ -19,10 +19,11 @@ const isNotEdit = (values: any) => {
   return values.flowOpMode !== FlowOpMode.Edit;
 };
 
-export const columns: BasicColumn[] = [
+export const getColumns = (showAll: boolean): BasicColumn[] => [
   {
     title: '标题',
     dataIndex: 'title',
+    fixed: 'left',
     width: 120,
   },
   {
@@ -41,7 +42,7 @@ export const columns: BasicColumn[] = [
     width: 120,
   },
   {
-    title: '截止时间',
+    title: '期望完成时间',
     dataIndex: 'expectHandleTime',
     width: 120,
     customRender: ({ text }) => moment(text).format(timeFormat),
@@ -52,6 +53,22 @@ export const columns: BasicColumn[] = [
     width: 80,
     customRender: ({ text, record }) => `${flowStatusDict[text] ?? '未知'}${record.exceedHandle ? '（处理超时）' : ''}`,
   },
+  ...(showAll
+    ? [
+        {
+          title: '解决结果',
+          dataIndex: 'solved',
+          width: 80,
+          customRender: ({ text }) => (text == null ? '未评价' : text ? '已解决' : '未解决'),
+        },
+        {
+          title: '评分',
+          dataIndex: 'finalScore',
+          width: 80,
+          customRender: ({ text }) => (text == null ? '未评价' : `${text}分`),
+        },
+      ]
+    : []),
 ];
 
 export const searchFormSchema: FormSchema[] = [
@@ -94,6 +111,10 @@ export const searchFormSchema: FormSchema[] = [
     field: 'solved',
     component: 'Select',
     colProps: { span: 4, xl: { span: 5 } },
+    ifShow: () => {
+      const { currentRoute } = useRouter();
+      return !currentRoute.value.query.handle && !currentRoute.value.query.take;
+    },
     componentProps: {
       options: [
         {
@@ -107,6 +128,23 @@ export const searchFormSchema: FormSchema[] = [
           key: 'unsolved',
         },
       ],
+    },
+  },
+  {
+    label: '评分',
+    field: 'finalScore',
+    component: 'Select',
+    colProps: { span: 3, xl: { span: 4 } },
+    ifShow: () => {
+      const { currentRoute } = useRouter();
+      return !currentRoute.value.query.handle && !currentRoute.value.query.take;
+    },
+    componentProps: {
+      options: [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5].map((item: number) => ({
+        label: `${item}分`,
+        value: item,
+        key: item,
+      })),
     },
   },
 ];
@@ -240,7 +278,7 @@ export const formSchema: FormSchema[] = [
     },
   },
   {
-    label: '截止时间',
+    label: '期望完成时间',
     field: 'expectHandleTime',
     required: ({ values }) => !isNotEdit(values),
     dynamicDisabled: ({ values }) => isNotEdit(values),
@@ -249,7 +287,7 @@ export const formSchema: FormSchema[] = [
       ? {
           showTime: true,
           valueFormat: timeFormat,
-          placeholder: '请选择截止时间',
+          placeholder: '请选择期望完成时间',
           disabledDate: (current: Moment) => current && current < moment().startOf('day'),
         }
       : {
